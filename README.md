@@ -11,6 +11,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivat
 ![image](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E5%9C%96%E7%89%875.png)
 # 手機板UI：
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E6%89%8B%E6%A9%9F%E7%AB%AF%E5%8A%A0%E5%AF%86%E9%81%B8%E5%96%AE.Lua'))()
+
 ![image](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E5%9C%96%E7%89%876.png)
 ![image](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E5%9C%96%E7%89%877.png)
 
