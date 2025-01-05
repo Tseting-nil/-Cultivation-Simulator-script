@@ -977,7 +977,13 @@ Tabs.PAGE5:AddParagraph(
 )
 Tabs.PAGE5:AddParagraph(
     {
-        Title = "2024/12/27 -- [☑️] 設定語言變更為繁體中文"
+        Title = "2025/01/05 -- [✅] 添加對於世界副本的功能"
+    }
+)
+
+Tabs.PAGE5:AddParagraph(
+    {
+        Title = "2025/01/05 -- [✅] 添加自動煉丹&自動吸收丹藥"
     }
 )
 Tabs.PAGE5:AddParagraph(
@@ -987,14 +993,12 @@ Tabs.PAGE5:AddParagraph(
 )
 Tabs.PAGE5:AddParagraph(
     {
-        Title = "2025/01/05 -- [✅] 添加自動煉丹&自動吸收丹藥"
+        Title = "2024/12/27 -- [☑️] 設定語言變更為繁體中文"
     }
 )
-Tabs.PAGE5:AddParagraph(
-    {
-        Title = "2025/01/05 -- [✅] 添加對於世界副本的功能"
-    }
-)
+
+
+
 -- ========================================================================== --
 -- 設定頁
 
