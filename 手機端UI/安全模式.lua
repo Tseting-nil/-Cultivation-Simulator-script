@@ -43,4 +43,4 @@ end
 -- 啟動範圍檢測
 spawn(setupRangeDetection)
 
-return playerInRange
+return playerInRange,isDetectionEnabled
