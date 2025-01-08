@@ -29,7 +29,7 @@ end
 
 -- 記錄所有重生點位置
 for i = 1, 9 do
-    local scene = workspace:FindFirstChild("主场景"..i)
+    local scene = workspace:FindFirstChild("主場景"..i)
     if scene then
         local respawnPoint = scene:FindFirstChild("重生点")
         ALLRespawn_Point[i] = {
