@@ -700,7 +700,7 @@ Toggle:OnChanged(
 )
 Options.AutoCollectherbs:SetValue(false) -- 預設開啟自動採草藥
 
-local Toggle = Tabs.Main:AddToggle("invest", {Title = "投資", Default = false})
+local Toggle = Tabs.Main:AddToggle("invest", {Title = "自動執行投資", Default = false})
 
 Toggle:OnChanged(
     function()
@@ -953,6 +953,8 @@ Toggle:OnChanged(
         -- 透過 Toggle.Value 控制是否啟動或停止
         if Toggle.Value then
             useDiamonds = Toggle.Value
+        else
+            useDiamonds = false
         end
     end
 )
