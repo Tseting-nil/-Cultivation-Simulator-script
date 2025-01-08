@@ -13,17 +13,17 @@ local workspace = game:GetService("Workspace")
 local mainscene = workspace:FindFirstChild("主场景") -- 主場景
 if mainscene then
     mainscene.Name = "主場景1"
-    print("已成功更改名稱主場景1")
+    --print("已成功更改名稱主場景1")
 else
-    print("已更改名稱主場景1")
+    --print("已更改名稱主場景1")
 end
 for i = 1, 9 do
     local mainscene2 = workspace:FindFirstChild("主场景"..i)
     if mainscene2 then
         mainscene2.Name = "主場景"..i
-        print("已成功更改名稱主場景"..i)
+        --print("已成功更改名稱主場景"..i)
     else
-        print("已更改名稱主場景"..i)
+        --print("已更改名稱主場景"..i)
     end
 end
 
@@ -50,5 +50,5 @@ for _, respawnInfo in ipairs(ALLRespawn_Point) do
         closestSceneName = respawnInfo.SceneName
     end
 end
-
+--print("最近的出生點:", closestSceneName)
 return closestSceneName
