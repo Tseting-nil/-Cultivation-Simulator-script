@@ -1,7 +1,7 @@
 -- 本地變數定義
 local localPlayer = game.Players.LocalPlayer
 local Players = game.Players
-isDetectionEnabled = false
+local isDetectionEnabled = false
 local playerInRange = false
 
 -- 檢查玩家是否在範圍內
@@ -43,4 +43,4 @@ end
 -- 啟動範圍檢測
 spawn(setupRangeDetection)
 
-return playerInRange,isDetectionEnabled
+return playerInRange
