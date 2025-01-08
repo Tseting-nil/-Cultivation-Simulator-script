@@ -3,6 +3,10 @@ local localPlayer = game.Players.LocalPlayer
 local Players = game.Players
 local isDetectionEnabled = false
 local playerInRange = false
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- 創建或獲取 RemoteEvent
+local detectionEvent = ReplicatedStorage:WaitForChild("DetectionEvent")
 
 -- 檢查玩家是否在範圍內
 local function checkPlayersInRange()
@@ -24,6 +28,9 @@ local function checkPlayersInRange()
 			end
 		end
 	end
+
+	-- 通知遠程腳本 playerInRange 狀態
+	detectionEvent:FireAllClients(playerInRange)
 end
 
 -- 設置範圍檢測循環
@@ -42,5 +49,3 @@ end
 
 -- 啟動範圍檢測
 spawn(setupRangeDetection)
-
-return playerInRange
