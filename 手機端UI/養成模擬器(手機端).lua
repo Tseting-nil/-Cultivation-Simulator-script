@@ -6,7 +6,10 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	wait(2);
 	--print("AFK：AFK Bypass");
 end);
-local window = library:AddWindow("Cultivation-Simulator 養成模擬器", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(275, 265),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator 養成模擬器-手機板UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(275, 265),can_resize=false});
+-- ========================================================================== --
+-- 自述
+
 local features = window:AddTab("自述");
 features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2");
@@ -206,6 +209,8 @@ blackBlock.Parent = screenGui
 features:AddButton("開黑幕/關閉", function()
 	blackBlock.Visible = not blackBlock.Visible
 end);
+-- ========================================================================== --
+-- Main
 
 local features = window:AddTab("Main");
 features:AddButton("掛機模式", function()

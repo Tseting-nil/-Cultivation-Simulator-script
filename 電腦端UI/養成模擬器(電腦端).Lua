@@ -15,7 +15,7 @@ end
 local Window =
     Fluent:CreateWindow(
     {
-        Title = "Cultivation-Simulator 養成模擬器",
+        Title = "Cultivation-Simulator 養成模擬器-電腦板UI",
         SubTitle = "作者：澤澤",
         TabWidth = 160,
         Size = UDim2.fromOffset(580, 460), --(寬/高)
