@@ -1,7 +1,7 @@
 -- 本地變數定義
 local localPlayer = game.Players.LocalPlayer
 local Players = game.Players
-local isDetectionEnabled = false
+isDetectionEnabled = false
 local playerInRange = false
 
 -- 檢查玩家是否在範圍內
