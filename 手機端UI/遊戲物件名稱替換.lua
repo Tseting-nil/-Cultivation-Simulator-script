@@ -11,14 +11,14 @@ local function gamepassmissionnamechange()
             if gamepassmissionlist then
             	gamepassmissionlist.Name = tostring(i)
             else
-                --更新數據
+                
                 game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\232\142\183\229\143\150\230\149\176\230\141\174"):FireServer()
-                print("通行證任務--名稱--已全部更改")
+                --print("通行證任務--名稱--已全部更改")
             end
         end
 	end)
 	else
-		print("通行證任務--名稱--已重複更改")
+		--print("通行證任務--名稱--已重複更改")
     end
 end
 gamepassmissionnamechange()
@@ -32,12 +32,12 @@ local function everydatmissionnamechange()
 			if everydaymissionlist then
 				everydaymissionlist.Name = tostring(i)
 			else
-				print("每日任務--名稱--已全部更改")
+				--print("每日任務--名稱--已全部更改")
 			end
 		end
 	end)
 	else
-		print("每日任務--名稱--已重複更改")
+		--print("每日任務--名稱--已重複更改")
 	end
 end
 everydatmissionnamechange()
