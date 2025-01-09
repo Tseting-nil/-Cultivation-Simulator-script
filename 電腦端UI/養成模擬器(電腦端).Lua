@@ -68,10 +68,8 @@ local privileges = values:WaitForChild("特权")
 
 --遊戲內部UI定義
 local playerGui = player.PlayerGui
-local mainmission =
-    playerGui.GUI:WaitForChild("主界面"):WaitForChild("主城"):WaitForChild("主线任务"):WaitForChild("按钮"):WaitForChild("提示").Visible --任務UI
-local missionnamelist =
-    playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表") --任務UI--gamepass
+local mainmission = playerGui.GUI:WaitForChild("主界面"):WaitForChild("主城"):WaitForChild("主线任务"):WaitForChild("按钮"):WaitForChild("提示").Visible --任務UI
+local missionnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表") --任務UI--gamepass
 --TP重啟世界
 local guiPath = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗")
 local levelInfoUI = guiPath:WaitForChild("关卡信息"):WaitForChild("文本")
@@ -100,7 +98,6 @@ local extract_sword_value  --抽獎相關
 local extract_skill_level  --抽獎相關
 local extract_skill_value  --抽獎相關
 local useDiamonds = false --抽獎相關
-local namechangechick = false --任務--gamepass
 local savemodecheck2 = false --安全模式第二次確認
 local Autolotteryspeed = 0.2
 -- 創建界面
@@ -118,25 +115,25 @@ blackBlock.Parent = screenGui
 local function gamepassmissionnamechange()
     -- 檢查最終對象是否存在
     if missionnamelist then
-        local gamepassmissionlist = missionnamelist:FindFirstChild("任务项预制体")
-        if gamepassmissionlist then
-            -- 將 LayoutOrder 值轉為字符串後設置為 Name
-           gamepassmissionlist.Name = tostring(gamepassmissionlist.LayoutOrder)
-        else
-            --更新數據
-            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-                "\229\133\172\231\148\168"
-            ):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild(
-                "\232\142\183\229\143\150\230\149\176\230\141\174"
-            ):FireServer()
-            print("任務--名稱--已全部更改")
-            namechangechick = true
+        for i = 1, 12 do
+            local gamepassmissionlist = missionnamelist:FindFirstChild("任务项预制体")
+            if gamepassmissionlist then
+                -- 將 LayoutOrder 值轉為字符串後設置為 Name
+            gamepassmissionlist.Name = tostring(i)
+            else
+                --更新數據
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
+                    "\229\133\172\231\148\168"
+                ):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild(
+                    "\232\142\183\229\143\150\230\149\176\230\141\174"
+                ):FireServer()
+                print("任務--名稱--已全部更改")
+            end
         end
     end
 end
-while not namechangechick do
-    gamepassmissionnamechange()
-end
+gamepassmissionnamechange()
+
 --特殊定義(重生點設置)
 local closestScene = nil
 local closestPosition = nil
@@ -379,11 +376,7 @@ local function mainmissionchack()
         playerGui.GUI:WaitForChild("主界面"):WaitForChild("主城"):WaitForChild("主线任务"):WaitForChild("按钮"):WaitForChild("提示").Visible
     if mainmission == true then
         print("任務完成，可領取")
-        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-            "\229\133\172\231\148\168"
-        ):FindFirstChild("\228\184\187\231\186\191\228\187\187\229\138\161"):FindFirstChild(
-            "\233\162\134\229\143\150\229\165\150\229\138\177"
-        ):FireServer()
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\228\184\187\231\186\191\228\187\187\229\138\161"):FindFirstChild("\233\162\134\229\143\150\229\165\150\229\138\177"):FireServer()
     end
 end
 --gamepass任務
@@ -410,17 +403,9 @@ local function gamepassmission()
                             local args = {
                                 [1] = missionname
                             }
-                            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-                                "\229\133\172\231\148\168"
-                            ):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild(
-                                "\229\174\140\230\136\144\228\187\187\229\138\161"
-                            ):FireServer(unpack(args))
+                            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild( "\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\229\174\140\230\136\144\228\187\187\229\138\161"):FireServer(unpack(args))
                             --更新數據
-                            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-                                "\229\133\172\231\148\168"
-                            ):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild(
-                                "\232\142\183\229\143\150\230\149\176\230\141\174"
-                            ):FireServer()
+                            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\232\142\183\229\143\150\230\149\176\230\141\174" ):FireServer()
                         end
                     end
                 end
@@ -635,7 +620,7 @@ Tabs.Main:AddButton(
         end
     }
 )
-local Toggle = Tabs.Main:AddToggle("invest", {Title = "自動領取在線獎勵 -- Bata測試", Default = false})
+local Toggle = Tabs.Main:AddToggle("Autocoll", {Title = "自動領取在線獎勵", Default = false})
 
 Toggle:OnChanged(
     function()
@@ -656,7 +641,7 @@ Toggle:OnChanged(
         end
     end
 )
-Options.invest:SetValue(false)
+Options.Autocoll:SetValue(false)
 
 local Toggle = Tabs.Main:AddToggle("AutoCollectherbs", {Title = "自動採草藥", Default = false})
 
@@ -988,7 +973,6 @@ local function checkTime()
         if currentTime.hour == 0 and currentTime.min == 0 then
             wait(1)
             --任務--gamepass重製
-            namechangechick = false
             gamepassmissionnamechange()
             wait(60)
         else
