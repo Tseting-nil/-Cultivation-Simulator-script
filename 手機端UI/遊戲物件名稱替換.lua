@@ -17,7 +17,31 @@ local function gamepassmissionnamechange()
             end
         end
 	end)
+	else
+		print("任務--名稱--已重複更改")
     end
 end
 
 gamepassmissionnamechange()
+
+-- 定時檢查當時間為 UTC+8 的 00:00(遊戲更新時間)
+local function checkTimeAndRun()
+    spawn(function()
+        while true do
+            local currentTime = os.time() -- 獲取當前時間戳
+            local utcTime = os.date("!*t", currentTime) -- UTC 時間表
+            local utcPlus8Time = os.date("*t", currentTime + (8 * 3600)) -- UTC+8 時間表
+
+            if utcPlus8Time.hour == 0 and utcPlus8Time.min == 0 then
+                print("UTC+8 時間為 00:00，開始執行更新數據...")
+                gamepassmissionnamechange()
+                wait(60) -- 等待 60 秒，避免重複執行
+            end
+
+            wait(1) -- 每秒檢查一次
+        end
+    end)
+end
+
+-- 開始定時檢查
+checkTimeAndRun()
