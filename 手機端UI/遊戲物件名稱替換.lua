@@ -4,6 +4,7 @@ local gamepassmissionnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitF
 -- ========================================================================== --
 -- 任務資料夾初始化名稱
 local function gamepassmissionnamechange()
+    local namecheck = false
 	-- 檢查最終對象是否存在
 	if gamepassmissionnamelist then
 	spawn(function()
@@ -13,9 +14,13 @@ local function gamepassmissionnamechange()
             	gamepassmissionlist.Name = tostring(i)
             else
                 game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\232\142\183\229\143\150\230\149\176\230\141\174"):FireServer()
-                print("通行證任務--名稱--已全部更改")
+                if not namecheck then
+                    print("通行證任務--名稱--已全部更改")
+                    namecheck = true
+                end
             end
         end
+        namecheck = false
 	end)
 	else
 		--print("通行證任務--名稱--已全部更改")
@@ -27,6 +32,7 @@ gamepassmissionnamechange()
 
 local everydaymissionnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("每日任务"):WaitForChild("背景"):WaitForChild("任务列表")
 local function everydatmissionnamechange()
+    local namecheck = false
 	if everydaymissionnamelist then
 	spawn(function()
 		for i = 1, 7 do
@@ -34,9 +40,13 @@ local function everydatmissionnamechange()
 			if everydaymissionlist then
 				everydaymissionlist.Name = tostring(i)
 			else
-				print("每日任務--名稱--已全部更改")
+                if not namecheck then
+                    print("每日任務--名稱--已全部更改")
+                    namecheck = true
+                end
 			end
 		end
+        namecheck = false
 	end)
 	else
 		--print("每日任務--名稱--已全部更改")
