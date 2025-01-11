@@ -94,6 +94,7 @@ end
 -- 地下城資料夾初始化名稱
 local Dungeonslist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
 local DungeonDungeon = Dungeonslist:FindFirstChild("副本预制体")
+local Dungeonnamechangechick = false
 --更改副本文件名稱
 local function Dungeonnamechange()
     if DungeonDungeon then
