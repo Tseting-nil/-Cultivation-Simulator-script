@@ -91,28 +91,26 @@ else
 end
 
 -- ========================================================================== --
--- 00:00(UTC+8) 時執行更新
---[[
--- 定時檢查當時間為 UTC+8 的 00:00(遊戲更新時間)
-local function checkTimeAndRun()
-    spawn(function()
-        while true do
-            local currentTime = os.time() -- 獲取當前時間戳
-            local utcTime = os.date("!*t", currentTime) -- UTC 時間表
-            local utcPlus8Time = os.date("*t", currentTime + (8 * 3600)) -- UTC+8 時間表
-
-            if utcPlus8Time.hour == 0 and utcPlus8Time.min == 0 then
-                print("UTC+8 時間為 00:00，開始執行更新數據...")
-                gamepassmissionnamechange()
-				everydatmissionnamechange()
-                wait(60) -- 等待 60 秒，避免重複執行
-            end
-
-            wait(1) -- 每秒檢查一次
+-- 地下城資料夾初始化名稱
+local Dungeonslist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
+local DungeonDungeon = Dungeonslist:FindFirstChild("副本预制体")
+--更改副本文件名稱
+local function Dungeonnamechange()
+    if DungeonDungeon then
+        local dungeonFolder = Dungeonslist:FindFirstChild("副本预制体")
+        if dungeonFolder then
+            local dungeonsname = dungeonFolder:FindFirstChild("名称")
+            dungeonsname = dungeonsname.Text
+            dungeonsname = string.gsub(dungeonsname, "%s+", "")
+            dungeonFolder.Name = dungeonsname
+        else
+            Dungeonnamechangechick = true
+            print("地下城--名稱--已全部更改")
         end
-    end)
+    end
 end
 
--- 開始定時檢查
-checkTimeAndRun()
-]]
+while not Dungeonnamechangechick do
+    Dungeonnamechange()
+    task.wait(0.1)
+end
