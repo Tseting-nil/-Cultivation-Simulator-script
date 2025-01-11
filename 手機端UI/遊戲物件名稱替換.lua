@@ -90,3 +90,28 @@ else
 ]]
 end
 
+-- ========================================================================== --
+-- 地下城資料夾初始化名稱
+local Dungeonslist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
+local DungeonDungeon = Dungeonslist:FindFirstChild("副本预制体")
+local Dungeonnamechangechick = false
+--更改副本文件名稱
+local function Dungeonnamechange()
+    if DungeonDungeon then
+        local dungeonFolder = Dungeonslist:FindFirstChild("副本预制体")
+        if dungeonFolder then
+            local dungeonsname = dungeonFolder:FindFirstChild("名称")
+            dungeonsname = dungeonsname.Text
+            dungeonsname = string.gsub(dungeonsname, "%s+", "")
+            dungeonFolder.Name = dungeonsname
+        else
+            Dungeonnamechangechick = true
+            print("地下城--名稱--已全部更改")
+        end
+    end
+end
+
+while not Dungeonnamechangechick do
+    Dungeonnamechange()
+    task.wait(0.1)
+end
