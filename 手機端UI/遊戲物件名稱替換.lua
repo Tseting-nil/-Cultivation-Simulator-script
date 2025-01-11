@@ -66,52 +66,32 @@ if worldname and worldlevelsname then
     worldlevelsname.Name = "levels"
 end
 
--- 獲取目標資料夾（例如 schedule）
-local targetFolder = schedule
--- 定義 IntValue 的名稱
-local intValueName = "statistics"
--- 檢查是否已存在同名的 IntValue
-local existingIntValue = targetFolder:FindFirstChild(intValueName)
--- 正確的條件檢查
-if not existingIntValue then
-    -- 如果不存在，創建新的 IntValue
-    local newIntValue = Instance.new("IntValue")
-    newIntValue.Name = intValueName -- 設置名稱
-    newIntValue.Value = 0 -- 設置初始值
-    newIntValue.Parent = targetFolder -- 添加到目標資料夾
---[[
-    print("成功創建 IntValue，名稱：" .. intValueName .. "，值：" .. newIntValue.Value)
-elseif not existingIntValue:IsA("IntValue") then
-    -- 如果名稱相同但類型不同，打印警告
-    warn("目標名稱已被其他類型物件佔用：" .. existingIntValue.ClassName)
-else
-    -- 如果已存在並且類型正確，打印提示
-    print("IntValue 已存在，名稱：" .. intValueName .. "，值：" .. existingIntValue.Value)
-]]
-end
-
 -- ========================================================================== --
 -- 地下城資料夾初始化名稱
 local Dungeonslist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
-local DungeonDungeon = Dungeonslist:FindFirstChild("副本预制体")
-local Dungeonnamechangechick = false
---更改副本文件名稱
 local function Dungeonnamechange()
-    if DungeonDungeon then
-        local dungeonFolder = Dungeonslist:FindFirstChild("副本预制体")
-        if dungeonFolder then
-            local dungeonsname = dungeonFolder:FindFirstChild("名称")
-            dungeonsname = dungeonsname.Text
-            dungeonsname = string.gsub(dungeonsname, "%s+", "")
-            dungeonFolder.Name = dungeonsname
-        else
-            Dungeonnamechangechick = true
-            print("地下城--名稱--已全部更改")
-        end
+    local namecheck = false
+    if Dungeonslist then
+        spawn(function()
+            while true do
+                local dungeonlist = Dungeonslist:FindFirstChild("副本预制体")
+                if dungeonlist then
+                    local dungeonsname = dungeonlist:FindFirstChild("名称").Text
+                    dungeonsname = string.gsub(dungeonsname, "%s+", "")
+                    dungeonlist.Name = dungeonsname
+                else
+                    if not namecheck then
+                        print("地下城--名稱--已全部更改")
+                        namecheck = true
+                        break
+                    end
+                end
+            end
+            namecheck = false
+        end)
+    else
+        --print("地下城--名稱--已全部更改")
     end
 end
 
-while not Dungeonnamechangechick do
-    Dungeonnamechange()
-    task.wait(0.1)
-end
+Dungeonnamechange()
