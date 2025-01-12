@@ -1172,10 +1172,15 @@ local function updateExtractedValues()
     extract_sword_value = tonumber(string.match(sword_value, "^(%d+)/"))
     extract_skill_level = tonumber(string.match(skill_level, "%d+"))
     extract_skill_value = tonumber(string.match(skill_value, "^(%d+)/"))
-    lotterynum.Text = "法寶抽獎券： " .. sword_tickets .. "技能抽獎券： " .. skill_tickets .. "鑽石數量： " .. diamonds
+    lotterynum.Text = "法寶抽獎券： " .. sword_tickets .. "    技能抽獎券： " .. skill_tickets
 end
 
-
+spawn(function()
+    while true do
+        updateExtractedValues()
+        wait(1)
+    end
+end)
 
 local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能", function(bool)
 	Autolottery = bool
