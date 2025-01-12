@@ -559,16 +559,6 @@ Tabs.PAGE:AddParagraph(
 
 Tabs.PAGE:AddButton(
     {
-        Title = "手機板UI",
-        Description = "包含基本功能",
-        Callback = function()
-            loadstring(game:HttpGet("https://pastebin.com/raw/thwJrecP"))()
-        end
-    }
-)
-
-Tabs.PAGE:AddButton(
-    {
         Title = "開黑幕/關閉",
         Callback = function()
             print("開黑幕/關閉")
@@ -1053,10 +1043,15 @@ Tabs.PAGE4:AddButton(
 -- PAGE5 更新日誌
 Tabs.PAGE5:AddParagraph(
     {
-        Title = "2024/12/20 -- [☑️] 腳本介面由 Elerium-v2 變更為 Fluent",
-        Content = "手機端依舊使用 Elerium-v2 介面, 手機版還是會更新吧!?"
+        Title = "2024/12/20 -- [☑️] 電腦端腳本介面由 Elerium-v2 變更為 Fluent",
     }
 )
+Tabs.PAGE5:AddParagraph(
+    {
+        Title = "2025/01/12  -- [❌] 移除開啟手機端UI -- 不兼容"
+    }
+)
+
 Tabs.PAGE5:AddParagraph(
     {
         Title = "2025/01/07 -- [✅] 添加在線獎勵自動領取"
