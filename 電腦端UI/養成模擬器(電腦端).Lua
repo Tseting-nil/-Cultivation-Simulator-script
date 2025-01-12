@@ -547,11 +547,6 @@ end
 --自述(PAGE)頁
 Tabs.PAGE:AddParagraph(
     {
-        Title = "這個UI庫不能調整字體大小,如看不到請使用手機板UI",
-    }
-)
-Tabs.PAGE:AddParagraph(
-    {
         Title = "最後更新時間：2025/01/07",
         Content = "製作時間：2024/12/20"
     }
