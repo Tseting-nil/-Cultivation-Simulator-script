@@ -17,7 +17,7 @@
 
 ---
 
-## ✨ 腳本：自動區分設備
+## ✨ 腳本：手機板UI
 ```lua
 loadstring("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E9%A4%8A%E6%88%90%E6%A8%A1%E6%93%AC%E5%99%A8%E8%85%B3%E6%9C%AC.lua")()
 ```
