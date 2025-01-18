@@ -18,10 +18,6 @@
 - 電腦版使用 [Fluent](https://github.com/dawid-scripts/Fluent)
 - 手機版使用 [Elerium v2](https://github.com/memejames/elerium-v2-ui-library)
 
-
-## ✨ 正在製作
-- 地下城相關功能(需要"億"點點時間)
-
 ---
 
 ## ✨ 腳本：手機板中文介面
