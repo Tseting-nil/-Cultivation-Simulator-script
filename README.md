@@ -1,3 +1,4 @@
+### 中文 | [English](READMEen.md)
 # 🌟 養成模擬器腳本 | Cultivation Simulator Script
 
 **遊戲鏈接**：  
@@ -23,9 +24,13 @@
 
 ---
 
-## ✨ 腳本：手機板UI
+## ✨ 腳本：手機板中文介面
 ```lua
-loadstring("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E9%A4%8A%E6%88%90%E6%A8%A1%E6%93%AC%E5%99%A8%E8%85%B3%E6%9C%AC.lua")()
+loadstring("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%A4%8A%E6%88%90%E6%A8%A1%E6%93%AC%E5%99%A8(%E6%89%8B%E6%A9%9F%E7%AB%AF)%E4%B8%AD%E6%96%87%E9%9D%A2%E6%9D%BF.lua")()
+```
+## ✨ 腳本：手機板英文介面
+```lua
+loadstring("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%A4%8A%E6%88%90%E6%A8%A1%E6%93%AC%E5%99%A8(%E6%89%8B%E6%A9%9F%E7%AB%AF)%E8%8B%B1%E6%96%87%E9%9D%A2%E6%9D%BF.lua")()
 ```
 
 ## 🖋 作者：Tseting-nil 澤澤 
