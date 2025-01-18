@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))()
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/Ktm0i9QT", true))()
 --獲取重生點
 local RespawPoint = loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua'))()
 --遊戲內部資料夾名稱更改(優先度最高)
@@ -18,18 +18,16 @@ game.Players.LocalPlayer.Idled:Connect(function()
 end);
 -- ========================================================================== --
 -- 標題
-local window = library:AddWindow("Cultivation-Simulator  養成模擬器 -- 手機板UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(356, 310),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(356, 310),can_resize=false});
 -- ========================================================================== --
 -- 標籤
-local features = window:AddTab("自述");
+local features = window:AddTab("Readme");
 local features1 = window:AddTab("Main");
-local features2 = window:AddTab("副本");
-local features3 = window:AddTab("地下城");
-local features4 = window:AddTab("抽取");
-local features5 = window:AddTab("開啟UI");
-local features6 = window:AddTab("設定");
-
-
+local features2 = window:AddTab("World");
+local features3 = window:AddTab("Dungeons");
+local features4 = window:AddTab("Pull");
+local features5 = window:AddTab("UI");
+--local features6 = window:AddTab("設定");
 
 -- ========================================================================== --
 -- 定義全域函數
@@ -48,7 +46,6 @@ local finishworldnum
 --遊戲UI
 local values = player:WaitForChild("值");
 local privileges = values:WaitForChild("特权");
-
 
 --全域數值定義
 local gowordlevels = 1
@@ -236,12 +233,12 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
-features:AddLabel("AntiAFK：start");
-features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/01/18");
-local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
-local timezoneLabel = features:AddLabel("時區：UTC+00:00");
+features:AddLabel("Author： 澤澤ZeZe  |  Version： Mobile Edition");
+features:AddLabel("AntiAFK：Start");
+features:AddLabel("Created on： 2024/09/27");
+features:AddLabel("Last Updated： 2025/01/18");
+local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
+local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
 	return os.date("%Y/%m/%d %H:%M:%S");
 end
@@ -250,8 +247,8 @@ local function getLocalTimezone()
 	return string.format("UTC%s", offset:sub(1, 3) .. ":" .. offset:sub(4, 5));
 end
 local function updateLabel()
-	timeLabel.Text = "當前時間：" .. getFormattedTime();
-	timezoneLabel.Text = "時區：" .. getLocalTimezone();
+	timeLabel.Text = "Current Time：" .. getFormattedTime();
+	timezoneLabel.Text = "Time Zone：" .. getLocalTimezone();
 end
 spawn(function()
 	while true do
@@ -261,10 +258,10 @@ spawn(function()
 end);
 -- 重生點按鈕
 local AddLabelfeatures = features:AddLabel("重生點：重生點");
-AddLabelfeatures.Text = ("重生點：" .. RespawPoint .." -- 傳送錯誤請回家後使用底下按鈕")
+AddLabelfeatures.Text = ("重生點：" .. RespawPoint .." -- If TP Error.Return home and Use TP FIX button")
 local function Respawn_Point()
     RespawPoint = loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua'))()
-    AddLabelfeatures.Text = ("重生點：" .. RespawPoint .." -- 傳送錯誤請回家後使用底下按鈕")
+    AddLabelfeatures.Text = ("重生點：" .. RespawPoint .." -- If TP Error.Return home and Use TP FIX button")
     print("最近的出生點：".. RespawPoint)
     RespawPointnum = RespawPoint:match("%d+")
     print("重生點編號：".. RespawPointnum)
@@ -273,19 +270,19 @@ local function Respawn_Point()
     print("傳送座標：".. TPX .." ".. TPY .." ".. TPZ)
     player.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(TPX, TPY, TPZ)
 end
-features:AddButton("重生點更改",function()
+features:AddButton("TP FIX",function()
 	Respawn_Point()
 end)
 
 -- 安全模式按鈕
 local function updateButtonText()
 	if isDetectionEnabled then
-		savemodebutton.Text = " 狀態：已啟用安全模式";
+		savemodebutton.Text = "Status：Safe Mode Enabled";
 	else
-		savemodebutton.Text = " 狀態：以關閉安全模式";
+		savemodebutton.Text = "Status：Safe Mode Disabled";
 	end
 end
-savemodebutton = features:AddButton(" 狀態：啟用安全模式 ", function()
+savemodebutton = features:AddButton("Status：Safe Mode Enabled ", function()
 	inRange = false;
 	playerInRange = false;
 	timescheck = 0;
@@ -306,13 +303,13 @@ blackBlock.Position = UDim2.new(0, 0, 0, 0)  -- 位置在螢幕的起始點
 blackBlock.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 blackBlock.Visible = false  -- 初始時隱藏
 blackBlock.Parent = screenGui
-features:AddButton("黑幕開/關閉", function()
+features:AddButton("Black Screen: On/Off", function()
 	blackBlock.Visible = not blackBlock.Visible
 end);
 
 -- ========================================================================== --
 -- --特殊定義(在線獎勵領取)
-local timeLabel = features1:AddLabel("距離下自動獲取還有 0 秒")
+local timeLabel = features1:AddLabel("Time until auto-fetch: 0 seconds")
 local playerGui = game.Players.LocalPlayer.PlayerGui
 local Online_Gift = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("节日活动商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("在线奖励"):WaitForChild("列表")
 
@@ -376,15 +373,15 @@ local function Online_Gift_start()
     end
 
     if nowminCountdown and nowminCountdown > 0 then
-        timeLabel.Text = string.format("距離下自動獲取還有 %d 秒", nowminCountdown)
+        timeLabel.Text = string.format("Time until auto-fetch: %d seconds", nowminCountdown)
     elseif nowminCountdown and nowminCountdown <= 0 then
-        timeLabel.Text = "倒計時結束，準備獲取獎勳"
+        timeLabel.Text = "Countdown complete, preparing to receive rewards"
         for i = 1, 6 do
             local args = { [1] = i }
             game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\232\138\130\230\151\165\230\180\187\229\138\168"):FindFirstChild("\233\162\134\229\143\150\229\165\150\229\138\177"):FireServer(unpack(args))
         end
     else
-        timeLabel.Text = "已全部領取"
+        timeLabel.Text = "All rewards collected"
         Gife_check = false
     end
 end
@@ -397,7 +394,7 @@ local function Online_Gift_check()
     end
 end
 
-features1:AddButton("自動領取在線獎勳", function()
+features1:AddButton("Auto-collect online rewards", function()
     Gife_check = true
     spawn(Online_Gift_check)
 end)
@@ -417,7 +414,7 @@ local function CheckAllRewardsCompleted()
     end
 
     if allCompleted then
-        print("所有在線獎勳已完成！")
+        print("All online rewards have been collected！")
         Gife_check = false
     end
 end
@@ -459,7 +456,7 @@ spawn(function()
 end)
 -- ========================================================================== --
 -- Main頁
-local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass任務)", function(bool)
+local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GamePass tasks)", function(bool)
 	Autocollmission = bool;
 	if Autocollmission then
 		while Autocollmission do
@@ -472,7 +469,7 @@ local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass�
 end);
 Autocollmission:Set(false);
 
-local invest = features1:AddSwitch("自動執行投資", function(bool)
+local invest = features1:AddSwitch("Auto-execute investments", function(bool)
 	invest = bool;
 	if invest then
 		while invest do
@@ -493,7 +490,7 @@ local invest = features1:AddSwitch("自動執行投資", function(bool)
 end);
 invest:Set(false);
 
-local AutoCollectherbs = features1:AddSwitch("自動採草藥", function(bool)
+local AutoCollectherbs = features1:AddSwitch("Auto-harvest herbs", function(bool)
 	AutoCollectherbs = bool;
 	if AutoCollectherbs then
 		while AutoCollectherbs do
@@ -508,20 +505,20 @@ local AutoCollectherbs = features1:AddSwitch("自動採草藥", function(bool)
 end);
 AutoCollectherbs:Set(false);
 
-features1:AddLabel(" - - 統計");
+features1:AddLabel("- - Statistics");
 features1:AddButton("每秒擊殺/金幣數", function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/0NqSi46N"))()
 	loadstring(game:HttpGet("https://pastebin.com/raw/HGQXdAiz"))()
 end);
 
-features1:AddLabel(" - - 通行證解鎖");
-features1:AddButton("解鎖自動煉製", function()
+features1:AddLabel("- - GamePass Unlock");
+features1:AddButton("Unlock Auto-Crafting", function()
 	local superRefining = privileges:WaitForChild("超级炼制");
 	superRefining.Value = false;
 	local automaticRefining = privileges:WaitForChild("自动炼制");
 	automaticRefining.Value = true;
 end);
-features1:AddButton("背包擴充", function()
+features1:AddButton("Backpack Expansion", function()
 	local backpack = privileges:WaitForChild("扩充背包");
 	backpack.Value = true;
 end);
@@ -548,85 +545,84 @@ end)
 -- ========================================================================== --
 -- 副本頁UI
 
-local Difficulty_choose = features2:AddLabel("  當前選擇： 01");
-local Difficulty_selection = features2:AddDropdown("                關卡難易度選擇                ", function(text)
-    if text == "      世界關卡簡單： 01       " then
+local Difficulty_choose = features2:AddLabel("Current Selection： 01");
+local Difficulty_selection = features2:AddDropdown("Difficulty Level Selection", function(text)
+    if text == "World Easy： 01" then
         print("當前選擇：簡單")
         gowordlevels = 1
-        Difficulty_choose.Text = "  當前選擇： 01"
-    elseif text == "      世界關卡普通： 21       " then
+        Difficulty_choose.Text = "Current Selection： 01"
+    elseif text == "World Normal： 21" then
         print("當前選擇：普通")
         gowordlevels = 21
         if gowordlevels > worldnum then
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
             end
         else
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
             end
-
         end
-    elseif text == "      世界關卡困難： 41       " then
+    elseif text == "World Hard： 41" then
         print("當前選擇：困難")
         gowordlevels = 41
         if gowordlevels > worldnum then
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
             end
         else
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
             end
 
         end
-    elseif text == "      世界關卡專家： 61       " then
+    elseif text == "World Expert： 61" then
         print("當前選擇：專家")
         gowordlevels = 61
         if gowordlevels > worldnum then
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
             end
         else
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
             end
 
         end
-    elseif text == "      自動最高關卡        " then
+    elseif text == "Auto Max Choose" then
         print("當前選擇：自動最高關卡")
         if worldnum < 10 then
-            Difficulty_choose.Text = "  當前選擇最高關卡： 0"..worldnum;
+            Difficulty_choose.Text = "Current Selection Max Level： 0"..worldnum;
         else
-            Difficulty_choose.Text = "  當前選擇最高關卡： "..worldnum;
+            Difficulty_choose.Text = "Current Selection Max Level： "..worldnum;
         end
         gowordlevels = worldnum
-        while text == "      自動最高關卡        "  do
+        while text == "Auto Max Choose"  do
             if newworldnum ~= worldnum then
                 gowordlevels = worldnum
                 newworldnum = worldnum
                 finishworldnum = tonumber(gowordlevels)
                 if worldnum < 10 then
-                    Difficulty_choose.Text = "  當前選擇最高關卡： 0"..gowordlevels;
+                    Difficulty_choose.Text = "Current Selection Max Level： 0"..worldnum;
                     wait(savemodetime2)
                     wait(savemodetime + 1)
                     local args = {[1]=finishworldnum}
                     game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))     
         
                 else
-                    Difficulty_choose.Text = "  當前選擇最高關卡： "..gowordlevels;
+                    Difficulty_choose.Text = "Current Selection Max Level： "..worldnum;
                     wait(savemodetime2)
                     wait(savemodetime + 1)
                     local args = {[1]=finishworldnum}
@@ -637,45 +633,45 @@ local Difficulty_selection = features2:AddDropdown("                關卡難易
         end
     end
 end);
-local Levels1 = Difficulty_selection:Add("      世界關卡簡單： 01       ")
-local Levels2 = Difficulty_selection:Add("      世界關卡普通： 21       ")
-local Levels3 = Difficulty_selection:Add("      世界關卡困難： 41       ")
-local Levels4 = Difficulty_selection:Add("      世界關卡專家： 61       ")
-local Levels5 = Difficulty_selection:Add("      自動最高關卡        ")
+local Levels1 = Difficulty_selection:Add("World Easy： 01")
+local Levels2 = Difficulty_selection:Add("World Normal： 21")
+local Levels3 = Difficulty_selection:Add("World Hard： 41")
+local Levels4 = Difficulty_selection:Add("World Expert： 61")
+local Levels5 = Difficulty_selection:Add("Auto Max Choose")
 local Levels6 = Difficulty_selection:Add("空白")
-features2:AddButton("選擇關卡+1", function()
+features2:AddButton("Select level +1", function()
 	gowordlevels = gowordlevels + 1
     if gowordlevels < 10 then
-        Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
+        Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
     else
-        Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
+        Difficulty_choose.Text = "Current Selection： "..gowordlevels;
     end
     if gowordlevels > worldnum then
         if gowordlevels < 10 then
-            Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
+            Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
         else
-            Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
+            Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
         end
     end
 end);
 
-features2:AddButton("選擇關卡-1", function()
+features2:AddButton("Select level -1", function()
     gowordlevels = gowordlevels - 1
     if gowordlevels < 1 then
         gowordlevels = 1
-        Difficulty_choose.Text = "  自動修正： 關卡 0" .. gowordlevels
+        Difficulty_choose.Text = "Autocorrection: Level 0" .. gowordlevels
     else
         if gowordlevels > worldnum then
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
+                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
             end
         else
             if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
             else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
+                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
             end
         end
     end
@@ -728,12 +724,12 @@ end
 ]]
 
 -- 添加按鈕功能
-features2:AddButton("傳送", function()
+features2:AddButton("TP", function()
     teleporttworld1()
 end)
-features2:AddLabel("⚠️自動開始需能夠完成波次100⚠️")
+features2:AddLabel("⚠️ Auto-start requires the ability to complete wave 100 ⚠️")
 local Autostart = false;
-local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)", function(bool)
+local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", function(bool)
 	Autostart = bool;
 	if Autostart then
 		while Autostart do
@@ -752,7 +748,7 @@ local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)
 end);
 Autostart:Set(false);
 
-features2:AddButton("掛機模式", function()
+features2:AddButton("AFK Mode", function()
 	local AFKmod = game:GetService("Players").LocalPlayer:WaitForChild("值"):WaitForChild("设置"):WaitForChild("自动战斗");
 	if ( AFKmod.Value == true ) then
 		AFKmod.Value = false;
@@ -890,93 +886,86 @@ local function checkDungeonkey()
 end
 checkDungeonkey()
 
-local chooselevels = features3:AddLabel("請選擇地下城...")
+local chooselevels = features3:AddLabel("select a dungeon...")
 
 
 -- 初始化下拉選單
-local dropdown1 = features3:AddDropdown("選擇地下城", function(text)
-    if     text == ("            礦石地下城            ") then
+local dropdown1 = features3:AddDropdown("Select a Dungeon", function(text)
+    if     text == ("OreDungeon") then
         dropdownchoose = 1
         dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：礦石地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            靈石地下城            ") then
+        chooselevels.Text = " OreDungeon,  Key："..Ore_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("GemDungeon") then
         dropdownchoose = 2
         dropdownchoose2 = tostring(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：靈石地下城,  鑰匙："..Gem_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            符石地下城            ") then
+        chooselevels.Text = " GemDungeon,  Key："..Gem_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("RuneDungeon") then
         dropdownchoose = 3
         dropdownchoose2 = tostring(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")        
-        chooselevels.Text = "當前選擇：符石地下城,  鑰匙："..Rune_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            遺物地下城            ") then        
+        chooselevels.Text = " RuneDungeon,  Key："..Rune_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("RelicDungeon") then        
         dropdownchoose = 4  
         dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            懸浮地下城            ") then
+        chooselevels.Text = " RelicDungeon,  Key："..Relic_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("HoverDungeon") then
         dropdownchoose = 7
         dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            金幣地下城            ") then
+        chooselevels.Text = " HoverDungeon,  Key："..Hover_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("GoldDungeon") then
         dropdownchoose = 6
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            活動地下城   未開啟         ") then
+        chooselevels.Text = " GoldDungeon,  Key："..Gold_Dungeonkey.. "  ,Level："..dropdownchoose2
+    elseif text == ("Event Dungeon...Not open") then
         dropdownchoose = 5
         dropdownchoose2 = "未開啟"
         chooselevels.Text = "當前選擇：活動地下城  未開啟"
-    else
-        dropdownchoose = 8
-        chooselevels.Text = "此為佔位符號無任何效果"
     end
 end)
 
-local Dungeon1 = dropdown1:Add("            礦石地下城            ")
-local Dungeon2 = dropdown1:Add("            靈石地下城            ")
-local Dungeon3 = dropdown1:Add("            符石地下城            ")
-local Dungeon4 = dropdown1:Add("            遺物地下城            ")
-local Dungeon5 = dropdown1:Add("            懸浮地下城            ")
-local Dungeon6 = dropdown1:Add("            金幣地下城            ")
-local Dungeon7 = dropdown1:Add("            活動地下城   未開啟            ")
-local Dungeon8 = dropdown1:Add("            此為佔位符號無任何效果            ")
-
-
+local Dungeon1 = dropdown1:Add("OreDungeon")
+local Dungeon2 = dropdown1:Add("GemDungeon")
+local Dungeon3 = dropdown1:Add("RuneDungeon")
+local Dungeon4 = dropdown1:Add("RelicDungeon")
+local Dungeon5 = dropdown1:Add("HoverDungeon")
+local Dungeon6 = dropdown1:Add("GoldDungeon")
+local Dungeon7 = dropdown1:Add("Event Dungeon...Not open")
+local Dungeon8 = dropdown1:Add("空白")
 
 local function UDPDungeontext()
     if dropdownchoose == 0 then
-        chooselevels.Text = "請選擇地下城"
+        chooselevels.Text = "Select a Dungeon"
     elseif dropdownchoose == 1 then
         dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：礦石地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " OreDungeon,  Key："..Ore_Dungeonkey.. "  ,Level："..dropdownchoose2
     elseif dropdownchoose == 2 then
         dropdownchoose2 = tostring(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：靈石地下城,  鑰匙："..Gem_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " GemDungeon,  Key："..Gem_Dungeonkey.. "  ,Level："..dropdownchoose2
     elseif dropdownchoose == 3 then
         dropdownchoose2 = tostring(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：符石地下城,  鑰匙："..Rune_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " RuneDungeon,  Key："..Rune_Dungeonkey.. "  ,Level："..dropdownchoose2
     elseif dropdownchoose == 4 then
         dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " RelicDungeon,  Key："..Relic_Dungeonkey.. "  ,Level："..dropdownchoose2
     elseif dropdownchoose == 7 then
         dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " HoverDungeon,  Key："..Hover_Dungeonkey.. "  ,Level："..dropdownchoose2
     elseif dropdownchoose == 6 then
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = " GoldDungeon,  Key："..Gold_Dungeonkey.. "  ,Level："..dropdownchoose2        
     elseif dropdownchoose == 5 then  
-        chooselevels.Text = "當前選擇：活動地下城  未開啟"
-    elseif dropdownchoose == 8 then
-        chooselevels.Text = "此為佔位符號無任何效果"
+        chooselevels.Text = " EventDungeon  Not OPEN"
     end
 end
 
 local function UDPDungeonchoose()
     checkDungeonkey()
-    Dungeon1.Text = ("            礦石地下城   鑰匙："..Ore_Dungeonkey.."            ")
-    Dungeon2.Text = ("            靈石地下城   鑰匙："..Gem_Dungeonkey.."            ")
-    Dungeon3.Text = ("            符石地下城   鑰匙："..Rune_Dungeonkey.."            ")
-    Dungeon4.Text = ("            遺物地下城   鑰匙："..Relic_Dungeonkey.."            ")
-    Dungeon5.Text = ("            懸浮地下城   鑰匙："..Hover_Dungeonkey.."            ")
-    Dungeon6.Text = ("            金幣地下城   鑰匙："..Gold_Dungeonkey.."            ")
-    Dungeon7.Text = ("            活動地下城   未開啟            ")
+    Dungeon1.Text = ("  OreDungeon    Key："..Ore_Dungeonkey.."  ")
+    Dungeon2.Text = ("  GemDungeon    Key："..Gem_Dungeonkey.."  ")
+    Dungeon3.Text = ("  RuneDungeon    Key："..Rune_Dungeonkey.."  ")
+    Dungeon4.Text = ("  RelicDungeon    Key："..Relic_Dungeonkey.."  ")
+    Dungeon5.Text = ("  HoverDungeon    Key："..Hover_Dungeonkey.."  ")
+    Dungeon6.Text = ("  GoldDungeon    Key："..Gold_Dungeonkey.."  ")
+    Dungeon7.Text = ("  Event Dungeon...Notopen")
 end
 
 spawn(function()
@@ -986,8 +975,8 @@ spawn(function()
         wait(0.5)
     end
 end)
-features3:AddLabel("⚠️因需要寫入本地數據所以操作勿太快")
-local updDungeonuiSwitch = features3:AddSwitch("同步地下城進入介面的難度", function(bool)
+features3:AddLabel("⚠️ Please avoid operating too quickly ")
+local updDungeonuiSwitch = features3:AddSwitch("Sync dungeon entry interface difficulty", function(bool)
 	updDungeonui = bool
 end)
 
@@ -1120,7 +1109,7 @@ local function AutostartDungeonf()
     end
 end
 
-local AutostartDungeonSwitch = features3:AddSwitch("戰鬥結束後自動開始(地下城)--需要可以贏", function(bool)
+local AutostartDungeonSwitch = features3:AddSwitch("Auto-start After Battle (Dungeon) -- Victory Required", function(bool)
     AutostartDungeon = bool
     if AutostartDungeon then
         while AutostartDungeon do
@@ -1131,13 +1120,13 @@ local AutostartDungeonSwitch = features3:AddSwitch("戰鬥結束後自動開始(
 end)
 AutostartDungeonSwitch:Set(false)
 
-local AutoDungeonplus1Switch = features3:AddSwitch("戰鬥結束關卡數自動+1", function(bool)
+local AutoDungeonplus1Switch = features3:AddSwitch("Automatically Increase Level by +1 After Battle", function(bool)
     AutoDungeonplus1 = bool
 end)
 
 AutoDungeonplus1Switch:Set(false)
 
-features3:AddTextBox("自訂輸入關卡", function(text)
+features3:AddTextBox("You can also manually input the level", function(text)
     local dropdownchoose0 = string.gsub(text, "[^%d]", "")
     local dropdownchoose3 = tonumber(dropdownchoose0)
     if not dropdownchoose3 then
@@ -1174,23 +1163,23 @@ end)
 
 
 
-features3:AddButton("關卡選擇+1", function()
+features3:AddButton("Level Selection +1", function()
     adjustDungeonLevel(1)
 end)
 
-features3:AddButton("關卡選擇-1", function()
+features3:AddButton("Level Selection -1", function()
     adjustDungeonLevel(-1)
 end)
 
 
-features3:AddButton("傳送", function()
+features3:AddButton("TP", function()
     DungeonTP()
 end)
 -- ========================================================================== --
 -- 抽取頁
 -- ========================================================================== --
 -- --特殊定義(煉製裝備相關)
-local AutoelixirSwitch = features4:AddSwitch("自動煉丹藥", function(bool)
+local AutoelixirSwitch = features4:AddSwitch("Auto Elixir ", function(bool)
 	Autoelixir = bool
 	if Autoelixir then
 		while Autoelixir do
@@ -1202,7 +1191,7 @@ end)
 
 AutoelixirSwitch:Set(false)
 
-local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥（⚠️背包裡面所有的丹藥⚠️）", function(bool)
+local AutoelixirabsorbSwitch = features4:AddSwitch("Auto Absorb Elixir（⚠️All Elixir in the backpack⚠️）", function(bool)
 	Autoelixirabsorb = bool
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
@@ -1245,12 +1234,7 @@ local function usesword_ticket()
         [1] = "\230\179\149\229\174\157",
         [2] = false
     }
-
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-        "\229\133\172\231\148\168"
-    ):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild(
-        "\230\138\189\229\165\150"
-    ):FireServer(unpack(args))
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
 end
 local function useskill_ticket()
     print("抽獎：技能")
@@ -1258,11 +1242,7 @@ local function useskill_ticket()
         [1] = "\230\138\128\232\131\189",
         [2] = false
     }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild(
-        "\229\133\172\231\148\168"
-    ):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild(
-        "\230\138\189\229\165\150"
-    ):FireServer(unpack(args))
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
 end
 
 -- 配置參數
@@ -1338,9 +1318,6 @@ local function compare_ticket_type(sword_tickets,skill_tickets,sword_level,skill
     end
 end
 
-
-
-
 -- 數據提取函數
 local function fetchData()
     sword_level = sword:WaitForChild("值").Text
@@ -1353,8 +1330,8 @@ local function fetchData()
 end
 fetchData()
 
-features4:AddLabel("⚠️同步抽取，抽獎券不足就會停止，請開啟鑽石抽取")
-local lotterynum =  features4:AddLabel("法寶抽獎券： " .. sword_tickets .. "    技能抽獎券： " .. skill_tickets)
+features4:AddLabel("⚠️If lottery tickets are insufficient, it will stop")
+local lotterynum =  features4:AddLabel("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets)
 
 
 local function updateExtractedValues()
@@ -1363,7 +1340,7 @@ local function updateExtractedValues()
     extract_sword_value = tonumber(string.match(sword_value, "^(%d+)/"))
     extract_skill_level = tonumber(string.match(skill_level, "%d+"))
     extract_skill_value = tonumber(string.match(skill_value, "^(%d+)/"))
-    lotterynum.Text = "法寶抽獎券： " .. sword_tickets .. "    技能抽獎券： " .. skill_tickets
+    lotterynum.Text = ("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets)
 end
 
 spawn(function()
@@ -1373,7 +1350,7 @@ spawn(function()
     end
 end)
 
-local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
 	Autolottery = bool
 	if Autolottery then
 		while Autolottery do
@@ -1387,15 +1364,15 @@ end)
 AutolotterySwitch:Set(false)
 
 -- 啟用鑽石補充功能
-local USEDiamondSwitch = features4:AddSwitch("啟用鑽石抽取", function(bool)
+local USEDiamondSwitch = features4:AddSwitch("Enable Diamond Draw", function(bool)
 	useDiamonds = bool
 end)
 
 USEDiamondSwitch:Set(false)
-features4:AddButton("抽取速度快",function()
+features4:AddButton("Fast",function()
 	Autolotteryspeed = 0
 end)
-features4:AddButton("抽取速度慢",function()
+features4:AddButton("Slow",function()
 	Autolotteryspeed = 0.5
 end)
 
@@ -1403,43 +1380,43 @@ end)
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")
-features5:AddButton("開啟每日任務",function()
+features5:AddButton("Daily Tasks",function()
     local event = replicatedStorage:FindFirstChild("打开每日任务", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開每日任務")
     end
 end)
-features5:AddButton("開啟郵件",function()
+features5:AddButton("Mail",function()
     local event = replicatedStorage:FindFirstChild("打开邮件", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打开郵件")
     end
 end)
-features5:AddButton("開啟轉盤",function()
+features5:AddButton("Wheel",function()
     local event = replicatedStorage:FindFirstChild("打开转盘", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開轉盤")
     end
 end)
-features5:AddButton("開啟陣法",function()
+features5:AddButton("Formation",function()
     local event = replicatedStorage:FindFirstChild("打开阵法", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打开陣法")
     end
 end)
-features5:AddButton("開啟世界樹",function()
+features5:AddButton("World Tree",function()
     local event = replicatedStorage:FindFirstChild("打开世界树", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開世界樹")
     end
 end)
-features5:AddButton("開啟練器台",function()
+features5:AddButton("Training Bench",function()
     local event = replicatedStorage:FindFirstChild("打开炼器台", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開練器台")
     end
 end)
-features5:AddButton("開啟煉丹爐",function()
+features5:AddButton("Alchemy Furnace",function()
     local event = replicatedStorage:FindFirstChild("打开炼丹炉", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開煉丹爐")
