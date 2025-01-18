@@ -770,6 +770,8 @@ local httpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local filePath = "DungeonsMaxLevel.json"  -- JSON 文件路徑
 local updDungeonui = false
+local AutoDungeonplus1 = false
+local Notexecuted = true
 local dungeonFunctions = {} -- 用於存放動態生成的副本函數
 
 -- 提取 LocalPlayer 的資料
@@ -910,15 +912,15 @@ local dropdown1 = features3:AddDropdown("選擇地下城", function(text)
         dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
         chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
     elseif text == ("            懸浮地下城            ") then
-        dropdownchoose = 5
+        dropdownchoose = 7
         dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
         chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
     elseif text == ("            金幣地下城            ") then
         dropdownchoose = 6
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
-        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
     elseif text == ("            活動地下城   未開啟         ") then
-        dropdownchoose = 7
+        dropdownchoose = 5
         dropdownchoose2 = "未開啟"
         chooselevels.Text = "當前選擇：活動地下城  未開啟"
     else
@@ -953,13 +955,13 @@ local function UDPDungeontext()
     elseif dropdownchoose == 4 then
         dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
         chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif dropdownchoose == 5 then
+    elseif dropdownchoose == 7 then
         dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
         chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
     elseif dropdownchoose == 6 then
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
         chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif dropdownchoose == 7 then  
+    elseif dropdownchoose == 5 then  
         chooselevels.Text = "當前選擇：活動地下城  未開啟"
     elseif dropdownchoose == 8 then
         chooselevels.Text = "此為佔位符號無任何效果"
@@ -991,8 +993,8 @@ end)
 
 updDungeonuiSwitch:Set(false)
 
-
-
+-- ========================================================================== --
+-- 特殊定義地下城自動開始
 local function updateDungeonLevel(dungeonName, dataField, newLevel)
     -- 測試更新後的函數
     JsonHandler.updatePlayerData(filePath, player.Name, { [dataField] = newLevel })
@@ -1000,8 +1002,140 @@ local function updateDungeonLevel(dungeonName, dataField, newLevel)
     print("更新後的 " .. dungeonName .. " 等級:", dungeonFunctions[dungeonName]())
     
 end
+local function adjustDungeonLevel(adjustment)
+    local newLevel = dropdownchoose2 + adjustment
+    local dungeonMapping = {
+        [1] = { name = "OreDungeon", field = "OreDungeonMaxLevel" },
+        [2] = { name = "GemDungeon", field = "GemDungeonMaxLevel" },
+        [3] = { name = "RuneDungeon", field = "RuneDungeonMaxLevel" },
+        [4] = { name = "RelicDungeon", field = "RelicDungeonMaxLevel" },
+        [7] = { name = "HoverDungeon", field = "HoverDungeonMaxLevel" },
+        [6] = { name = "GoldDungeon", field = "GoldDungeonMaxLevel" },
+    }
+    local dungeon = dungeonMapping[dropdownchoose]
+    if dungeon then
+        updateDungeonLevel(dungeon.name, dungeon.field, newLevel)
+    else
+        print("未選擇地下城")
+    end
+end
 
+local function DungeonTP()
+    local dropdownTP = tonumber(dropdownchoose2)
+    local args = {
+        [1] = dropdownchoose,
+        [2] = dropdownTP
+    }
 
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\137\175\230\156\172"):FindFirstChild("\232\191\155\229\133\165\229\137\175\230\156\172"):FireServer(unpack(args))
+end
+
+local function AutostartDungeonf()
+    local Dungeonuilevel = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):WaitForChild("关卡信息"):WaitForChild("文本").Text
+    local dungeonNametext = string.match(Dungeonuilevel, "^(.-)%s%d")
+    if dungeonNametext == "Ore Dungeon" then
+        local lastKeysCount = getDungeonKey("OreDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    elseif dungeonNametext == "Gem Dungeon" then
+        local lastKeysCount = getDungeonKey("GemDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    elseif dungeonNametext == "Rune Dungeon" then
+        local lastKeysCount = getDungeonKey("RuneDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    elseif dungeonNametext == "Relic Dungeon" then
+        local lastKeysCount = getDungeonKey("RelicDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    elseif dungeonNametext == "Hover Dungeon" then
+        local lastKeysCount = getDungeonKey("HoverDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    elseif dungeonNametext == "Gold Dungeon" then
+        local lastKeysCount = getDungeonKey("GoldDungeon")
+        local lastKeysCount1 = tonumber(lastKeysCount)
+        local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
+        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+            if AutoDungeonplus1  then
+                adjustDungeonLevel(1)
+            end
+            wait(savemodetime2)
+            teleporthome()
+            wait(0.5)
+            wait(savemodetime)
+            DungeonTP()
+        end
+    end
+end
+
+local AutostartDungeonSwitch = features3:AddSwitch("戰鬥結束後自動開始(地下城)--需要可以贏", function(bool)
+    AutostartDungeon = bool
+    if AutostartDungeon then
+        while AutostartDungeon do
+            AutostartDungeonf()
+            wait(0.5)
+        end
+    end
+end)
+AutostartDungeonSwitch:Set(false)
+
+local AutoDungeonplus1Switch = features3:AddSwitch("戰鬥結束關卡數自動+1", function(bool)
+    AutoDungeonplus1 = bool
+end)
+
+AutoDungeonplus1Switch:Set(false)
 
 features3:AddTextBox("自訂輸入關卡", function(text)
     local dropdownchoose0 = string.gsub(text, "[^%d]", "")
@@ -1038,60 +1172,19 @@ features3:AddTextBox("自訂輸入關卡", function(text)
     end
 end)
 
+
+
 features3:AddButton("關卡選擇+1", function()
-    local dropdownchoose3 = dropdownchoose2 + 1
-    local dungeonMapping = {
-        [1] = { name = "OreDungeon", field = "OreDungeonMaxLevel" },
-        [2] = { name = "GemDungeon", field = "GemDungeonMaxLevel" },
-        [3] = { name = "RuneDungeon", field = "RuneDungeonMaxLevel" },
-        [4] = { name = "RelicDungeon", field = "RelicDungeonMaxLevel" },
-        [5] = { name = "HoverDungeon", field = "HoverDungeonMaxLevel" },
-        [6] = { name = "GoldDungeon", field = "GoldDungeonMaxLevel" },
-    }
-
-    local dungeon = dungeonMapping[dropdownchoose]
-    if dungeon then
-        updateDungeonLevel(dungeon.name, dungeon.field, dropdownchoose3)
-    elseif dropdownchoose == 7 then
-        print("活動地下城未開啟")
-    else
-        print("...")
-    end
+    adjustDungeonLevel(1)
 end)
-
-
-
 
 features3:AddButton("關卡選擇-1", function()
-    local dropdownchoose3 = dropdownchoose2 - 1
-    local dungeonMapping = {
-        [1] = { name = "OreDungeon", field = "OreDungeonMaxLevel" },
-        [2] = { name = "GemDungeon", field = "GemDungeonMaxLevel" },
-        [3] = { name = "RuneDungeon", field = "RuneDungeonMaxLevel" },
-        [4] = { name = "RelicDungeon", field = "RelicDungeonMaxLevel" },
-        [5] = { name = "HoverDungeon", field = "HoverDungeonMaxLevel" },
-        [6] = { name = "GoldDungeon", field = "GoldDungeonMaxLevel" },
-    }
-
-    local dungeon = dungeonMapping[dropdownchoose]
-    if dungeon then
-        updateDungeonLevel(dungeon.name, dungeon.field, dropdownchoose3)
-    elseif dropdownchoose == 7 then
-        print("活動地下城未開啟")
-    else
-        print("...")
-    end
+    adjustDungeonLevel(-1)
 end)
 
+
 features3:AddButton("傳送", function()
-    local dropdownTP = tonumber(dropdownchoose2)
-    local args = {
-        [1] = dropdownchoose,
-        [2] = dropdownTP
-    }
-
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\137\175\230\156\172"):FindFirstChild("\232\191\155\229\133\165\229\137\175\230\156\172"):FireServer(unpack(args))
-
+    DungeonTP()
 end)
 -- ========================================================================== --
 -- 抽取頁
