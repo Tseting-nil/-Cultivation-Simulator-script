@@ -727,7 +727,7 @@ end
 features2:AddButton("TP", function()
     teleporttworld1()
 end)
-features2:AddLabel("⚠️ Auto-start requires the ability to complete wave 100 ⚠️")
+features2:AddLabel("!! Auto-start requires the ability to complete wave 100")
 local Autostart = false;
 local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", function(bool)
 	Autostart = bool;
@@ -975,7 +975,7 @@ spawn(function()
         wait(0.5)
     end
 end)
-features3:AddLabel("⚠️ Please avoid operating too quickly ")
+features3:AddLabel("!! Please avoid operating too quickly ")
 local updDungeonuiSwitch = features3:AddSwitch("Sync dungeon entry interface difficulty", function(bool)
 	updDungeonui = bool
 end)
@@ -1191,7 +1191,7 @@ end)
 
 AutoelixirSwitch:Set(false)
 
-local AutoelixirabsorbSwitch = features4:AddSwitch("Auto Absorb Elixir（⚠️All Elixir in the backpack⚠️）", function(bool)
+local AutoelixirabsorbSwitch = features4:AddSwitch("Auto Absorb Elixir⚠️All Elixir in the backpack⚠️）", function(bool)
 	Autoelixirabsorb = bool
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
