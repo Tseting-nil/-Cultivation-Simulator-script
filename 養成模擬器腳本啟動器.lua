@@ -1,86 +1,91 @@
+local a = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%B8%AD%E8%8B%B1%E8%85%B3%E6%9C%AC%E8%87%AA%E5%8B%95%E8%BC%89%E5%85%A5JSON.lua", true))()
+if a == 1 then
+    local HttpService = game:GetService("HttpService")
 
-local HttpService = game:GetService("HttpService")
+    local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))()
+    local switch11
+    local switch22
 
-local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))()
-local switch11
-local switch22
-
--- 預設的配置
-local defaultConfig = {
-    MobileEnglishUI = false,
-    MobileChineseUI = false,
-}
-
--- 嘗試讀取本地 JSON 配置檔案
-local file = io.open("userSettings.json", "r")
-local config
-if file then
-    -- 讀取檔案內容
-    local jsonString = file:read("*a")
-    file:close()
-
-    -- 解碼 JSON 字串
-    config = HttpService:JSONDecode(jsonString)
-else
-    -- 如果檔案不存在，使用預設設置並創建檔案
-    config = defaultConfig
-    -- 將預設設置保存到檔案
-    local jsonString = HttpService:JSONEncode(config)
-    local file = io.open("userSettings.json", "w")
-    if file then
-        file:write(jsonString)
-        file:close()
-    else
-        print("無法創建檔案。")
-    end
-end
-
-switch11 = config.MobileEnglishUI
-switch22 = config.MobileChineseUI
-
-local window = library:AddWindow("Cultivation-Simulator-Start", {
-    main_color = Color3.fromRGB(41, 74, 122),
-    min_size = Vector2.new(350, 346),
-    can_resize = false,
-})
-
-local features = window:AddTab("Language/語言選擇")
-features:Show()
-
-local switch1 = features:AddSwitch("MobileEnglishUI/手機英文介面", function(bool)
-    switch11 = bool
-end)
-switch1:Set(switch11)
-
-local switch2 = features:AddSwitch("MobileChineseUI/手機中文介面", function(bool)
-    switch22 = bool
-end)
-switch2:Set(switch22)
-
-features:AddButton("AutoLoad/自動載入",function()
-    if switch11 == true then
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/English%20script.lua'))()
-    elseif switch22 == true then
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/chinese%20script.lua'))()
-    else
-        print("請選擇介面")
-    end
-
-    -- 保存當前配置
-    local config = {
-        MobileEnglishUI = switch11,
-        MobileChineseUI = switch22,
+    -- 預設的配置
+    local defaultConfig = {
+        MobileEnglishUI = false,
+        MobileChineseUI = false,
     }
 
-    local jsonString = HttpService:JSONEncode(config)
-    
-    -- 保存到本地檔案
-    local file = io.open("userSettings.json", "w")
-    if file then
-        file:write(jsonString)
-        file:close()
-    else
-        print("無法開啟檔案進行寫入。")
+    -- 檢查本地文件是否存在，若存在則讀取配置
+    local function loadConfig()
+        local jsonString
+        if isfile("userSettings.json") then
+            jsonString = readfile("userSettings.json")
+        else
+            jsonString = HttpService:JSONEncode(defaultConfig)  -- 若文件不存在則返回預設配置
+        end
+        return HttpService:JSONDecode(jsonString)
     end
-end)
+
+    -- 加載配置
+    local config = loadConfig()
+
+    switch11 = config.MobileEnglishUI
+    switch22 = config.MobileChineseUI
+
+    local window = library:AddWindow("Cultivation-Simulator-Start", {
+        main_color = Color3.fromRGB(41, 74, 122),
+        min_size = Vector2.new(350, 346),
+        can_resize = false,
+    })
+
+    local features = window:AddTab("Language/語言選擇")
+    features:Show()
+    features:AddLabel("You can only choose one/你只能選擇一個")
+    local switch1 = features:AddSwitch("MobileEnglishUI/手機英文介面", function(bool)
+        switch11 = bool
+    end)
+    switch1:Set(switch11)
+    
+    local switch2 = features:AddSwitch("MobileChineseUI/手機中文介面", function(bool)
+        switch22 = bool
+    end)
+    switch2:Set(switch22)
+    
+    -- 使用 while 循环强制保持两个状态相反
+    spawn(function()
+        while true do
+            -- 如果 switch1 被选中，就强制取消 switch2
+            if switch11 then
+                switch22 = false
+                switch2:Set(false)
+            -- 如果 switch2 被选中，就强制取消 switch1
+            elseif switch22 then
+                switch11 = false
+                switch1:Set(false)
+            end
+            wait(0.1) -- 每 0.1 秒检查一次状态，避免过度消耗性能
+        end
+    end)
+    features:AddButton("Load/載入",function()
+        if switch11 == true then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/English%20script.lua'))()
+        elseif switch22 == true then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/chinese%20script.lua'))()
+        else
+            print("請選擇介面")
+        end
+    end)
+    features:AddLabel("Save for auto load/保存當前配置為自動載入")
+    features:AddButton("Save/保存",function()
+        -- 保存當前配置
+        local config = {
+            MobileEnglishUI = switch11,
+            MobileChineseUI = switch22,
+            AUTOLOAD = true
+        }
+
+        local jsonString = HttpService:JSONEncode(config)
+        
+        -- 使用 writefile 保存到本地
+        writefile("userSettings.json", jsonString)
+        print("配置已保存到 userSettings.json")
+    end)
+end
 
