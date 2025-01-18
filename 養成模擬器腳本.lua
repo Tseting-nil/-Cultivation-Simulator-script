@@ -1,1 +1,0 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%A4%8A%E6%88%90%E6%A8%A1%E6%93%AC%E5%99%A8(%E6%89%8B%E6%A9%9F%E7%AB%AF).lua"))()
