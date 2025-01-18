@@ -729,7 +729,6 @@ end
 
 -- 添加按鈕功能
 features2:AddButton("傳送", function()
-    game:GetService("Players").LocalPlayer:WaitForChild("值"):WaitForChild("设置"):WaitForChild("自动战斗").Value = true
     teleporttworld1()
 end)
 features2:AddLabel("⚠️自動開始需能夠完成波次100⚠️")
