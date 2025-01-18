@@ -770,16 +770,16 @@ end)
 local httpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local filePath = "DungeonsMaxLevel.json"  -- JSON 文件路徑
+local updDungeonui = false
+local dungeonFunctions = {} -- 用於存放動態生成的副本函數
 
 -- 提取 LocalPlayer 的資料
-
 local function extractLocalPlayerData()
-    -- 確保 JSON 文件存在
+    -- 確保 JSON 文件存在並讀取內容
     if not isfile(filePath) then
         error("JSON 文件不存在：" .. filePath)
     end
 
-    -- 讀取 JSON 文件內容
     local fileContent = readfile(filePath)
     local success, data = pcall(httpService.JSONDecode, httpService, fileContent)
     if not success then
@@ -796,60 +796,62 @@ local function extractLocalPlayerData()
     return localPlayerData
 end
 
--- 保存為單獨函數
-local dungeonFunctions = {}
-
+-- 創建 Dungeon 函數
 local function saveDungeonFunctions(playerData)
     for dungeonName, maxLevel in pairs(playerData) do
-        local functionName = dungeonName:gsub("MaxLevel", "")  -- 移除 "MaxLevel" 後綴
+        -- 將 "MaxLevel" 後綴移除，作為函數名稱
+        local functionName = dungeonName:gsub("MaxLevel", "")
         dungeonFunctions[functionName] = function()
             return maxLevel
         end
-        --print("函數已創建：" .. functionName)
     end
 end
 
--- 更新副本資料並重新設置 dungeonFunctions
+-- 更新副本資料並重新設置 Dungeon 函數
 local function updateDungeonFunctions()
     -- 重新獲取玩家資料
     local playerData = JsonHandler.getPlayerData(filePath, player.Name)
 
-    -- 清空原來的 dungeonFunctions
+    -- 清空原來的 Dungeon 函數
     dungeonFunctions = {}
 
-    -- 創建新的 dungeonFunctions
-    for dungeonName, maxLevel in pairs(playerData) do
-        local functionName = dungeonName:gsub("MaxLevel", "")  -- 移除 "MaxLevel" 後綴
-        dungeonFunctions[functionName] = function()
-            return maxLevel
-        end
-        --print("函數已創建：" .. functionName)
-    end
+    -- 創建新的 Dungeon 函數
+    saveDungeonFunctions(playerData)
 end
 
 -- 主程式執行
-local success, playerData = pcall(extractLocalPlayerData)
-if success then
-    saveDungeonFunctions(playerData)
-else
-    warn("提取資料失敗：" .. tostring(playerData))
+local function main()
+    local success, playerData = pcall(extractLocalPlayerData)
+    if success then
+        saveDungeonFunctions(playerData)
+        print("Dungeon 函數已成功創建")
+    else
+        warn("提取資料失敗：" .. tostring(playerData))
+    end
 end
 
---[[測試函數
-for funcName, func in pairs(dungeonFunctions) do
-    print(funcName, "Max Level:", func())  -- 呼叫函數並打印返回值
+-- 初始化執行
+main()
+
+-- 測試 Dungeon 函數
+--[[
+for functionName, dungeonFunc in pairs(dungeonFunctions) do
+    print("副本名稱:", functionName, "等級:", dungeonFunc())
 end
 ]]--
--- 每秒更新副本最高等級
+
+-- JSON每秒更新副本UI選擇的值等級
 spawn(function()
     while true do
-        local dungeonChoice = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("副本选择弹出框"):WaitForChild("背景"):WaitForChild("标题"):WaitForChild("名称").Text
-        local dungeonMaxLevel = tonumber(playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("副本选择弹出框"):WaitForChild("背景"):WaitForChild("难度"):WaitForChild("难度等级"):WaitForChild("值").Text)
-        -- 檢查副本資料是否有更新
-        JsonHandler.updateDungeonMaxLevel(filePath, player.Name, dungeonChoice, dungeonMaxLevel)    
-        -- 更新 dungeonFunctions 和標籤
-        updateDungeonFunctions()
-        wait(1)
+        if updDungeonui then
+            local dungeonChoice = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("副本选择弹出框"):WaitForChild("背景"):WaitForChild("标题"):WaitForChild("名称").Text
+            local dungeonMaxLevel = tonumber(playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("副本选择弹出框"):WaitForChild("背景"):WaitForChild("难度"):WaitForChild("难度等级"):WaitForChild("值").Text)
+            -- 檢查副本資料是否有更新
+            JsonHandler.updateDungeonMaxLevel(filePath, player.Name, dungeonChoice, dungeonMaxLevel)    
+            -- 更新 dungeonFunctions 和標籤
+            updateDungeonFunctions()
+        end
+    wait(1)
     end
 end)
 -- 打印玩家初始資料
@@ -858,147 +860,244 @@ print("玩家初始資料:")
 for key, value in pairs(playerData) do
     print(key, value)
 end
-local dungeonNum
+
 local Dungeonslist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
---獲取副本鑰匙值
+local dropdownchoose = 0
+local dropdownchoose2 = "1"
+local dropdownchoose3 = 0
+-- 獲取副本鑰匙值的通用函數
+local function getDungeonKey(dungeonName)
+    local dungeon = Dungeonslist:FindFirstChild(dungeonName)
+    if dungeon then
+        local keyText = dungeon:WaitForChild("钥匙"):WaitForChild("值").Text
+        local key = tonumber(string.match(keyText, "^%d+"))
+        if key then
+            return key < 10 and string.format("0%d", key) or tostring(key)
+        end
+    end
+    return nil
+end
+
+-- 獲取所有副本鑰匙值
 local function checkDungeonkey()
--- 获取副本钥匙值并确保小于 10 的数字前加上 0
-Ore_Dungeonkey = string.match(Dungeonslist.OreDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-Gem_Dungeonkey = string.match(Dungeonslist.GemDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-Gold_Dungeonkey = string.match(Dungeonslist.GoldDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-Relic_Dungeonkey = string.match(Dungeonslist.RelicDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-Rune_Dungeonkey = string.match(Dungeonslist.RuneDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-Hover_Dungeonkey = string.match(Dungeonslist.HoverDungeon:WaitForChild("钥匙"):WaitForChild("值").Text, "^%d+")
-
--- 确保数字小于 10 的值前加上 0
-Ore_Dungeonkey = tonumber(Ore_Dungeonkey) < 10 and string.format("0%d", tonumber(Ore_Dungeonkey)) or Ore_Dungeonkey
-Gem_Dungeonkey = tonumber(Gem_Dungeonkey) < 10 and string.format("0%d", tonumber(Gem_Dungeonkey)) or Gem_Dungeonkey
-Gold_Dungeonkey = tonumber(Gold_Dungeonkey) < 10 and string.format("0%d", tonumber(Gold_Dungeonkey)) or Gold_Dungeonkey
-Relic_Dungeonkey = tonumber(Relic_Dungeonkey) < 10 and string.format("0%d", tonumber(Relic_Dungeonkey)) or Relic_Dungeonkey
-Rune_Dungeonkey = tonumber(Rune_Dungeonkey) < 10 and string.format("0%d", tonumber(Rune_Dungeonkey)) or Rune_Dungeonkey
-Hover_Dungeonkey = tonumber(Hover_Dungeonkey) < 10 and string.format("0%d", tonumber(Hover_Dungeonkey)) or Hover_Dungeonkey
-
+    Ore_Dungeonkey = getDungeonKey("OreDungeon")
+    Gem_Dungeonkey = getDungeonKey("GemDungeon")
+    Gold_Dungeonkey = getDungeonKey("GoldDungeon")
+    Relic_Dungeonkey = getDungeonKey("RelicDungeon")
+    Rune_Dungeonkey = getDungeonKey("RuneDungeon")
+    Hover_Dungeonkey = getDungeonKey("HoverDungeon")
 end
 checkDungeonkey()
-wait(0.5)
-local dropdownchoose
-local dropdownchoose2
-local dropdown = features3:AddDropdown("選擇地下城", function(text)
-	if text == "        礦石地下城      " then
+
+local chooselevels = features3:AddLabel("請選擇地下城...")
+
+
+-- 初始化下拉選單
+local dropdown1 = features3:AddDropdown("選擇地下城", function(text)
+    if     text == ("            礦石地下城            ") then
         dropdownchoose = 1
-        dropdownchoose2 =  tonumber(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
-	elseif text == "        金幣地下城      " then
+        dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：礦石地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            靈石地下城            ") then
         dropdownchoose = 2
-        dropdownchoose2 =  tonumber(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
-	elseif text == "        靈石地下城      " then
+        dropdownchoose2 = tostring(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：靈石地下城,  鑰匙："..Gem_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            符石地下城            ") then
         dropdownchoose = 3
-        dropdownchoose2 =  tonumber(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
-    elseif text == "        符石地下城      " then
-        dropdownchoose = 4
-        dropdownchoose2 =  tonumber(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
-    elseif text == "        遺物地下城      " then
+        dropdownchoose2 = tostring(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")        
+        chooselevels.Text = "當前選擇：符石地下城,  鑰匙："..Rune_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            遺物地下城            ") then        
+        dropdownchoose = 4  
+        dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            懸浮地下城            ") then
         dropdownchoose = 5
-        dropdownchoose2 =  tonumber(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")
-    elseif text == "        懸浮地下城      " then
+        dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            金幣地下城            ") then
         dropdownchoose = 6
-        dropdownchoose2 =  tonumber(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
-	end
-end)
-local Dungeons1 = dropdown:Add("        礦石地下城      ")
-local Dungeons2 = dropdown:Add("        金幣地下城      ")
-local Dungeons3 = dropdown:Add("        靈石地下城      ")
-local Dungeons4 = dropdown:Add("        符石地下城      ")
-local Dungeons5 = dropdown:Add("        遺物地下城      ")
-local Dungeons6 = dropdown:Add("        懸浮地下城      ")
-local Dungeons7 = dropdown:Add("        活動地下城 -- 未開啟      ")
-local Dungeons7 = dropdown:Add("空白")
--- 副本鑰匙標籤
-local textLabel1 = features3:AddLabel("礦石副本鑰匙： "..(Ore_Dungeonkey or "0").." 當前選擇難度： "..(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "未知"))
-local textLabel2 = features3:AddLabel("金幣副本鑰匙： "..(Gem_Dungeonkey or "0").." 當前選擇難度： "..(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "未知"))
-local textLabel3 = features3:AddLabel("靈石副本鑰匙： "..(Gold_Dungeonkey or "0").." 當前選擇難度：  "..(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "未知"))
-local textLabel4 = features3:AddLabel("符石副本鑰匙： "..(Relic_Dungeonkey or "0").." 當前選擇難度：  "..(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "未知"))
-local textLabel5 = features3:AddLabel("遺物副本鑰匙： "..(Rune_Dungeonkey or "0").." 當前選擇難度：  "..(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "未知"))
-local textLabel6 = features3:AddLabel("懸浮地牢鑰匙： "..(Hover_Dungeonkey or "0").." 當前選擇難度：  "..(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "未知"))
-
-local function DungeonKeyUpd()
-checkDungeonkey()
--- 更新内容
-textLabel1.Text = "礦石副本鑰匙：" .. (Ore_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "未知")
-textLabel2.Text = "金幣副本鑰匙：" .. (Gold_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "未知")
-textLabel3.Text = "靈石副本鑰匙：" .. (Gem_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "未知")
-textLabel4.Text = "符石副本鑰匙：" .. (Rune_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "未知")
-textLabel5.Text = "遺物副本鑰匙：" .. (Relic_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "未知")
-textLabel6.Text = "懸浮地牢鑰匙：" .. (Hover_Dungeonkey or "0") .. "    當前選擇難度：  " .. (dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "未知")
-end
-local function dungeonNumcheck()
-    combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):WaitForChild("关卡信息"):WaitForChild("文本").Text
-    local dungeonName = string.match(combattext, "([%w%s]+)%s%d+-%d+/%d+") 
-    if dungeonName == "Ore Dungeon" then
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["OreDungeon"] = dungeonNum + 1
-    elseif dungeonName == "Gold Dungeon" then 
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["GoldDungeon"] = dungeonNum + 1
-    elseif dungeonName == "Gem Dungeon" then
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["GemDungeon"] = dungeonNum + 1
-    elseif dungeonName == "Relic Dungeon" then
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["RelicDungeon"] = dungeonNum + 1
-    elseif dungeonName == "Rune Dungeon" then
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["RuneDungeon"] = dungeonNum + 1
-    elseif dungeonName == "Hover Dungeon" then
-        dungeonNum = string.match(combattext, dungeonName.." (%d+)-")
-        dungeonNum = tonumber(dungeonNum)
-        dungeonFunctions["HoverDungeon"] = dungeonNum + 1 
-    end    
-end
-
-
-spawn(function()
-    while true do
-        DungeonKeyUpd()
-        --dungeonNumcheck()
-        wait(1)
+        dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif text == ("            活動地下城   未開啟         ") then
+        dropdownchoose = 7
+        dropdownchoose2 = "未開啟"
+        chooselevels.Text = "當前選擇：活動地下城  未開啟"
+    else
+        dropdownchoose = 8
+        chooselevels.Text = "此為佔位符號無任何效果"
     end
 end)
 
-local function teleport3()
+local Dungeon1 = dropdown1:Add("            礦石地下城            ")
+local Dungeon2 = dropdown1:Add("            靈石地下城            ")
+local Dungeon3 = dropdown1:Add("            符石地下城            ")
+local Dungeon4 = dropdown1:Add("            遺物地下城            ")
+local Dungeon5 = dropdown1:Add("            懸浮地下城            ")
+local Dungeon6 = dropdown1:Add("            金幣地下城            ")
+local Dungeon7 = dropdown1:Add("            活動地下城   未開啟            ")
+local Dungeon8 = dropdown1:Add("            此為佔位符號無任何效果            ")
+
+
+
+local function UDPDungeontext()
+    if dropdownchoose == 0 then
+        chooselevels.Text = "請選擇地下城"
+    elseif dropdownchoose == 1 then
+        dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：礦石地下城,  鑰匙："..Ore_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 2 then
+        dropdownchoose2 = tostring(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：靈石地下城,  鑰匙："..Gem_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 3 then
+        dropdownchoose2 = tostring(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：符石地下城,  鑰匙："..Rune_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 4 then
+        dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：遺物地下城,  鑰匙："..Relic_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 5 then
+        dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：懸浮地下城,  鑰匙："..Hover_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 6 then
+        dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
+        chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
+    elseif dropdownchoose == 7 then  
+        chooselevels.Text = "當前選擇：活動地下城  未開啟"
+    elseif dropdownchoose == 8 then
+        chooselevels.Text = "此為佔位符號無任何效果"
+    end
+end
+
+local function UDPDungeonchoose()
+    checkDungeonkey()
+    Dungeon1.Text = ("            礦石地下城   鑰匙："..Ore_Dungeonkey.."            ")
+    Dungeon2.Text = ("            靈石地下城   鑰匙："..Gem_Dungeonkey.."            ")
+    Dungeon3.Text = ("            符石地下城   鑰匙："..Rune_Dungeonkey.."            ")
+    Dungeon4.Text = ("            遺物地下城   鑰匙："..Relic_Dungeonkey.."            ")
+    Dungeon5.Text = ("            懸浮地下城   鑰匙："..Hover_Dungeonkey.."            ")
+    Dungeon6.Text = ("            金幣地下城   鑰匙："..Gold_Dungeonkey.."            ")
+    Dungeon7.Text = ("            活動地下城   未開啟            ")
+end
+
+spawn(function()
+    while true do
+        UDPDungeonchoose()
+        UDPDungeontext()
+        wait(0.5)
+    end
+end)
+features3:AddLabel("⚠️因需要寫入本地數據所以操作勿太快")
+local updDungeonuiSwitch = features3:AddSwitch("同步地下城進入介面的難度", function(bool)
+	updDungeonui = bool
+end)
+
+updDungeonuiSwitch:Set(false)
+
+
+
+local function updateDungeonLevel(dungeonName, dataField, newLevel)
+    -- 測試更新後的函數
+    JsonHandler.updatePlayerData(filePath, player.Name, { [dataField] = newLevel })
+    updateDungeonFunctions()
+    print("更新後的 " .. dungeonName .. " 等級:", dungeonFunctions[dungeonName]())
+    
+end
+
+
+
+features3:AddTextBox("自訂輸入關卡", function(text)
+    local dropdownchoose0 = string.gsub(text, "[^%d]", "")
+    local dropdownchoose3 = tonumber(dropdownchoose0)
+    if not dropdownchoose3 then
+        dropdownchoose3 = 1
+    end
+    if dropdownchoose == 1 then
+        local field = "OreDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    elseif dropdownchoose == 2 then
+        local field = "GemDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    elseif dropdownchoose == 3 then
+        local field = "RuneDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    elseif dropdownchoose == 4 then
+        local field = "RelicDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    elseif dropdownchoose == 5 then
+        local field = "HoverDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    elseif dropdownchoose == 6 then
+        local field = "GoldDungeonMaxLevel"
+        JsonHandler.updateField(filePath, player.Name, field, dropdownchoose3)
+        updateDungeonFunctions()
+    else
+        print("未選擇地下城")
+    end
+end)
+
+features3:AddButton("關卡選擇+1", function()
+    local dropdownchoose3 = dropdownchoose2 + 1
+    local dungeonMapping = {
+        [1] = { name = "OreDungeon", field = "OreDungeonMaxLevel" },
+        [2] = { name = "GemDungeon", field = "GemDungeonMaxLevel" },
+        [3] = { name = "RuneDungeon", field = "RuneDungeonMaxLevel" },
+        [4] = { name = "RelicDungeon", field = "RelicDungeonMaxLevel" },
+        [5] = { name = "HoverDungeon", field = "HoverDungeonMaxLevel" },
+        [6] = { name = "GoldDungeon", field = "GoldDungeonMaxLevel" },
+    }
+
+    local dungeon = dungeonMapping[dropdownchoose]
+    if dungeon then
+        updateDungeonLevel(dungeon.name, dungeon.field, dropdownchoose3)
+    elseif dropdownchoose == 7 then
+        print("活動地下城未開啟")
+    else
+        print("...")
+    end
+end)
+
+
+
+
+features3:AddButton("關卡選擇-1", function()
+    local dropdownchoose3 = dropdownchoose2 - 1
+    local dungeonMapping = {
+        [1] = { name = "OreDungeon", field = "OreDungeonMaxLevel" },
+        [2] = { name = "GemDungeon", field = "GemDungeonMaxLevel" },
+        [3] = { name = "RuneDungeon", field = "RuneDungeonMaxLevel" },
+        [4] = { name = "RelicDungeon", field = "RelicDungeonMaxLevel" },
+        [5] = { name = "HoverDungeon", field = "HoverDungeonMaxLevel" },
+        [6] = { name = "GoldDungeon", field = "GoldDungeonMaxLevel" },
+    }
+
+    local dungeon = dungeonMapping[dropdownchoose]
+    if dungeon then
+        updateDungeonLevel(dungeon.name, dungeon.field, dropdownchoose3)
+    elseif dropdownchoose == 7 then
+        print("活動地下城未開啟")
+    else
+        print("...")
+    end
+end)
+
+features3:AddButton("傳送", function()
+    local dropdownTP = tonumber(dropdownchoose2)
     local args = {
         [1] = dropdownchoose,
-        [2] = dropdownchoose2
+        [2] = dropdownTP
     }
 
     game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\137\175\230\156\172"):FindFirstChild("\232\191\155\229\133\165\229\137\175\230\156\172"):FireServer(unpack(args))
-end
---[[
-features3:AddButton("傳送",function()
-	teleport3()
+
 end)
-
-features3:AddButton("選擇難度+1",function()
-	dungeonNum = dungeonNum + 1
-end)
-
-features3:AddButton("選擇難度-1",function()
-	dungeonNum = dungeonNum - 1
-end)
-
-]]--
-
-
 -- ========================================================================== --
 -- 抽取頁
 -- ========================================================================== --
 -- --特殊定義(煉製裝備相關)
-local CopyObject = workspace:waitForChild("主場景"..RespawPointnum):waitForChild("建造物"):waitForChild("035炼器台")
-
 local AutoelixirSwitch = features4:AddSwitch("自動煉丹藥", function(bool)
 	Autoelixir = bool
 	if Autoelixir then
