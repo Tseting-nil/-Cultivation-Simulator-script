@@ -8,12 +8,18 @@
 ## ⚠️ 注意事項
 1. **本腳本僅供學術研究與學習用途**，請勿用於破壞遊戲規則。
 2. 使用腳本存在風險，如賬號被封禁，作者不承擔任何責任。
-
+3. **每天必須重新進入一次**
+4. 遊戲為每日0點(UTC+8)時更新有些功能會需要重進方可使用
+   
 ---
 
 ## ✨ 介面使用
 - 電腦版使用 [Fluent](https://github.com/dawid-scripts/Fluent)
 - 手機版使用 [Elerium v2](https://github.com/memejames/elerium-v2-ui-library)
+
+
+## ✨ 正在製作
+- 地下城相關功能(需要"億"點點時間)
 
 ---
 
@@ -27,7 +33,7 @@ loadstring("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator
   
 ## 📸 展示
 
-### 電腦版介面
+### 電腦版介面(暫時停用)
 ![電腦版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA1.jpg)  
 ![電腦版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA2.jpg)  
 ![電腦版 UI 展示 3](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA3.jpg)  
