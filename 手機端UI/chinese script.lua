@@ -584,7 +584,7 @@ end
 features2:AddButton("傳送", function()
 	teleporttworld1();
 end);
-features2:AddLabel("⚠️自動開始需能夠完成波次100⚠️");
+features2:AddLabel("!!自動開始需能夠完成波次100");
 local Autostart = false;
 local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)", function(bool)
 	Autostart = bool;
@@ -785,7 +785,7 @@ spawn(function()
 		wait(0.5);
 	end
 end);
-features3:AddLabel("⚠️因需要寫入本地數據所以操作勿太快");
+features3:AddLabel("!!因需要寫入本地數據所以操作勿太快");
 local updDungeonuiSwitch = features3:AddSwitch("同步地下城進入介面的難度", function(bool)
 	updDungeonui = bool;
 end);
@@ -966,7 +966,7 @@ local AutoelixirSwitch = features4:AddSwitch("自動煉丹藥", function(bool)
 	end
 end);
 AutoelixirSwitch:Set(false);
-local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥（⚠️背包裡面所有的丹藥⚠️）", function(bool)
+local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥⚠️背包裡面所有的丹藥⚠️）", function(bool)
 	Autoelixirabsorb = bool;
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
