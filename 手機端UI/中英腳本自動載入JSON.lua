@@ -65,9 +65,12 @@ print("手機中文介面：" .. tostring(config.MobileChineseUI))
 if config.MobileEnglishUI then
     -- 加載英文界面腳本
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/English%20script.lua"))()
+    return 2
 elseif config.MobileChineseUI then
     -- 加載中文界面腳本
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/chinese%20script.lua"))()
+    return 2
 else
     print("請選擇介面。")
+    return 1
 end
