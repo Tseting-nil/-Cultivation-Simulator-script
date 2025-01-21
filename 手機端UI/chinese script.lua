@@ -1140,3 +1140,17 @@ features5:AddButton("開啟煉丹爐", function()
 		event:Fire("打開煉丹爐");
 	end
 end);
+features6:AddLabel(" -- 語言配置/language config")
+features6:AddButton("刪除語言配置/language config delete",function()
+    local HttpService = game:GetService("HttpService")
+    function deleteConfigFile()
+        if isfile("userSettings.json") then
+            delfile("userSettings.json")
+            print("配置文件 userSettings.json 已刪除。")
+        else
+            print("配置文件 userSettings.json 不存在，無法刪除。")
+        end
+    end
+    deleteConfigFile()
+end)
+
