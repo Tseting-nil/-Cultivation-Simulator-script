@@ -1,4 +1,5 @@
 local a = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%B8%AD%E8%8B%B1%E8%85%B3%E6%9C%AC%E8%87%AA%E5%8B%95%E8%BC%89%E5%85%A5JSON.lua", true))()
+
 if a == 1 then
     local HttpService = game:GetService("HttpService")
 
@@ -29,14 +30,66 @@ if a == 1 then
     switch11 = config.MobileEnglishUI
     switch22 = config.MobileChineseUI
 
+    local player = game.Players.LocalPlayer
+    local playerGui = player:FindFirstChild("PlayerGui")
+    if not playerGui then
+        warn("無法找到 PlayerGui！")
+        return
+    end
+    -- 動態創建 ScreenGui
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "CustomScreenGui"
+    screenGui.Parent = playerGui -- 設置父級為 PlayerGui
+
+    -- 需要複製的 URL
+    local urlToCopy = "https://github.com/Tseting-nil"
+    -- 顯示通知的函數
+    local function showNotification(message)
+        -- 創建通知框架
+        local notification = Instance.new("Frame")
+        notification.Size = UDim2.new(0, 300, 0, 50)
+        notification.Position = UDim2.new(1, -320, 1, -120) -- 右下角
+        notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        notification.BackgroundTransparency = 0.5
+        notification.BorderSizePixel = 0
+        notification.Parent = screenGui
+        -- 添加標籤
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, 0, 1, 0)
+        label.Position = UDim2.new(0, 0, 0, 0)
+        label.Text = message
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.BackgroundTransparency = 1
+        label.Font = Enum.Font.GothamBold
+        label.TextScaled = true
+        label.Parent = notification
+        -- 延遲 3 秒後刪除通知
+        task.delay(3, function()
+            notification:Destroy()
+        end)
+    end
+
     local window = library:AddWindow("Cultivation-Simulator-Start", {
         main_color = Color3.fromRGB(41, 74, 122),
-        min_size = Vector2.new(350, 346),
+        min_size = Vector2.new(380, 346),
         can_resize = false,
     })
 
     local features = window:AddTab("Language/語言選擇")
     features:Show()
+    features:AddLabel("!! This is no key system script / !! 此為無密鑰系統腳本 ")
+    features:AddLabel("The Original code on Github /原始碼在我的Github")
+    features:AddLabel("Github：https://github.com/Tseting-nil")
+    features:AddButton("Github link / Github連結",function()
+        local urlToCopy = "https://github.com/Tseting-nil"
+        if setclipboard then
+            setclipboard(urlToCopy)
+            showNotification("URL Copy！") -- 顯示提示
+        else
+            showNotification("Error Copy！")
+        end
+    end)
+    features:AddLabel("")
     features:AddLabel("You can only choose one/你只能選擇一個")
     local switch1 = features:AddSwitch("MobileEnglishUI/手機英文介面", function(bool)
         switch11 = bool
