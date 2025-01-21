@@ -8,13 +8,14 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	AntiAFK:ClickButton2(Vector2.new());
 	wait(2);
 end);
-local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(356, 310),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(370, 310),can_resize=false});
 local features = window:AddTab("Readme");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
 local features3 = window:AddTab("Dungeons");
 local features4 = window:AddTab("Pull");
 local features5 = window:AddTab("UI");
+local features6 = window:AddTab("Set");
 local workspace = game:GetService("Workspace");
 local player = game:GetService("Players").LocalPlayer;
 local Players = game.Players;
@@ -185,7 +186,7 @@ features:Show();
 features:AddLabel("Author： 澤澤ZeZe  |  Version： Mobile Edition");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/01/18");
+features:AddLabel("Last Updated： 2025/01/21");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -1133,4 +1134,17 @@ features5:AddButton("Alchemy Furnace", function()
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開煉丹爐");
 	end
+end);
+features6:AddLabel(" -- 語言配置/language config");
+features6:AddButton("刪除語言配置/language config delete", function()
+	local HttpService = game:GetService("HttpService");
+	function deleteConfigFile()
+		if isfile("userSettings.json") then
+			delfile("userSettings.json");
+			print("配置文件 userSettings.json 已刪除。");
+		else
+			print("配置文件 userSettings.json 不存在，無法刪除。");
+		end
+	end
+	deleteConfigFile();
 end);
