@@ -1037,7 +1037,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("OreDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end
@@ -1051,7 +1051,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("GemDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end
@@ -1065,7 +1065,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("RuneDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end
@@ -1079,7 +1079,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("RelicDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end
@@ -1093,7 +1093,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("HoverDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end
@@ -1107,7 +1107,7 @@ local function AutostartDungeonf()
         local lastKeysCount = getDungeonKey("GoldDungeon")
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
-        if lastKeysCount1 ~= currentKeysCount and currentKeysCount > 0 then
+        if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
             if AutoDungeonplus1  then
                 adjustDungeonLevel(1)
             end

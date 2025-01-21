@@ -817,7 +817,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("OreDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -831,7 +831,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("GemDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -845,7 +845,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("RuneDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -859,7 +859,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("RelicDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -873,7 +873,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("HoverDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -887,7 +887,7 @@ local function AutostartDungeonf()
 		local lastKeysCount = getDungeonKey("GoldDungeon");
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
-		if ((lastKeysCount1 ~= currentKeysCount) and (currentKeysCount > 0)) then
+		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
 			if AutoDungeonplus1 then
 				adjustDungeonLevel(1);
 			end
@@ -966,7 +966,7 @@ local AutoelixirSwitch = features4:AddSwitch("自動煉丹藥", function(bool)
 	end
 end);
 AutoelixirSwitch:Set(false);
-local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥⚠️背包裡面所有的丹藥⚠️）", function(bool)
+local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥（⚠️背包裡面所有的丹藥⚠️）", function(bool)
 	Autoelixirabsorb = bool;
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
@@ -1140,17 +1140,16 @@ features5:AddButton("開啟煉丹爐", function()
 		event:Fire("打開煉丹爐");
 	end
 end);
-features6:AddLabel(" -- 語言配置/language config")
-features6:AddButton("刪除語言配置/language config delete",function()
-    local HttpService = game:GetService("HttpService")
-    function deleteConfigFile()
-        if isfile("userSettings.json") then
-            delfile("userSettings.json")
-            print("配置文件 userSettings.json 已刪除。")
-        else
-            print("配置文件 userSettings.json 不存在，無法刪除。")
-        end
-    end
-    deleteConfigFile()
-end)
-
+features6:AddLabel(" -- 語言配置/language config");
+features6:AddButton("刪除語言配置/language config delete", function()
+	local HttpService = game:GetService("HttpService");
+	function deleteConfigFile()
+		if isfile("userSettings.json") then
+			delfile("userSettings.json");
+			print("配置文件 userSettings.json 已刪除。");
+		else
+			print("配置文件 userSettings.json 不存在，無法刪除。");
+		end
+	end
+	deleteConfigFile();
+end);
