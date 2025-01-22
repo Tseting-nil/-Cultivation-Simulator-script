@@ -691,18 +691,19 @@ local function teleporttworld2()
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args));
     print("重啟世界關卡：".. finishworldnum)
 end
-local combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text
 local function CheckRestart() --玩家完成關卡後觸發自動傳送
-    combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text
+    local combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text
     local worldstring = string.match(combattext, "World")
     finishworldnum = string.match(combattext, "World (%d+)-")-- 關卡數字 1
     local fraction = string.match(combattext, "-(%d+/%d+)")-- 提取關卡完成度
     -- 將分數轉換為小數
-    local numerator, denominator = string.match(fraction, "(%d+)/(%d+)")
-    local decimal = tonumber(numerator) / tonumber(denominator)
-    if decimal == 1 and worldstring then
-        --print("完成戰鬥 世界"..finishworldnum)
-        Restart = true
+    if fraction then
+        local numerator, denominator = string.match(fraction, "(%d+)/(%d+)")
+        local decimal = tonumber(numerator) / tonumber(denominator)
+        if decimal == 1 and worldstring then
+            --print("完成戰鬥 世界"..finishworldnum)
+            Restart = true
+        end
     end
 end
 
@@ -728,11 +729,10 @@ features2:AddButton("TP", function()
     teleporttworld1()
 end)
 features2:AddLabel("!! Auto-start requires the ability to complete wave 100")
-local Autostart = false;
 local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", function(bool)
-	Autostart = bool;
-	if Autostart then
-		while Autostart do
+    Autostartwarld = bool
+    if Autostartwarld then
+        while Autostartwarld do
             CheckRestart()
             if Restart then
                 wait(savemodetime2)
@@ -742,10 +742,10 @@ local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", 
                 teleporttworld2()
                 Restart = false
             end
-			wait(1)
-		end
+            wait(1)
+        end
     end
-end);
+end)
 Autostart:Set(false);
 
 features2:AddButton("AFK Mode", function()

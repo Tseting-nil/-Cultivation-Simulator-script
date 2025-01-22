@@ -565,16 +565,17 @@ local function teleporttworld2()
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args));
 	print("重啟世界關卡：" .. finishworldnum);
 end
-local combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text;
 local function CheckRestart()
-	combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text;
+	local combattext = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本").Text;
 	local worldstring = string.match(combattext, "World");
 	finishworldnum = string.match(combattext, "World (%d+)-");
 	local fraction = string.match(combattext, "-(%d+/%d+)");
-	local numerator, denominator = string.match(fraction, "(%d+)/(%d+)");
-	local decimal = tonumber(numerator) / tonumber(denominator);
-	if ((decimal == 1) and worldstring) then
-		Restart = true;
+	if fraction then
+		local numerator, denominator = string.match(fraction, "(%d+)/(%d+)");
+		local decimal = tonumber(numerator) / tonumber(denominator);
+		if ((decimal == 1) and worldstring) then
+			Restart = true;
+		end
 	end
 end
 local function teleporthome()
@@ -585,11 +586,10 @@ features2:AddButton("TP", function()
 	teleporttworld1();
 end);
 features2:AddLabel("!! Auto-start requires the ability to complete wave 100");
-local Autostart = false;
 local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", function(bool)
-	Autostart = bool;
-	if Autostart then
-		while Autostart do
+	Autostartwarld = bool;
+	if Autostartwarld then
+		while Autostartwarld do
 			CheckRestart();
 			if Restart then
 				wait(savemodetime2);
