@@ -16,8 +16,8 @@ if a == 1 then
     -- 檢查本地文件是否存在，若存在則讀取配置
     local function loadConfig()
         local jsonString
-        if isfile("userSettings.json") then
-            jsonString = readfile("userSettings.json")
+        if isfile("Cultivation_languageSet.json") then
+            jsonString = readfile("Cultivation_languageSet.json")
         else
             jsonString = HttpService:JSONEncode(defaultConfig)  -- 若文件不存在則返回預設配置
         end
@@ -65,9 +65,8 @@ if a == 1 then
 	local window = library:AddWindow("Cultivation-Simulator-Start", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(380, 346),can_resize=false});
 	local features = window:AddTab("Language/語言選擇");
 	features:Show();
-	features:AddLabel("!! This is no key system script / !! 此為無密鑰系統腳本 ");
+	features:AddLabel("Version：1.0 / 版本：1.0");
 	features:AddLabel("The Original code on Github /原始碼在我的Github");
-	features:AddLabel("Github：https://github.com/Tseting-nil");
 	features:AddButton("Github link / Github連結", function()
 		local urlToCopy = "https://github.com/Tseting-nil";
 		if setclipboard then
@@ -78,7 +77,6 @@ if a == 1 then
 		end
 	end);
 	features:AddLabel("");
-	features:AddLabel("You can only choose one/你只能選擇一個");
 	local switch1 = features:AddSwitch("MobileEnglishUI/手機英文介面", function(bool)
 		switch11 = bool;
 	end);
@@ -92,7 +90,8 @@ if a == 1 then
 			if switch11 then
 				switch22 = false;
 				switch2:Set(false);
-			elseif switch22 then
+			end
+			if switch22 then
 				switch11 = false;
 				switch1:Set(false);
 			end
@@ -115,8 +114,8 @@ if a == 1 then
 	features:AddButton("Save/保存", function()
 		local config = {MobileEnglishUI=switch11,MobileChineseUI=switch22,AUTOLOAD=true};
 		local jsonString = HttpService:JSONEncode(config);
-		writefile("userSettings.json", jsonString);
-		print("配置已保存到 userSettings.json");
+		writefile("Cultivation_languageSet.json", jsonString);
+		print("配置已保存到 Cultivation_languageSet.json");
         showNotification("Config Save!!");
 	end);
 end
