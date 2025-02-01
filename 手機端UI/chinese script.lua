@@ -8,14 +8,15 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	AntiAFK:ClickButton2(Vector2.new());
 	wait(2);
 end);
-local window = library:AddWindow("Cultivation-Simulator  養成模擬器 -- 手機板UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(356, 310),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator  養成模擬器 -- 手機板UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(395, 315),can_resize=false});
 local features = window:AddTab("自述");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("副本");
 local features3 = window:AddTab("地下城");
 local features4 = window:AddTab("抽取");
-local features5 = window:AddTab("開啟UI");
-local features6 = window:AddTab("設定");
+local features5 = window:AddTab("PVP");
+local features6 = window:AddTab("開啟UI");
+local features7 = window:AddTab("設定");
 local workspace = game:GetService("Workspace");
 local player = game:GetService("Players").LocalPlayer;
 local Players = game.Players;
@@ -186,7 +187,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/01/21");
+features:AddLabel("最後更新時間：2025/02/01");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1097,58 +1098,59 @@ end);
 features4:AddButton("抽取速度慢", function()
 	Autolotteryspeed = 0.5;
 end);
+features5:AddLabel("也許在這邊會有些什麼...");
 local replicatedStorage = game:GetService("ReplicatedStorage");
-features5:AddButton("開啟每日任務", function()
+features6:AddButton("開啟每日任務", function()
 	local event = replicatedStorage:FindFirstChild("打开每日任务", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開每日任務");
 	end
 end);
-features5:AddButton("開啟郵件", function()
+features6:AddButton("開啟郵件", function()
 	local event = replicatedStorage:FindFirstChild("打开邮件", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打开郵件");
 	end
 end);
-features5:AddButton("開啟轉盤", function()
+features6:AddButton("開啟轉盤", function()
 	local event = replicatedStorage:FindFirstChild("打开转盘", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開轉盤");
 	end
 end);
-features5:AddButton("開啟陣法", function()
+features6:AddButton("開啟陣法", function()
 	local event = replicatedStorage:FindFirstChild("打开阵法", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打开陣法");
 	end
 end);
-features5:AddButton("開啟世界樹", function()
+features6:AddButton("開啟世界樹", function()
 	local event = replicatedStorage:FindFirstChild("打开世界树", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開世界樹");
 	end
 end);
-features5:AddButton("開啟練器台", function()
+features6:AddButton("開啟練器台", function()
 	local event = replicatedStorage:FindFirstChild("打开炼器台", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開練器台");
 	end
 end);
-features5:AddButton("開啟煉丹爐", function()
+features6:AddButton("開啟煉丹爐", function()
 	local event = replicatedStorage:FindFirstChild("打开炼丹炉", true);
 	if (event and event:IsA("BindableEvent")) then
 		event:Fire("打開煉丹爐");
 	end
 end);
-features6:AddLabel(" -- 語言配置/language config");
-features6:AddButton("刪除語言配置/language config delete", function()
+features7:AddLabel(" -- 語言配置/language config");
+features7:AddButton("刪除語言配置/language config delete", function()
 	local HttpService = game:GetService("HttpService");
 	function deleteConfigFile()
-		if isfile("userSettings.json") then
-			delfile("userSettings.json");
-			print("配置文件 userSettings.json 已刪除。");
+		if isfile("Cultivation_languageSet.json") then
+			delfile("Cultivation_languageSet.json");
+			print("配置文件 Cultivation_languageSet.json 已刪除。");
 		else
-			print("配置文件 userSettings.json 不存在，無法刪除。");
+			print("配置文件 Cultivation_languageSet.json 不存在，無法刪除。");
 		end
 	end
 	deleteConfigFile();
