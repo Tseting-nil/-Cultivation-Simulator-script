@@ -39,7 +39,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivat
 ![電腦版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA2.jpg)  
 ![電腦版 UI 展示 3](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA3.jpg)  
 
-### Mobile Version Interface (Temporarily Disabled)
+### Mobile Version Interface 
 ![手機版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA4.jpg)  
 ![手機版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA5.jpg)  
 
