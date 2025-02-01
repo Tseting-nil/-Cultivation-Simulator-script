@@ -18,16 +18,17 @@ game.Players.LocalPlayer.Idled:Connect(function()
 end);
 -- ========================================================================== --
 -- 標題
-local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(370, 310),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 315),can_resize=false});
 -- ========================================================================== --
 -- 標籤
-local features = window:AddTab("Readme");
+local features = window:AddTab("Rdme");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
 local features3 = window:AddTab("Dungeons");
 local features4 = window:AddTab("Pull");
-local features5 = window:AddTab("UI");
-local features6 = window:AddTab("Set");
+local features5 = window:AddTab("PVP");
+local features6 = window:AddTab("UI");
+local features7 = window:AddTab("Set");
 
 -- ========================================================================== --
 -- 定義全域函數
@@ -233,10 +234,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： 澤澤ZeZe  |  Version： Mobile Edition");
+features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/01/21");
+features:AddLabel("Last Updated： 2025/02/01");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -546,62 +547,43 @@ end)
 -- 副本頁UI
 
 local Difficulty_choose = features2:AddLabel("Current Selection： 01");
-local Difficulty_selection = features2:AddDropdown("Difficulty Level Selection", function(text)
-    if text == "World Easy： 01" then
+local function gowordlevelscheak(gowordlevels)
+    if gowordlevels > worldnum then
+        if gowordlevels < 10 then
+            Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
+        else
+            Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
+        end
+    else
+        if gowordlevels < 10 then
+            Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
+        else
+            Difficulty_choose.Text = "Current Selection： "..gowordlevels;
+        end
+    end
+end
+local Difficulty_selection = features2:AddDropdown("                Difficulty Level Selection                ", function(text)
+    if text == "  World ： 01 .. Easy" then
         print("當前選擇：簡單")
         gowordlevels = 1
         Difficulty_choose.Text = "Current Selection： 01"
-    elseif text == "World Normal： 21" then
+    elseif text == "  World ： 21 .. Normal" then
         print("當前選擇：普通")
         gowordlevels = 21
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
-            end
-        end
-    elseif text == "World Hard： 41" then
+        gowordlevelscheak(gowordlevels)
+    elseif text == "  World ： 41 .. Hard" then
         print("當前選擇：困難")
         gowordlevels = 41
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
-            end
-
-        end
-    elseif text == "World Expert： 61" then
+        gowordlevelscheak(gowordlevels)
+    elseif text == "  World ： 61 .. Expert" then
         print("當前選擇：專家")
         gowordlevels = 61
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
-            end
-
-        end
-    elseif text == "Auto Max Choose" then
+        gowordlevelscheak(gowordlevels)
+    elseif text == "  World ： 81" then
+        print("World ： 81")
+        gowordlevels = 81
+        gowordlevelscheak(gowordlevels)
+    elseif text == "  Auto Max Choose" then
         print("當前選擇：自動最高關卡")
         if worldnum < 10 then
             Difficulty_choose.Text = "Current Selection Max Level： 0"..worldnum;
@@ -633,48 +615,21 @@ local Difficulty_selection = features2:AddDropdown("Difficulty Level Selection",
         end
     end
 end);
-local Levels1 = Difficulty_selection:Add("World Easy： 01")
-local Levels2 = Difficulty_selection:Add("World Normal： 21")
-local Levels3 = Difficulty_selection:Add("World Hard： 41")
-local Levels4 = Difficulty_selection:Add("World Expert： 61")
-local Levels5 = Difficulty_selection:Add("Auto Max Choose")
-local Levels6 = Difficulty_selection:Add("空白")
+local Levels1 = Difficulty_selection:Add("  World ： 01 .. Easy")
+local Levels2 = Difficulty_selection:Add("  World ： 21 .. Normal")
+local Levels3 = Difficulty_selection:Add("  World ： 41 .. Hard")
+local Levels4 = Difficulty_selection:Add("  World ： 61 .. Expert")
+local Levels5 = Difficulty_selection:Add("  World ： 81")
+local Levels6 = Difficulty_selection:Add("  Auto Max Choose")
+local Levels7 = Difficulty_selection:Add(" ... ")
 features2:AddButton("Select level +1", function()
 	gowordlevels = gowordlevels + 1
-    if gowordlevels < 10 then
-        Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
-    else
-        Difficulty_choose.Text = "Current Selection： "..gowordlevels;
-    end
-    if gowordlevels > worldnum then
-        if gowordlevels < 10 then
-            Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
-        else
-            Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
-        end
-    end
+    gowordlevelscheak(gowordlevels)
 end);
 
 features2:AddButton("Select level -1", function()
     gowordlevels = gowordlevels - 1
-    if gowordlevels < 1 then
-        gowordlevels = 1
-        Difficulty_choose.Text = "Autocorrection: Level 0" .. gowordlevels
-    else
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Level Not Unlocked： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Level Not Unlocked： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "Current Selection： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "Current Selection： "..gowordlevels;
-            end
-        end
-    end
+    gowordlevelscheak(gowordlevels)
 end);
 
 -- ========================================================================== --
@@ -886,54 +841,54 @@ local function checkDungeonkey()
 end
 checkDungeonkey()
 
-local chooselevels = features3:AddLabel("select a dungeon...")
+local chooselevels = features3:AddLabel("Dungeon Selection ...")
 
 
 -- 初始化下拉選單
-local dropdown1 = features3:AddDropdown("Select a Dungeon", function(text)
-    if     text == ("OreDungeon") then
+local dropdown1 = features3:AddDropdown("Dungeon Selection ...", function(text)
+    if     text == ("    OreDungeon    ") then
         dropdownchoose = 1
         dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
         chooselevels.Text = " OreDungeon,  Key："..Ore_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("GemDungeon") then
+    elseif text == ("    GemDungeon    ") then
         dropdownchoose = 2
         dropdownchoose2 = tostring(dungeonFunctions["GemDungeon"] and dungeonFunctions["GemDungeon"]() or "0")
         chooselevels.Text = " GemDungeon,  Key："..Gem_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("RuneDungeon") then
+    elseif text == ("    RuneDungeon    ") then
         dropdownchoose = 3
         dropdownchoose2 = tostring(dungeonFunctions["RuneDungeon"] and dungeonFunctions["RuneDungeon"]() or "0")        
         chooselevels.Text = " RuneDungeon,  Key："..Rune_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("RelicDungeon") then        
+    elseif text == ("    RelicDungeon    ") then        
         dropdownchoose = 4  
         dropdownchoose2 = tostring(dungeonFunctions["RelicDungeon"] and dungeonFunctions["RelicDungeon"]() or "0")
         chooselevels.Text = " RelicDungeon,  Key："..Relic_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("HoverDungeon") then
+    elseif text == ("    HoverDungeon    ") then
         dropdownchoose = 7
         dropdownchoose2 = tostring(dungeonFunctions["HoverDungeon"] and dungeonFunctions["HoverDungeon"]() or "0")
         chooselevels.Text = " HoverDungeon,  Key："..Hover_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("GoldDungeon") then
+    elseif text == ("    GoldDungeon    ") then
         dropdownchoose = 6
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
         chooselevels.Text = " GoldDungeon,  Key："..Gold_Dungeonkey.. "  ,Level："..dropdownchoose2
-    elseif text == ("Event Dungeon...Not open") then
+    elseif text == ("    Event Dungeon...Not open    ") then
         dropdownchoose = 5
         dropdownchoose2 = "未開啟"
         chooselevels.Text = "當前選擇：活動地下城  未開啟"
     end
 end)
 
-local Dungeon1 = dropdown1:Add("OreDungeon")
-local Dungeon2 = dropdown1:Add("GemDungeon")
-local Dungeon3 = dropdown1:Add("RuneDungeon")
-local Dungeon4 = dropdown1:Add("RelicDungeon")
-local Dungeon5 = dropdown1:Add("HoverDungeon")
-local Dungeon6 = dropdown1:Add("GoldDungeon")
-local Dungeon7 = dropdown1:Add("Event Dungeon...Not open")
-local Dungeon8 = dropdown1:Add("空白")
+local Dungeon1 = dropdown1:Add("    OreDungeon    ")
+local Dungeon2 = dropdown1:Add("    GemDungeon    ")
+local Dungeon3 = dropdown1:Add("    RuneDungeon    ")
+local Dungeon4 = dropdown1:Add("    RelicDungeon    ")
+local Dungeon5 = dropdown1:Add("    HoverDungeon    ")
+local Dungeon6 = dropdown1:Add("    GoldDungeon    ")
+local Dungeon7 = dropdown1:Add("    Event Dungeon...Not open    ")
+local Dungeon8 = dropdown1:Add("    ...    ")
 
 local function UDPDungeontext()
     if dropdownchoose == 0 then
-        chooselevels.Text = "Select a Dungeon"
+        chooselevels.Text = "Dungeon Selection ..."
     elseif dropdownchoose == 1 then
         dropdownchoose2 = tostring(dungeonFunctions["OreDungeon"] and dungeonFunctions["OreDungeon"]() or "0")
         chooselevels.Text = " OreDungeon,  Key："..Ore_Dungeonkey.. "  ,Level："..dropdownchoose2
@@ -959,13 +914,13 @@ end
 
 local function UDPDungeonchoose()
     checkDungeonkey()
-    Dungeon1.Text = ("  OreDungeon    Key："..Ore_Dungeonkey.."  ")
-    Dungeon2.Text = ("  GemDungeon    Key："..Gem_Dungeonkey.."  ")
-    Dungeon3.Text = ("  RuneDungeon    Key："..Rune_Dungeonkey.."  ")
-    Dungeon4.Text = ("  RelicDungeon    Key："..Relic_Dungeonkey.."  ")
-    Dungeon5.Text = ("  HoverDungeon    Key："..Hover_Dungeonkey.."  ")
-    Dungeon6.Text = ("  GoldDungeon    Key："..Gold_Dungeonkey.."  ")
-    Dungeon7.Text = ("  Event Dungeon...Notopen")
+    Dungeon1.Text = ("  OreDungeon          Key："..Ore_Dungeonkey.."  ")
+    Dungeon2.Text = ("  GemDungeon        Key："..Gem_Dungeonkey.."  ")
+    Dungeon3.Text = ("  RuneDungeon       Key："..Rune_Dungeonkey.."  ")
+    Dungeon4.Text = ("  RelicDungeon        Key："..Relic_Dungeonkey.."  ")
+    Dungeon5.Text = ("  HoverDungeon      Key："..Hover_Dungeonkey.."  ")
+    Dungeon6.Text = ("  GoldDungeon         Key："..Gold_Dungeonkey.."  ")
+    Dungeon7.Text = ("  Event Dungeon...Not open")
 end
 
 spawn(function()
@@ -1376,63 +1331,63 @@ features4:AddButton("Slow",function()
 	Autolotteryspeed = 0.5
 end)
 
-
+features5:AddLabel("// Maybe this feature will be there  //")
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")
-features5:AddButton("Daily Tasks",function()
+features6:AddButton("Daily Tasks",function()
     local event = replicatedStorage:FindFirstChild("打开每日任务", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開每日任務")
     end
 end)
-features5:AddButton("Mail",function()
+features6:AddButton("Mail",function()
     local event = replicatedStorage:FindFirstChild("打开邮件", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打开郵件")
     end
 end)
-features5:AddButton("Wheel",function()
+features6:AddButton("Wheel",function()
     local event = replicatedStorage:FindFirstChild("打开转盘", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開轉盤")
     end
 end)
-features5:AddButton("Formation",function()
+features6:AddButton("Formation",function()
     local event = replicatedStorage:FindFirstChild("打开阵法", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打开陣法")
     end
 end)
-features5:AddButton("World Tree",function()
+features6:AddButton("World Tree",function()
     local event = replicatedStorage:FindFirstChild("打开世界树", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開世界樹")
     end
 end)
-features5:AddButton("Training Bench",function()
+features6:AddButton("Training Bench",function()
     local event = replicatedStorage:FindFirstChild("打开炼器台", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開練器台")
     end
 end)
-features5:AddButton("Alchemy Furnace",function()
+features6:AddButton("Alchemy Furnace",function()
     local event = replicatedStorage:FindFirstChild("打开炼丹炉", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開煉丹爐")
     end
 end)
-features6:AddLabel(" -- 語言配置/language config")
-features6:AddButton("刪除語言配置/language config delete",function()
+features7:AddLabel(" -- 語言配置/language config")
+features7:AddButton("刪除語言配置/language config delete",function()
     local HttpService = game:GetService("HttpService")
-    -- 刪除 userSettings.json 配置文件
+    -- 刪除 Cultivation_languageSet.json 配置文件
     function deleteConfigFile()
-        if isfile("userSettings.json") then
+        if isfile("Cultivation_languageSet.json") then
             -- 使用 delfile 刪除文件
-            delfile("userSettings.json")
-            print("配置文件 userSettings.json 已刪除。")
+            delfile("Cultivation_languageSet.json")
+            print("配置文件 Cultivation_languageSet.json 已刪除。")
         else
-            print("配置文件 userSettings.json 不存在，無法刪除。")
+            print("配置文件 Cultivation_languageSet.json 不存在，無法刪除。")
         end
     end
     deleteConfigFile()
