@@ -187,7 +187,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/01");
+features:AddLabel("Last Updated： 2025/02/03");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -379,7 +379,7 @@ local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GameP
 		end);
 	end
 end);
-Autocollmission:Set(true);
+Autocollmission:Set(false);
 local invest = features1:AddSwitch("Auto-execute investments", function(bool)
 	investbool = bool;
 	if investbool then
@@ -399,7 +399,7 @@ local invest = features1:AddSwitch("Auto-execute investments", function(bool)
 		end);
 	end
 end);
-invest:Set(true);
+invest:Set(false);
 local AutoCollectherbs = features1:AddSwitch("Auto-harvest herbs", function(bool)
 	AutoCollectherbsbool = bool;
 	if AutoCollectherbsbool then
@@ -415,7 +415,7 @@ local AutoCollectherbs = features1:AddSwitch("Auto-harvest herbs", function(bool
 		end);
 	end
 end);
-AutoCollectherbs:Set(true);
+AutoCollectherbs:Set(false);
 features1:AddLabel("- - GamePass Unlock");
 local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 	local Refiningbool = bool;
