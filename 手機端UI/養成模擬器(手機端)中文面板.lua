@@ -432,6 +432,7 @@ spawn(function()
 end)
 
 -- 每天凌晨 1 點自動執行一次
+
 spawn(function()
     while true do
         -- 取得當前UTC時間的時數和日期
@@ -461,22 +462,37 @@ end)
 -- ========================================================================== --
 -- Main頁
 local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass任務)", function(bool)
-	Autocollmission = bool;
-	if Autocollmission then
-		while Autocollmission do
-			mainmissionchack()
-			everydaymission()
-			gamepassmission()
+	Autocollmissionbool = bool;
+	if Autocollmissionbool then
+        spawn(function()
+            while Autocollmissionbool do
+                mainmissionchack()
+                everydaymission()
+                gamepassmission()
+                wait(1)
+            end
+        end)
+	end
+end);
+Autocollmission:Set(false);
+--[[
+local GamePassaward = features1:AddSwitch("GamePass獎勵領取", function(bool)
+	GamePassawardbool = bool;
+	if GamePassawardbool then
+		while GamePassawardbool do
 			wait(1)
 		end
 	end
 end);
-Autocollmission:Set(false);
+GamePassaward:Set(true);
+]]--
+
 
 local invest = features1:AddSwitch("自動執行投資", function(bool)
-	invest = bool;
-	if invest then
-		while invest do
+	investbool = bool;
+	if investbool then
+        spawn(function()
+		while investbool do
 			for i = 1, 3 do
 				local args = {i};
 				game:GetService("ReplicatedStorage")["\228\186\139\228\187\182"]["\229\133\172\231\148\168"]["\229\149\134\229\186\151"]["\233\147\182\232\161\140"]["\233\162\134\229\143\150\231\144\134\232\180\162"]:FireServer(unpack(args));
@@ -490,42 +506,48 @@ local invest = features1:AddSwitch("自動執行投資", function(bool)
 			end
 			wait(600);
 		end
+    end)
 	end
 end);
 invest:Set(false);
 
 local AutoCollectherbs = features1:AddSwitch("自動採草藥", function(bool)
-	AutoCollectherbs = bool;
-	if AutoCollectherbs then
-		while AutoCollectherbs do
-			for i = 1, 6 do
-				local args = {[1]=i,[2]=nil};
-				game:GetService("ReplicatedStorage")["\228\186\139\228\187\182"]["\229\133\172\231\148\168"]["\229\134\156\231\148\176"]["\233\135\135\233\155\134"]:FireServer(unpack(args));
-				wait(0.1)
-			end
-			wait(60);
-		end
+	AutoCollectherbsbool = bool;
+	if AutoCollectherbsbool then
+        spawn(function()
+            while AutoCollectherbsbool do
+                for i = 1, 6 do
+                    local args = {[1]=i,[2]=nil};
+                    game:GetService("ReplicatedStorage")["\228\186\139\228\187\182"]["\229\133\172\231\148\168"]["\229\134\156\231\148\176"]["\233\135\135\233\155\134"]:FireServer(unpack(args));
+                    wait(0.1)
+                end
+                wait(60);
+            end
+        end)
 	end
 end);
 AutoCollectherbs:Set(false);
 
-features1:AddLabel(" - - 統計");
-features1:AddButton("每秒擊殺/金幣數", function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/0NqSi46N"))()
-	loadstring(game:HttpGet("https://pastebin.com/raw/HGQXdAiz"))()
-end);
-
 features1:AddLabel(" - - 通行證解鎖");
-features1:AddButton("解鎖自動煉製", function()
-	local superRefining = privileges:WaitForChild("超级炼制");
-	superRefining.Value = false;
-	local automaticRefining = privileges:WaitForChild("自动炼制");
-	automaticRefining.Value = true;
+local Refining = features1:AddSwitch("解鎖自動煉製", function(bool)
+	local Refiningbool = bool;
+    privileges:WaitForChild("超级炼制").Value = Refiningbool;
+    privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
-features1:AddButton("背包擴充", function()
-	local backpack = privileges:WaitForChild("扩充背包");
-	backpack.Value = true;
+Refining:Set(true);
+
+local Luckyinvesting = features1:AddSwitch("幸運投資--投資為最高倍率", function(bool)
+	local Luckyinvestingbool = bool;
+    privileges:WaitForChild("幸运投资").Value = Luckyinvestingbool;
 end);
+Luckyinvesting:Set(true);
+
+local backpack = features1:AddSwitch("背包擴充", function(bool)
+	local backpackbool = bool;
+    privileges:WaitForChild("扩充背包").Value = backpackbool;
+end);
+backpack:Set(true);
+
 
 -- ========================================================================== --
 -- 副本頁
@@ -1462,3 +1484,8 @@ features7:AddButton("刪除語言配置/language config delete",function()
     end
     deleteConfigFile()
 end)
+features7:AddLabel(" - - 統計");
+features7:AddButton("每秒擊殺/金幣數", function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/0NqSi46N"))()
+	loadstring(game:HttpGet("https://pastebin.com/raw/HGQXdAiz"))()
+end);
