@@ -419,7 +419,7 @@ AutoCollectherbs:Set(false);
 features1:AddLabel(" - - 通行證解鎖");
 local Refining = features1:AddSwitch("解鎖自動煉製", function(bool)
 	local Refiningbool = bool;
-	privileges:WaitForChild("超级炼制").Value = Refiningbool;
+	privileges:WaitForChild("超级炼制").Value = false;
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);

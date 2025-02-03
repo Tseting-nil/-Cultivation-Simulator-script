@@ -419,7 +419,7 @@ AutoCollectherbs:Set(false);
 features1:AddLabel("- - GamePass Unlock");
 local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 	local Refiningbool = bool;
-	privileges:WaitForChild("超级炼制").Value = Refiningbool;
+	privileges:WaitForChild("超级炼制").Value = false;
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
