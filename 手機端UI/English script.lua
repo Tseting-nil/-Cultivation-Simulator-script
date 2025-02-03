@@ -423,11 +423,6 @@ local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
-local Luckyinvesting = features1:AddSwitch("Lucky Investment--Investment with the highest multiple", function(bool)
-	local Luckyinvestingbool = bool;
-	privileges:WaitForChild("幸运投资").Value = Luckyinvestingbool;
-end);
-Luckyinvesting:Set(true);
 local backpack = features1:AddSwitch("Backpack Expansion", function(bool)
 	local backpackbool = bool;
 	privileges:WaitForChild("扩充背包").Value = backpackbool;
