@@ -187,7 +187,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/03");
+features:AddLabel("Last Updated： 2025/02/06");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -1120,4 +1120,14 @@ features7:AddLabel("- - Statistics");
 features7:AddButton("每秒擊殺/金幣數", function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/0NqSi46N"))();
 	loadstring(game:HttpGet("https://pastebin.com/raw/HGQXdAiz"))();
+end);
+features7:AddLabel(" If you have any questions or ideas, leave a comment on GitHub.");
+features7:AddButton("Github Link", function()
+    local urlToCopy = "https://github.com/Tseting-nil";
+    if setclipboard then
+        setclipboard(urlToCopy);
+        showNotification("Link Copied:) ！！");
+    else
+        showNotification("error！Link：github.com/Tseting-nil");
+    end
 end);

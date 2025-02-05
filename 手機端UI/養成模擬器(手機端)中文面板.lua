@@ -240,7 +240,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/03");
+features:AddLabel("最後更新時間：2025/02/06");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -535,12 +535,6 @@ local Refining = features1:AddSwitch("解鎖自動煉製", function(bool)
     privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
-
-local Luckyinvesting = features1:AddSwitch("幸運投資--投資為最高倍率", function(bool)
-	local Luckyinvestingbool = bool;
-    privileges:WaitForChild("幸运投资").Value = Luckyinvestingbool;
-end);
-Luckyinvesting:Set(true);
 
 local backpack = features1:AddSwitch("背包擴充", function(bool)
 	local backpackbool = bool;
@@ -1488,4 +1482,14 @@ features7:AddLabel(" - - 統計");
 features7:AddButton("每秒擊殺/金幣數", function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/0NqSi46N"))()
 	loadstring(game:HttpGet("https://pastebin.com/raw/HGQXdAiz"))()
+end);
+features7:AddLabel(" 有任何問題或想法請在Github上留言");
+features7:AddButton("Github連結", function()
+    local urlToCopy = "https://github.com/Tseting-nil";
+    if setclipboard then
+        setclipboard(urlToCopy);
+        showNotification("連結以複製！");
+    else
+        showNotification("錯誤！連結為：github.com/Tseting-nil");
+    end
 end);
