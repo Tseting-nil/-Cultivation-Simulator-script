@@ -1,25 +1,28 @@
 local HttpService = game:GetService("HttpService")
 
-local function showNotification(message)
-    local notification = Instance.new("Frame");
-    notification.Size = UDim2.new(0, 300, 0, 50);
-    notification.Position = UDim2.new(1, -320, 1, -120);
-    notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0);
-    notification.BackgroundTransparency = 0.5;
-    notification.BorderSizePixel = 0;
-    notification.Parent = screenGui;
-    local label = Instance.new("TextLabel");
-    label.Size = UDim2.new(1, 0, 1, 0);
-    label.Position = UDim2.new(0, 0, 0, 0);
-    label.Text = message;
-    label.TextColor3 = Color3.fromRGB(255, 255, 255);
-    label.BackgroundTransparency = 1;
-    label.Font = Enum.Font.GothamBold;
-    label.TextScaled = true;
-    label.Parent = notification;
+-- 顯示通知函數
+function showNotification(message)
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local notification = Instance.new("Frame")
+    notification.Size = UDim2.new(0, 300, 0, 50)
+    notification.Position = UDim2.new(1, -320, 1, -120)
+    notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    notification.BackgroundTransparency = 0.5
+    notification.BorderSizePixel = 0
+    notification.Parent = screenGui
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.Position = UDim2.new(0, 0, 0, 0)
+    label.Text = message
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.TextScaled = true
+    label.Parent = notification
     task.delay(3, function()
-        notification:Destroy();
-    end);
+        notification:Destroy()
+    end)
 end
 
 -- 預設配置
@@ -53,6 +56,7 @@ function deleteConfigFile()
     end
 end
 
+
 -- 從本地讀取配置文件
 local function loadConfig()
     local jsonString
@@ -72,8 +76,6 @@ end
 
 -- 創建配置文件（如果不存在）
 createConfigFileIfNotExists()
-
-
 -- deleteConfigFile()  -- 如果需要刪除文件，請使用這行並把註解刪除
 
 -- 加載配置
@@ -85,12 +87,12 @@ print("手機中文介面：" .. tostring(config.MobileChineseUI))
 
 -- 在 GUI 或腳本中使用加載的配置
 if config.MobileEnglishUI then
-    showNotification("Loading...en-script");
+    showNotification("Loading...en-script")
     -- 加載英文界面腳本
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/English%20script.lua"))()
     return 2
 elseif config.MobileChineseUI then
-    showNotification("載入中...中文腳本");
+    showNotification("載入中...中文腳本")
     -- 加載中文界面腳本
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/chinese%20script.lua"))()
     return 2
