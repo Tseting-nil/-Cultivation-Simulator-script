@@ -20,14 +20,11 @@
 
 ---
 
-## ✨ 腳本：手機板中文介面
+## ✨ 腳本：手機板中文/英文介面
 ```lua
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/chinese%20script.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E5%95%9F%E5%8B%95%E5%99%A8%E5%8A%A0%E5%AF%86%E9%81%B8%E5%96%AE.lua'))()
 ```
-## ✨ 腳本：手機板英文介面
-```lua
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/English%20script.lua'))()
-```
+
 
 ## 🖋 作者：Tseting-nil 澤澤 
   - 此腳本由我獨自一人耗費時間製作如使用請標註此GitHub倉庫
