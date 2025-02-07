@@ -1136,8 +1136,6 @@ features3:AddTextBox("You can also manually input the level", function(text)
     end
 end)
 
-
-
 features3:AddButton("Level Selection +1", function()
     adjustDungeonLevel(1)
 end)
@@ -1145,7 +1143,6 @@ end)
 features3:AddButton("Level Selection -1", function()
     adjustDungeonLevel(-1)
 end)
-
 
 features3:AddButton("TP", function()
     DungeonTP()
@@ -1180,36 +1177,44 @@ AutoelixirabsorbSwitch:Set(false)
 
 -- ========================================================================== --
 -- --特殊定義(抽獎相關)
---抽獎相關
-local lottery =playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤")
+local player = game:GetService("Players").LocalPlayer
+local playerGui = game.Players.LocalPlayer.PlayerGui
+--定義技能區
+local lotteryskill = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤"):WaitForChild("技能")
+local skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text
+skilllevel = string.gsub(skilllevel, "%D", "")
+local skilllevel2 = lotteryskill:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
+skilllevel2 = string.match(skilllevel2, "(%d+)/")
+--定義法寶區
+local lotteryweapon = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤"):WaitForChild("法宝")
+local weaponlevel = lotteryweapon:WaitForChild("等级区域"):WaitForChild("值").text
+weaponlevel = string.gsub(weaponlevel, "%D", "")
+local weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
+weaponlevel2 = string.match(weaponlevel2, "(%d+)/")
+--定義貨幣區
 local currency = player:WaitForChild("值"):WaitForChild("货币")
 local diamonds = currency:WaitForChild("钻石")
---法寶UI
-local sword = lottery:WaitForChild("法宝"):WaitForChild("等级区域")
-local sword_level = sword:WaitForChild("值").text
-local sword_value = sword:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
---技能UI
-local skill = lottery:WaitForChild("技能"):WaitForChild("等级区域")
-local skill_level = skill:WaitForChild("值").text
-local skill_value = skill:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
---抽獎卷UI
 local sword_tickets = currency:WaitForChild("法宝抽奖券").value
 local skill_tickets = currency:WaitForChild("技能抽奖券").value
---單一向定義
-local extract_sword_level  --抽獎相關
-local extract_sword_value  --抽獎相關
-local extract_skill_level  --抽獎相關
-local extract_skill_value  --抽獎相關
-local useDiamonds = false --抽獎相關
-local Autolotteryspeed = 0.2
-
-local function usesword_ticket()
-    print("抽獎：法寶")
-    local args = {
-        [1] = "\230\179\149\229\174\157",
-        [2] = false
-    }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
+--定義抽獎相關參數
+local useDiamonds = false
+local Autolotteryspeed = 0.3 --不宜太快，遊戲抽獎為延遲抽獎
+--更新/獲取數據
+local function updData()
+    skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text
+    skilllevel = string.gsub(skilllevel, "%D", "") or 0
+    skilllevel2 = lotteryskill:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
+    skilllevel2 = string.match(skilllevel2, "(%d+)/") or 0
+    weaponlevel = lotteryweapon:WaitForChild("等级区域"):WaitForChild("值").text
+    weaponlevel = string.gsub(weaponlevel, "%D", "") or 0
+    weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text
+    weaponlevel2 = string.match(weaponlevel2, "(%d+)/") or 0
+    diamonds = currency:WaitForChild("钻石").value
+    sword_tickets = currency:WaitForChild("法宝抽奖券").value
+    skill_tickets = currency:WaitForChild("技能抽奖券").value
+    --print("技能等級："..skilllevel.."技能進度："..skilllevel2)
+    --print("法寶等級："..weaponlevel.."法寶進度："..weaponlevel2)
+    --print("鑽石："..diamonds.."法寶抽獎券："..sword_tickets.."技能抽獎券："..skill_tickets)
 end
 local function useskill_ticket()
     print("抽獎：技能")
@@ -1219,103 +1224,87 @@ local function useskill_ticket()
     }
     game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
 end
-
--- 配置參數
-local MIN_TICKETS = 8 -- 最低抽獎券需求
-local DIAMONDS_PER_TICKET = 50 -- 每張抽獎券需要的鑽石數量
-
--- 判斷是否可以使用抽獎券或鑽石補充
-local function checkTicketsAndDiamonds(tickets, diamonds, itemType, useDiamonds)
-    if tickets >= MIN_TICKETS then
-        --print(itemType .. "抽獎券足夠")
-        return true
-    end
-
-    -- 計算缺少的抽獎券
-    local missingTickets = MIN_TICKETS - tickets
-    --print(itemType .. "抽獎券不足，需要補充 " .. missingTickets .. " 張")
-
-    if not useDiamonds then
-        --print(itemType .. "未啟用鑽石補充")
-        return false
-    end
-
-    -- 計算補充所需的鑽石數量
-    local requiredDiamonds = missingTickets * DIAMONDS_PER_TICKET
-    if diamonds >= requiredDiamonds then
-        --print("鑽石足夠，將使用 " .. requiredDiamonds .. " 鑽石補充 " .. missingTickets .. " 張抽獎券")
-        return true
-    else
-        --print("鑽石不足，無法補充")
-        return false
-    end
+local function usesword_ticket()
+    print("抽獎：法寶")
+    local args = {
+        [1] = "\230\179\149\229\174\157",
+        [2] = false
+    }
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
 end
 
--- 自動抽獎邏輯
-local function processLottery(type, tickets, diamonds, useDiamonds)
-    local canProceed = checkTicketsAndDiamonds(tickets, diamonds, type, useDiamonds)
-    if canProceed then
-        --print("執行抽獎：" .. type)
-        if type == "法寶" then
-            usesword_ticket()
-        elseif type == "技能" then
+--判斷區(判斷：抽獎券是否足夠)
+local function Compareskilltickets()
+    if skill_tickets <= 8 and useDiamonds then
+        if diamonds >= 400 then
+            local compare = 8 - tonumber(skill_tickets)
+            --print("技能抽獎券不足，使用鑽石補足："..compare.."張")
+            --print("鑽石消耗："..compare*50)
             useskill_ticket()
-        end
-    else
-        --print(type .. "條件未滿足，抽獎失敗")
-    end
-    return canProceed
-end
-
--- 比較抽獎邏輯
-local function compare_ticket_type(sword_tickets,skill_tickets,sword_level,skill_level,sword_value,skill_value,diamonds,useDiamonds)
-    if sword_level == skill_level then
-        if sword_value > skill_value then
-            --print("法寶進度 > 技能進度，優先使用技能抽獎券")
-            processLottery("技能", skill_tickets, diamonds, useDiamonds)
-        elseif sword_value < skill_value then
-            --print("法寶進度 < 技能進度，優先使用法寶抽獎券")
-            processLottery("法寶", sword_tickets, diamonds, useDiamonds)
         else
-            --print("法寶進度 = 技能進度，同時使用")
-            local canSword = processLottery("法寶", sword_tickets, diamonds, useDiamonds)
-            local canSkill = processLottery("技能", skill_tickets, diamonds, useDiamonds)
-            if not canSword and not canSkill then
-            --print("兩種抽獎券均不足，無法使用抽獎券")
-            end
+            print("鑽石不足")
         end
-    elseif sword_level > skill_level then
-        --print("法寶等級 > 技能等級，優先使用技能抽獎券")
-        processLottery("技能", skill_tickets, diamonds, useDiamonds)
+    elseif skill_tickets >= 8  then
+        --print("技能抽獎券足夠")
+        useskill_ticket()
     else
-        --print("法寶等級 < 技能等級，優先使用法寶抽獎券")
-        processLottery("法寶", sword_tickets, diamonds, useDiamonds)
+        --print("技能抽獎券不足且沒開啟鑽石補足")
+    end
+end
+local function Compareweapentickets()
+    if sword_tickets <= 8 and useDiamonds then
+        if diamonds > 400 then
+            local compare = 8 - tonumber(sword_tickets)
+            --print("法寶抽獎券不足，使用鑽石補足："..compare.."張")
+            --print("鑽石消耗："..compare*50)
+            usesword_ticket()
+        else
+            --print("鑽石不足")
+        end
+    elseif sword_tickets >= 8  then
+        --print("法寶抽獎券足夠")
+        usesword_ticket()
+    else
+        --print("法寶抽獎券不足且沒開啟鑽石補足")
+    end
+end
+--判斷區(判斷：進度)
+local function Compareprogress()
+    if skilllevel2 > weaponlevel2 then
+        --print("法寶進度小於技能進度")
+        Compareweapentickets()
+    elseif skilllevel2 < weaponlevel2 then
+        --print("技能進度小於法寶進度")
+        Compareskilltickets()
+    else
+        --print("技能進度等於法寶進度")
+        Compareskilltickets()
+        Compareweapentickets()
     end
 end
 
--- 數據提取函數
-local function fetchData()
-    sword_level = sword:WaitForChild("值").Text
-    sword_value = sword:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").Text
-    skill_level = skill:WaitForChild("值").Text
-    skill_value = skill:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").Text
-    sword_tickets = currency:WaitForChild("法宝抽奖券").Value
-    skill_tickets = currency:WaitForChild("技能抽奖券").Value
-    diamonds = currency:WaitForChild("钻石").Value
+--判斷區(判斷：等級)
+local function Comparelevel()
+    updData()
+    if skilllevel > weaponlevel then
+        usesword_ticket()
+        --print("法寶等級小於技能等級")
+    elseif skilllevel < weaponlevel then
+        useskill_ticket()
+        --print("技能等級小於法寶等級")
+    else
+        --print("技能等級等於法寶等級")
+        Compareprogress()
+    end
 end
-fetchData()
 
-features4:AddLabel("⚠️If lottery tickets are insufficient, it will stop")
-local lotterynum =  features4:AddLabel("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets)
-
+features4:AddLabel("⚠️If lottery tickets are insufficient, it will stop");
+local lotterynum = features4:AddLabel("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets)
 
 local function updateExtractedValues()
-    fetchData()
-    extract_sword_level = tonumber(string.match(sword_level, "%d+"))
-    extract_sword_value = tonumber(string.match(sword_value, "^(%d+)/"))
-    extract_skill_level = tonumber(string.match(skill_level, "%d+"))
-    extract_skill_value = tonumber(string.match(skill_value, "^(%d+)/"))
-    lotterynum.Text = ("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets)
+    sword_tickets = currency:WaitForChild("法宝抽奖券").value
+    skill_tickets = currency:WaitForChild("技能抽奖券").value
+    lotterynum.Text = "Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets
 end
 
 spawn(function()
@@ -1325,33 +1314,30 @@ spawn(function()
     end
 end)
 
-local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills--Error", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
 	Autolottery = bool
 	if Autolottery then
 		while Autolottery do
-            --updateExtractedValues()
+            Comparelevel()
             wait(Autolotteryspeed)
-            --compare_ticket_type(sword_tickets,skill_tickets,extract_sword_level,extract_skill_level,extract_sword_value,extract_skill_value,diamonds,useDiamonds)
-            wait(0.5)
-            print("FIX")
+            wait(0.1)
         end
 	end
 end)
 
 AutolotterySwitch:Set(false)
-
 -- 啟用鑽石補充功能
 local USEDiamondSwitch = features4:AddSwitch("Enable Diamond Draw", function(bool)
 	useDiamonds = bool
 end)
+USEDiamondSwitch:Set(true)
 
-USEDiamondSwitch:Set(false)
-features4:AddButton("Fast",function()
-	Autolotteryspeed = 0
-end)
-features4:AddButton("Slow",function()
-	Autolotteryspeed = 0.5
-end)
+features4:AddButton("Fast", function()
+	Autolotteryspeed = 0;
+end);
+features4:AddButton("Slow", function()
+	Autolotteryspeed = 0.5;
+end);
 
 features5:AddLabel("// Maybe this feature will be there  //")
 -- ========================================================================== --

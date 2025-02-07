@@ -943,98 +943,97 @@ local AutoelixirabsorbSwitch = features4:AddSwitch("Auto Absorb Elixir⚠️All 
 	end
 end);
 AutoelixirabsorbSwitch:Set(false);
-local lottery = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤");
+local player = game:GetService("Players").LocalPlayer;
+local playerGui = game.Players.LocalPlayer.PlayerGui;
+local lotteryskill = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤"):WaitForChild("技能");
+local skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text;
+skilllevel = string.gsub(skilllevel, "%D", "");
+local skilllevel2 = lotteryskill:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
+skilllevel2 = string.match(skilllevel2, "(%d+)/");
+local lotteryweapon = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("召唤"):WaitForChild("法宝");
+local weaponlevel = lotteryweapon:WaitForChild("等级区域"):WaitForChild("值").text;
+weaponlevel = string.gsub(weaponlevel, "%D", "");
+local weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
+weaponlevel2 = string.match(weaponlevel2, "(%d+)/");
 local currency = player:WaitForChild("值"):WaitForChild("货币");
 local diamonds = currency:WaitForChild("钻石");
-local sword = lottery:WaitForChild("法宝"):WaitForChild("等级区域");
-local sword_level = sword:WaitForChild("值").text;
-local sword_value = sword:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
-local skill = lottery:WaitForChild("技能"):WaitForChild("等级区域");
-local skill_level = skill:WaitForChild("值").text;
-local skill_value = skill:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
 local sword_tickets = currency:WaitForChild("法宝抽奖券").value;
 local skill_tickets = currency:WaitForChild("技能抽奖券").value;
-local extract_sword_level;
-local extract_sword_value;
-local extract_skill_level;
-local extract_skill_value;
 local useDiamonds = false;
-local Autolotteryspeed = 0.2;
-local function usesword_ticket()
-	print("抽獎：法寶");
-	local args = {[1]="\230\179\149\229\174\157",[2]=false};
-	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
+local Autolotteryspeed = 0.3;
+local function updData()
+	skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text;
+	skilllevel = string.gsub(skilllevel, "%D", "") or 0;
+	skilllevel2 = lotteryskill:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
+	skilllevel2 = string.match(skilllevel2, "(%d+)/") or 0;
+	weaponlevel = lotteryweapon:WaitForChild("等级区域"):WaitForChild("值").text;
+	weaponlevel = string.gsub(weaponlevel, "%D", "") or 0;
+	weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
+	weaponlevel2 = string.match(weaponlevel2, "(%d+)/") or 0;
+	diamonds = currency:WaitForChild("钻石").value;
+	sword_tickets = currency:WaitForChild("法宝抽奖券").value;
+	skill_tickets = currency:WaitForChild("技能抽奖券").value;
 end
 local function useskill_ticket()
 	print("抽獎：技能");
 	local args = {[1]="\230\138\128\232\131\189",[2]=false};
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
 end
-local MIN_TICKETS = 8;
-local DIAMONDS_PER_TICKET = 50;
-local function checkTicketsAndDiamonds(tickets, diamonds, itemType, useDiamonds)
-	if (tickets >= MIN_TICKETS) then
-		return true;
-	end
-	local missingTickets = MIN_TICKETS - tickets;
-	if not useDiamonds then
-		return false;
-	end
-	local requiredDiamonds = missingTickets * DIAMONDS_PER_TICKET;
-	if (diamonds >= requiredDiamonds) then
-		return true;
-	else
-		return false;
-	end
+local function usesword_ticket()
+	print("抽獎：法寶");
+	local args = {[1]="\230\179\149\229\174\157",[2]=false};
+	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
 end
-local function processLottery(type, tickets, diamonds, useDiamonds)
-	local canProceed = checkTicketsAndDiamonds(tickets, diamonds, type, useDiamonds);
-	if canProceed then
-		if (type == "法寶") then
-			usesword_ticket();
-		elseif (type == "技能") then
+local function Compareskilltickets()
+	if ((skill_tickets <= 8) and useDiamonds) then
+		if (diamonds >= 400) then
+			local compare = 8 - tonumber(skill_tickets);
 			useskill_ticket();
-		end
-	else
-	end
-	return canProceed;
-end
-local function compare_ticket_type(sword_tickets, skill_tickets, sword_level, skill_level, sword_value, skill_value, diamonds, useDiamonds)
-	if (sword_level == skill_level) then
-		if (sword_value > skill_value) then
-			processLottery("技能", skill_tickets, diamonds, useDiamonds);
-		elseif (sword_value < skill_value) then
-			processLottery("法寶", sword_tickets, diamonds, useDiamonds);
 		else
-			local canSword = processLottery("法寶", sword_tickets, diamonds, useDiamonds);
-			local canSkill = processLottery("技能", skill_tickets, diamonds, useDiamonds);
-			if (not canSword and not canSkill) then
-			end
+			print("鑽石不足");
 		end
-	elseif (sword_level > skill_level) then
-		processLottery("技能", skill_tickets, diamonds, useDiamonds);
+	elseif (skill_tickets >= 8) then
+		useskill_ticket();
 	else
-		processLottery("法寶", sword_tickets, diamonds, useDiamonds);
 	end
 end
-local function fetchData()
-	sword_level = sword:WaitForChild("值").Text;
-	sword_value = sword:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").Text;
-	skill_level = skill:WaitForChild("值").Text;
-	skill_value = skill:WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").Text;
-	sword_tickets = currency:WaitForChild("法宝抽奖券").Value;
-	skill_tickets = currency:WaitForChild("技能抽奖券").Value;
-	diamonds = currency:WaitForChild("钻石").Value;
+local function Compareweapentickets()
+	if ((sword_tickets <= 8) and useDiamonds) then
+		if (diamonds > 400) then
+			local compare = 8 - tonumber(sword_tickets);
+			usesword_ticket();
+		else
+		end
+	elseif (sword_tickets >= 8) then
+		usesword_ticket();
+	else
+	end
 end
-fetchData();
+local function Compareprogress()
+	if (skilllevel2 > weaponlevel2) then
+		Compareweapentickets();
+	elseif (skilllevel2 < weaponlevel2) then
+		Compareskilltickets();
+	else
+		Compareskilltickets();
+		Compareweapentickets();
+	end
+end
+local function Comparelevel()
+	updData();
+	if (skilllevel > weaponlevel) then
+		usesword_ticket();
+	elseif (skilllevel < weaponlevel) then
+		useskill_ticket();
+	else
+		Compareprogress();
+	end
+end
 features4:AddLabel("⚠️If lottery tickets are insufficient, it will stop");
 local lotterynum = features4:AddLabel("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets);
 local function updateExtractedValues()
-	fetchData();
-	extract_sword_level = tonumber(string.match(sword_level, "%d+"));
-	extract_sword_value = tonumber(string.match(sword_value, "^(%d+)/"));
-	extract_skill_level = tonumber(string.match(skill_level, "%d+"));
-	extract_skill_value = tonumber(string.match(skill_value, "^(%d+)/"));
+	sword_tickets = currency:WaitForChild("法宝抽奖券").value;
+	skill_tickets = currency:WaitForChild("技能抽奖券").value;
 	lotterynum.Text = "Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets;
 end
 spawn(function()
@@ -1043,13 +1042,13 @@ spawn(function()
 		wait(1);
 	end
 end);
-local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills--Error", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
 	Autolottery = bool;
 	if Autolottery then
 		while Autolottery do
+			Comparelevel();
 			wait(Autolotteryspeed);
-			wait(0.5);
-			print("FIX");
+			wait(0.1);
 		end
 	end
 end);
@@ -1057,7 +1056,7 @@ AutolotterySwitch:Set(false);
 local USEDiamondSwitch = features4:AddSwitch("Enable Diamond Draw", function(bool)
 	useDiamonds = bool;
 end);
-USEDiamondSwitch:Set(false);
+USEDiamondSwitch:Set(true);
 features4:AddButton("Fast", function()
 	Autolotteryspeed = 0;
 end);
