@@ -237,7 +237,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/06");
+features:AddLabel("Last Updated： 2025/02/07");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -1325,13 +1325,15 @@ spawn(function()
     end
 end)
 
-local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills--Error", function(bool)
 	Autolottery = bool
 	if Autolottery then
 		while Autolottery do
-            updateExtractedValues()
+            --updateExtractedValues()
             wait(Autolotteryspeed)
-            compare_ticket_type(sword_tickets,skill_tickets,extract_sword_level,extract_skill_level,extract_sword_value,extract_skill_value,diamonds,useDiamonds)
+            --compare_ticket_type(sword_tickets,skill_tickets,extract_sword_level,extract_skill_level,extract_sword_value,extract_skill_value,diamonds,useDiamonds)
+            wait(0.5)
+            print("FIX")
         end
 	end
 end)

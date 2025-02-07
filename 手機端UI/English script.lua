@@ -187,7 +187,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/06");
+features:AddLabel("Last Updated： 2025/02/07");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -423,6 +423,11 @@ local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
+local Luckyinvesting = features1:AddSwitch("Lucky Investment--Investment with the highest multiple", function(bool)
+	local Luckyinvestingbool = bool;
+	privileges:WaitForChild("幸运投资").Value = Luckyinvestingbool;
+end);
+Luckyinvesting:Set(true);
 local backpack = features1:AddSwitch("Backpack Expansion", function(bool)
 	local backpackbool = bool;
 	privileges:WaitForChild("扩充背包").Value = backpackbool;
@@ -1038,13 +1043,13 @@ spawn(function()
 		wait(1);
 	end
 end);
-local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills--Error", function(bool)
 	Autolottery = bool;
 	if Autolottery then
 		while Autolottery do
-			updateExtractedValues();
 			wait(Autolotteryspeed);
-			compare_ticket_type(sword_tickets, skill_tickets, extract_sword_level, extract_skill_level, extract_sword_value, extract_skill_value, diamonds, useDiamonds);
+			wait(0.5);
+			print("FIX");
 		end
 	end
 end);
@@ -1123,11 +1128,11 @@ features7:AddButton("每秒擊殺/金幣數", function()
 end);
 features7:AddLabel(" If you have any questions or ideas, leave a comment on GitHub.");
 features7:AddButton("Github Link", function()
-    local urlToCopy = "https://github.com/Tseting-nil";
-    if setclipboard then
-        setclipboard(urlToCopy);
-        showNotification("Link Copied:) ！！");
-    else
-        showNotification("error！Link：github.com/Tseting-nil");
-    end
+	local urlToCopy = "https://github.com/Tseting-nil";
+	if setclipboard then
+		setclipboard(urlToCopy);
+		showNotification("Link Copied:) ！！");
+	else
+		showNotification("error！Link：github.com/Tseting-nil");
+	end
 end);

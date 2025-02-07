@@ -240,7 +240,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/06");
+features:AddLabel("最後更新時間：2025/02/07");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1290,26 +1290,26 @@ local DIAMONDS_PER_TICKET = 50 -- 每張抽獎券需要的鑽石數量
 -- 判斷是否可以使用抽獎券或鑽石補充
 local function checkTicketsAndDiamonds(tickets, diamonds, itemType, useDiamonds)
     if tickets >= MIN_TICKETS then
-        --print(itemType .. "抽獎券足夠")
+        print(itemType .. "抽獎券足夠")
         return true
     end
 
     -- 計算缺少的抽獎券
     local missingTickets = MIN_TICKETS - tickets
-    --print(itemType .. "抽獎券不足，需要補充 " .. missingTickets .. " 張")
+    print(itemType .. "抽獎券不足，需要補充 " .. missingTickets .. " 張")
 
     if not useDiamonds then
-        --print(itemType .. "未啟用鑽石補充")
+        print(itemType .. "未啟用鑽石補充")
         return false
     end
 
     -- 計算補充所需的鑽石數量
     local requiredDiamonds = missingTickets * DIAMONDS_PER_TICKET
     if diamonds >= requiredDiamonds then
-        --print("鑽石足夠，將使用 " .. requiredDiamonds .. " 鑽石補充 " .. missingTickets .. " 張抽獎券")
+        print("鑽石足夠，將使用 " .. requiredDiamonds .. " 鑽石補充 " .. missingTickets .. " 張抽獎券")
         return true
     else
-        --print("鑽石不足，無法補充")
+        print("鑽石不足，無法補充")
         return false
     end
 end
@@ -1325,7 +1325,7 @@ local function processLottery(type, tickets, diamonds, useDiamonds)
             useskill_ticket()
         end
     else
-        --print(type .. "條件未滿足，抽獎失敗")
+        print(type .. "條件未滿足，抽獎失敗")
     end
     return canProceed
 end
@@ -1334,24 +1334,24 @@ end
 local function compare_ticket_type(sword_tickets,skill_tickets,sword_level,skill_level,sword_value,skill_value,diamonds,useDiamonds)
     if sword_level == skill_level then
         if sword_value > skill_value then
-            --print("法寶進度 > 技能進度，優先使用技能抽獎券")
+            print("法寶進度 > 技能進度，優先使用技能抽獎券")
             processLottery("技能", skill_tickets, diamonds, useDiamonds)
         elseif sword_value < skill_value then
-            --print("法寶進度 < 技能進度，優先使用法寶抽獎券")
+            print("法寶進度 < 技能進度，優先使用法寶抽獎券")
             processLottery("法寶", sword_tickets, diamonds, useDiamonds)
         else
-            --print("法寶進度 = 技能進度，同時使用")
+            print("法寶進度 = 技能進度，同時使用")
             local canSword = processLottery("法寶", sword_tickets, diamonds, useDiamonds)
             local canSkill = processLottery("技能", skill_tickets, diamonds, useDiamonds)
             if not canSword and not canSkill then
-            --print("兩種抽獎券均不足，無法使用抽獎券")
+            print("兩種抽獎券均不足，無法使用抽獎券")
             end
         end
     elseif sword_level > skill_level then
-        --print("法寶等級 > 技能等級，優先使用技能抽獎券")
+        print("法寶等級 > 技能等級，優先使用技能抽獎券")
         processLottery("技能", skill_tickets, diamonds, useDiamonds)
     else
-        --print("法寶等級 < 技能等級，優先使用法寶抽獎券")
+        print("法寶等級 < 技能等級，優先使用法寶抽獎券")
         processLottery("法寶", sword_tickets, diamonds, useDiamonds)
     end
 end
@@ -1391,13 +1391,15 @@ spawn(function()
     end
 end)
 
-local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能", function(bool)
+local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能(修復中)", function(bool)
 	Autolottery = bool
 	if Autolottery then
 		while Autolottery do
-            updateExtractedValues()
+            --updateExtractedValues()
             wait(Autolotteryspeed)
-            compare_ticket_type(sword_tickets,skill_tickets,extract_sword_level,extract_skill_level,extract_sword_value,extract_skill_value,diamonds,useDiamonds)
+            --compare_ticket_type(sword_tickets,skill_tickets,extract_sword_level,extract_skill_level,extract_sword_value,extract_skill_value,diamonds,useDiamonds)
+        wait(0.5)
+        print("FIX")
         end
 	end
 end)
