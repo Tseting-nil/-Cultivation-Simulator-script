@@ -14,7 +14,6 @@ local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
 local features3 = window:AddTab("Dungeons");
 local features4 = window:AddTab("Pull");
-local features5 = window:AddTab("PVP");
 local features6 = window:AddTab("UI");
 local features7 = window:AddTab("Set");
 local workspace = game:GetService("Workspace");
@@ -187,7 +186,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/07");
+features:AddLabel("Last Updated： 2025/02/08");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -433,6 +432,32 @@ local backpack = features1:AddSwitch("Backpack Expansion", function(bool)
 	privileges:WaitForChild("扩充背包").Value = backpackbool;
 end);
 backpack:Set(true);
+local showAll = features1:AddSwitch("Show all Currencies", function(bool)
+	ShowAllbool = bool;
+	if ShowAllbool then
+		while ShowAllbool do
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\230\180\187\229\138\168\231\137\169\229\147\129"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\159\191\231\159\179"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\172\166\231\159\179\231\178\137\230\156\171"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\173\137\231\186\167"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\180\171\233\146\187"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\232\141\137\232\141\175"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\135\145\229\184\129"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\146\187\231\159\179"].Visible = true;
+			wait(0.3);
+		end
+	end
+end);
+showAll:Set(false);
+features1:AddButton("Remove the display of the reward", function()
+	local target1 = playerGui.GUI:WaitForChild("二级界面"):FindFirstChild("展示奖励界面");
+	if target1 then
+		target1:Destroy();
+		print("成功刪除 UI 元件");
+	else
+		print("已刪除過");
+	end
+end);
 local worldnum = player:WaitForChild("值"):WaitForChild("主线进度"):WaitForChild("world").Value;
 local newworldnum = worldnum;
 local function statisticsupdata()
@@ -1063,7 +1088,6 @@ end);
 features4:AddButton("Slow", function()
 	Autolotteryspeed = 0.5;
 end);
-features5:AddLabel("// Maybe this feature will be there  //");
 local replicatedStorage = game:GetService("ReplicatedStorage");
 features6:AddButton("Daily Tasks", function()
 	local event = replicatedStorage:FindFirstChild("打开每日任务", true);

@@ -26,11 +26,9 @@ local features1 = window:AddTab("Main");
 local features2 = window:AddTab("副本");
 local features3 = window:AddTab("地下城");
 local features4 = window:AddTab("抽取");
-local features5 = window:AddTab("PVP");
+--local features5 = window:AddTab("PVP");
 local features6 = window:AddTab("開啟UI");
 local features7 = window:AddTab("設定");
-
-
 
 -- ========================================================================== --
 -- 定義全域函數
@@ -49,7 +47,6 @@ local finishworldnum
 --遊戲UI
 local values = player:WaitForChild("值");
 local privileges = values:WaitForChild("特权");
-
 
 --全域數值定義
 local gowordlevels = 1
@@ -240,7 +237,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/07");
+features:AddLabel("最後更新時間：2025/02/08");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -541,7 +538,33 @@ local backpack = features1:AddSwitch("背包擴充", function(bool)
     privileges:WaitForChild("扩充背包").Value = backpackbool;
 end);
 backpack:Set(true);
+local showAll = features1:AddSwitch("顯示所有貨幣", function(bool)
+	ShowAllbool = bool;
+	if ShowAllbool then
+        while ShowAllbool do
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\230\180\187\229\138\168\231\137\169\229\147\129"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\159\191\231\159\179"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\172\166\231\159\179\231\178\137\230\156\171"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\173\137\231\186\167"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\180\171\233\146\187"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\232\141\137\232\141\175"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\135\145\229\184\129"].Visible = true
+            game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\146\187\231\159\179"].Visible = true
+            wait(0.3)
+        end
+	end
+end);
+showAll:Set(false);
 
+features1:AddButton("刪除顯示獲得的獎勵(所有的)",function()
+    local target1 = playerGui.GUI:WaitForChild("二级界面"):FindFirstChild("展示奖励界面")
+    if target1 then
+        target1:Destroy()
+        print("成功刪除 UI 元件")
+    else
+        print("已刪除過")
+    end
+end)
 
 -- ========================================================================== --
 -- 副本頁
@@ -1254,6 +1277,8 @@ local skill_tickets = currency:WaitForChild("技能抽奖券").value
 --定義抽獎相關參數
 local useDiamonds = false
 local Autolotteryspeed = 0.3 --不宜太快，遊戲抽獎為延遲抽獎
+local canstartticket = true
+local canstartticket2 = true
 --更新/獲取數據
 local function updData()
     skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text
@@ -1271,21 +1296,52 @@ local function updData()
     print("法寶等級："..weaponlevel.."法寶進度："..weaponlevel2)
     print("鑽石："..diamonds.."法寶抽獎券："..sword_tickets.."技能抽獎券："..skill_tickets)
 end
+--[[
+--判斷區(判斷：抽獎券是否消耗
+local function Checkticketsconsume()
+    local newskill_tickets = currency:WaitForChild("技能抽奖券").value
+    local newsword_tickets = currency:WaitForChild("法宝抽奖券").value
+    local newdiamonds = currency:WaitForChild("钻石").value
+    if newskill_tickets ~= skill_tickets and newdiamonds ~= diamonds then
+        canstartticket = true
+    else
+        print("等待...")
+        canstartticket = false
+        wait(0.2)
+        canstartticket = true
+    end
+    if newsword_tickets ~= sword_tickets then
+        canstartticket2 = true
+    else
+        print("等待...")
+        canstartticket2 = false
+        wait(0.2)
+        canstartticket2 = true
+    end
+end
+]]--
+
 local function useskill_ticket()
     print("抽獎：技能")
-    local args = {
-        [1] = "\230\138\128\232\131\189",
-        [2] = false
-    }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
+    --if canstartticket then
+        local args = {
+            [1] = "\230\138\128\232\131\189",
+            [2] = false
+        }
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))    
+    --end
+    --Checkticketsconsume()
 end
 local function usesword_ticket()
     print("抽獎：法寶")
-    local args = {
-        [1] = "\230\179\149\229\174\157",
-        [2] = false
-    }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
+    --if canstartticket2 then
+        local args = {
+            [1] = "\230\179\149\229\174\157",
+            [2] = false
+        }
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
+    --end
+    --Checkticketsconsume()
 end
 
 --判斷區(判斷：抽獎券是否足夠)
@@ -1357,9 +1413,9 @@ features4:AddLabel("⚠️同步抽取，抽獎券不足就會停止，請開啟
 local lotterynum =  features4:AddLabel("法寶抽獎券： " .. sword_tickets .. "    技能抽獎券： " .. skill_tickets)
 
 local function updateExtractedValues()
-    sword_tickets = currency:WaitForChild("法宝抽奖券").value
-    skill_tickets = currency:WaitForChild("技能抽奖券").value
-    lotterynum.Text = "法寶抽獎券： " .. sword_tickets .. "    技能抽獎券： " .. skill_tickets
+    local sword_ticketslable = currency:WaitForChild("法宝抽奖券").value
+    local skill_ticketslable = currency:WaitForChild("技能抽奖券").value
+    lotterynum.Text = "法寶抽獎券： " .. sword_ticketslable .. "    技能抽獎券： " .. skill_ticketslable
 end
 
 spawn(function()
@@ -1370,14 +1426,17 @@ spawn(function()
 end)
 
 local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能(檢查中但可使用)", function(bool)
-	Autolottery = bool
-	if Autolottery then
-		while Autolottery do
-            Comparelevel()
-            wait(Autolotteryspeed)
-            wait(0.1)
-        end
-	end
+    Autolottery = bool
+    if Autolottery then
+        spawn(function() -- 確保不阻塞主線程
+            while Autolottery do
+                Comparelevel()
+                wait(Autolotteryspeed)
+                if not Autolottery then break end -- 確保變數變更後能夠立即終止
+                wait(0.3)
+            end
+        end)
+    end
 end)
 
 AutolotterySwitch:Set(false)
@@ -1390,11 +1449,11 @@ USEDiamondSwitch:Set(false)
 features4:AddButton("抽取速度快",function()
 	Autolotteryspeed = 0
 end)
-features4:AddButton("抽取速度慢",function()
-	Autolotteryspeed = 0.5
+features4:AddButton("抽取速度一般",function()
+	Autolotteryspeed = 0.3
 end)
 
-features5:AddLabel("也許在這邊會有些什麼...");
+--features5:AddLabel("也許在這邊會有些什麼...");
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")
