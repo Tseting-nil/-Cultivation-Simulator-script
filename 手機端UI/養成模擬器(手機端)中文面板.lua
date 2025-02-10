@@ -26,7 +26,7 @@ local features1 = window:AddTab("Main");
 local features2 = window:AddTab("副本");
 local features3 = window:AddTab("地下城");
 local features4 = window:AddTab("抽取");
---local features5 = window:AddTab("PVP");
+local features5 = window:AddTab("升級");
 local features6 = window:AddTab("開啟UI");
 local features7 = window:AddTab("設定");
 
@@ -230,14 +230,13 @@ end
 -- 開始定時檢查
 checkTimeAndRun()
 
-
 -- ========================================================================== --
 -- 自述頁
 features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/08");
+features:AddLabel("最後更新時間：2025/02/10");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1296,52 +1295,24 @@ local function updData()
     print("法寶等級："..weaponlevel.."法寶進度："..weaponlevel2)
     print("鑽石："..diamonds.."法寶抽獎券："..sword_tickets.."技能抽獎券："..skill_tickets)
 end
---[[
---判斷區(判斷：抽獎券是否消耗
-local function Checkticketsconsume()
-    local newskill_tickets = currency:WaitForChild("技能抽奖券").value
-    local newsword_tickets = currency:WaitForChild("法宝抽奖券").value
-    local newdiamonds = currency:WaitForChild("钻石").value
-    if newskill_tickets ~= skill_tickets and newdiamonds ~= diamonds then
-        canstartticket = true
-    else
-        print("等待...")
-        canstartticket = false
-        wait(0.2)
-        canstartticket = true
-    end
-    if newsword_tickets ~= sword_tickets then
-        canstartticket2 = true
-    else
-        print("等待...")
-        canstartticket2 = false
-        wait(0.2)
-        canstartticket2 = true
-    end
-end
-]]--
 
 local function useskill_ticket()
     print("抽獎：技能")
-    --if canstartticket then
+    if canstartticket then
         local args = {
             [1] = "\230\138\128\232\131\189",
-            [2] = false
         }
         game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))    
-    --end
-    --Checkticketsconsume()
+    end
 end
 local function usesword_ticket()
     print("抽獎：法寶")
-    --if canstartticket2 then
+    if canstartticket2 then
         local args = {
             [1] = "\230\179\149\229\174\157",
-            [2] = false
         }
         game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args))
-    --end
-    --Checkticketsconsume()
+    end
 end
 
 --判斷區(判斷：抽獎券是否足夠)
@@ -1389,7 +1360,9 @@ local function Compareprogress()
         Compareskilltickets()
     else
         print("技能進度等於法寶進度")
-        Compareskilltickets()
+        spawn(function()
+            Compareskilltickets()
+        end)
         Compareweapentickets()
     end
 end
@@ -1428,6 +1401,8 @@ end)
 local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能(檢查中但可使用)", function(bool)
     Autolottery = bool
     if Autolottery then
+        canstartticket = true
+        canstartticket2 = true
         spawn(function() -- 確保不阻塞主線程
             while Autolottery do
                 Comparelevel()
@@ -1436,9 +1411,11 @@ local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能(檢查中�
                 wait(0.3)
             end
         end)
+    else
+        canstartticket = false
+        canstartticket2 = false
     end
 end)
-
 AutolotterySwitch:Set(false)
 -- 啟用鑽石補充功能
 local USEDiamondSwitch = features4:AddSwitch("啟用鑽石抽取", function(bool)
@@ -1453,7 +1430,37 @@ features4:AddButton("抽取速度一般",function()
 	Autolotteryspeed = 0.3
 end)
 
---features5:AddLabel("也許在這邊會有些什麼...");
+local AutoupdFlyingSwordSwitch = features5:AddSwitch("升級飛劍", function(bool)
+    AutoupdFlyingSword = bool
+    if AutoupdFlyingSword then
+        while AutoupdFlyingSword do
+            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\233\163\158\229\137\145"):FindFirstChild("\229\141\135\231\186\167"):FireServer()
+            wait(0.2)
+        end
+    end
+end)
+AutoupdFlyingSwordSwitch:Set(false)
+local AutoupdskillSwordSwitch = features5:AddSwitch("升級法寶/技能", function(bool)
+    AutoupdskillSword = bool
+    if AutoupdskillSword then
+        while AutoupdskillSword do
+            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\179\149\229\174\157"):FindFirstChild("\229\141\135\231\186\167\229\133\168\233\131\168\230\179\149\229\174\157"):FireServer()
+            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\138\128\232\131\189"):FindFirstChild("\229\141\135\231\186\167\229\133\168\233\131\168\230\138\128\232\131\189"):FireServer()
+            wait(1.5)
+        end
+    end
+end)
+AutoupdskillSwordSwitch:Set(false)
+local AutoupdRuneSwordSwitch = features5:AddSwitch("升級符石", function(bool)
+    AutoupdRuneSwordSwitch = bool
+    if AutoupdRuneSwordSwitch then
+        while AutoupdRuneSwordSwitch do
+            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\233\152\181\230\179\149"):FindFirstChild("\229\141\135\231\186\167"):FireServer()
+            wait(0.2)
+        end
+    end
+end)
+AutoupdRuneSwordSwitch:Set(false)
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")

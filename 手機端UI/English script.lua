@@ -14,6 +14,7 @@ local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
 local features3 = window:AddTab("Dungeons");
 local features4 = window:AddTab("Pull");
+local features5 = window:AddTab("Upd");
 local features6 = window:AddTab("UI");
 local features7 = window:AddTab("Set");
 local workspace = game:GetService("Workspace");
@@ -186,7 +187,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/08");
+features:AddLabel("Last Updated： 2025/02/10");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -422,11 +423,6 @@ local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
-local Luckyinvesting = features1:AddSwitch("Lucky Investment--Investment with the highest multiple", function(bool)
-	local Luckyinvestingbool = bool;
-	privileges:WaitForChild("幸运投资").Value = Luckyinvestingbool;
-end);
-Luckyinvesting:Set(true);
 local backpack = features1:AddSwitch("Backpack Expansion", function(bool)
 	local backpackbool = bool;
 	privileges:WaitForChild("扩充背包").Value = backpackbool;
@@ -986,6 +982,8 @@ local sword_tickets = currency:WaitForChild("法宝抽奖券").value;
 local skill_tickets = currency:WaitForChild("技能抽奖券").value;
 local useDiamonds = false;
 local Autolotteryspeed = 0.3;
+local canstartticket = true;
+local canstartticket2 = true;
 local function updData()
 	skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text;
 	skilllevel = string.gsub(skilllevel, "%D", "") or 0;
@@ -998,49 +996,70 @@ local function updData()
 	diamonds = currency:WaitForChild("钻石").value;
 	sword_tickets = currency:WaitForChild("法宝抽奖券").value;
 	skill_tickets = currency:WaitForChild("技能抽奖券").value;
+	print("技能等級：" .. skilllevel .. "技能進度：" .. skilllevel2);
+	print("法寶等級：" .. weaponlevel .. "法寶進度：" .. weaponlevel2);
+	print("鑽石：" .. diamonds .. "法寶抽獎券：" .. sword_tickets .. "技能抽獎券：" .. skill_tickets);
 end
 local function useskill_ticket()
 	print("抽獎：技能");
-	local args = {[1]="\230\138\128\232\131\189",[2]=false};
-	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
+	if canstartticket then
+		local args = {[1]="\230\138\128\232\131\189"};
+		game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
+	end
 end
 local function usesword_ticket()
 	print("抽獎：法寶");
-	local args = {[1]="\230\179\149\229\174\157",[2]=false};
-	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
+	if canstartticket2 then
+		local args = {[1]="\230\179\149\229\174\157"};
+		game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\149\134\229\186\151"):FindFirstChild("\229\143\172\229\148\164"):FindFirstChild("\230\138\189\229\165\150"):FireServer(unpack(args));
+	end
 end
 local function Compareskilltickets()
 	if ((skill_tickets <= 8) and useDiamonds) then
 		if (diamonds >= 400) then
 			local compare = 8 - tonumber(skill_tickets);
+			print("技能抽獎券不足，使用鑽石補足：" .. compare .. "張");
+			print("鑽石消耗：" .. (compare * 50));
 			useskill_ticket();
 		else
 			print("鑽石不足");
 		end
 	elseif (skill_tickets >= 8) then
+		print("技能抽獎券足夠");
 		useskill_ticket();
 	else
+		print("技能抽獎券不足且沒開啟鑽石補足");
 	end
 end
 local function Compareweapentickets()
 	if ((sword_tickets <= 8) and useDiamonds) then
 		if (diamonds > 400) then
 			local compare = 8 - tonumber(sword_tickets);
+			print("法寶抽獎券不足，使用鑽石補足：" .. compare .. "張");
+			print("鑽石消耗：" .. (compare * 50));
 			usesword_ticket();
 		else
+			print("鑽石不足");
 		end
 	elseif (sword_tickets >= 8) then
+		print("法寶抽獎券足夠");
 		usesword_ticket();
 	else
+		print("法寶抽獎券不足且沒開啟鑽石補足");
 	end
 end
 local function Compareprogress()
 	if (skilllevel2 > weaponlevel2) then
+		print("法寶進度小於技能進度");
 		Compareweapentickets();
 	elseif (skilllevel2 < weaponlevel2) then
+		print("技能進度小於法寶進度");
 		Compareskilltickets();
 	else
-		Compareskilltickets();
+		print("技能進度等於法寶進度");
+		spawn(function()
+			Compareskilltickets();
+		end);
 		Compareweapentickets();
 	end
 end
@@ -1048,18 +1067,21 @@ local function Comparelevel()
 	updData();
 	if (skilllevel > weaponlevel) then
 		usesword_ticket();
+		print("法寶等級小於技能等級");
 	elseif (skilllevel < weaponlevel) then
 		useskill_ticket();
+		print("技能等級小於法寶等級");
 	else
+		print("技能等級等於法寶等級");
 		Compareprogress();
 	end
 end
 features4:AddLabel("⚠️If lottery tickets are insufficient, it will stop");
 local lotterynum = features4:AddLabel("Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets);
 local function updateExtractedValues()
-	sword_tickets = currency:WaitForChild("法宝抽奖券").value;
-	skill_tickets = currency:WaitForChild("技能抽奖券").value;
-	lotterynum.Text = "Weapon Tickets： " .. sword_tickets .. "  Skill Tickets： " .. skill_tickets;
+	local sword_ticketslable = currency:WaitForChild("法宝抽奖券").value;
+	local skill_ticketslable = currency:WaitForChild("技能抽奖券").value;
+	lotterynum.Text = "Weapon Tickets： " .. sword_ticketslable .. "  Skill Tickets： " .. skill_ticketslable;
 end
 spawn(function()
 	while true do
@@ -1070,24 +1092,65 @@ end);
 local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
 	Autolottery = bool;
 	if Autolottery then
-		while Autolottery do
-			Comparelevel();
-			wait(Autolotteryspeed);
-			wait(0.1);
-		end
+		canstartticket = true;
+		canstartticket2 = true;
+		spawn(function()
+			while Autolottery do
+				Comparelevel();
+				wait(Autolotteryspeed);
+				if not Autolottery then
+					break;
+				end
+				wait(0.3);
+			end
+		end);
+	else
+		canstartticket = false;
+		canstartticket2 = false;
 	end
 end);
 AutolotterySwitch:Set(false);
 local USEDiamondSwitch = features4:AddSwitch("Enable Diamond Draw", function(bool)
 	useDiamonds = bool;
 end);
-USEDiamondSwitch:Set(true);
+USEDiamondSwitch:Set(false);
 features4:AddButton("Fast", function()
 	Autolotteryspeed = 0;
 end);
 features4:AddButton("Slow", function()
 	Autolotteryspeed = 0.5;
 end);
+local AutoupdFlyingSwordSwitch = features5:AddSwitch("Upd Flying Sword", function(bool)
+	AutoupdFlyingSword = bool;
+	if AutoupdFlyingSword then
+		while AutoupdFlyingSword do
+			game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\233\163\158\229\137\145"):FindFirstChild("\229\141\135\231\186\167"):FireServer();
+			wait(0.2);
+		end
+	end
+end);
+AutoupdFlyingSwordSwitch:Set(false);
+local AutoupdskillSwordSwitch = features5:AddSwitch("Upd weapon/skill", function(bool)
+	AutoupdskillSword = bool;
+	if AutoupdskillSword then
+		while AutoupdskillSword do
+			game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\179\149\229\174\157"):FindFirstChild("\229\141\135\231\186\167\229\133\168\233\131\168\230\179\149\229\174\157"):FireServer();
+			game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\138\128\232\131\189"):FindFirstChild("\229\141\135\231\186\167\229\133\168\233\131\168\230\138\128\232\131\189"):FireServer();
+			wait(1.5);
+		end
+	end
+end);
+AutoupdskillSwordSwitch:Set(false);
+local AutoupdRuneSwordSwitch = features5:AddSwitch("Upd Rune", function(bool)
+	AutoupdRuneSwordSwitch = bool;
+	if AutoupdRuneSwordSwitch then
+		while AutoupdRuneSwordSwitch do
+			game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\233\152\181\230\179\149"):FindFirstChild("\229\141\135\231\186\167"):FireServer();
+			wait(0.2);
+		end
+	end
+end);
+AutoupdRuneSwordSwitch:Set(false);
 local replicatedStorage = game:GetService("ReplicatedStorage");
 features6:AddButton("Daily Tasks", function()
 	local event = replicatedStorage:FindFirstChild("打开每日任务", true);
