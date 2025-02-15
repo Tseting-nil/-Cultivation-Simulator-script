@@ -236,7 +236,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/15");
+features:AddLabel("最後更新時間：2025/02/16");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1287,7 +1287,7 @@ end)
 
 AutoDungeonplus1Switch:Set(false)
 
-local AutofinishdungeonSwitch = features3:AddSwitch("完成所有地下城(最多鑰匙的開始你還是需要選擇一個作傳送)--測試", function(bool)
+local AutofinishdungeonSwitch = features3:AddSwitch("完成所有地下城(當沒有鑰匙會自動跳轉到最高鑰匙的)--測試", function(bool)
     Autofinishdungeon = bool
 end)
 
@@ -1537,6 +1537,8 @@ local USEDiamondSwitch = features4:AddSwitch("啟用鑽石抽取", function(bool
 	useDiamonds = bool
 end)
 USEDiamondSwitch:Set(false)
+-- ========================================================================== --
+-- 雜項頁
 
 local AutoupdFlyingSwordSwitch = features5:AddSwitch("升級飛劍", function(bool)
     AutoupdFlyingSword = bool
@@ -1569,6 +1571,32 @@ local AutoupdRuneSwordSwitch = features5:AddSwitch("升級符石", function(bool
     end
 end)
 AutoupdRuneSwordSwitch:Set(false)
+local Guidename = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("主页"):WaitForChild("介绍"):waitForChild("名称"):waitForChild("文本"):waitForChild("文本").Text
+local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
+local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+local Guildname = features5:AddLabel("公會名稱：未獲取點擊更新公會" .. " 剩餘貢獻次數： " .. Donatetimesnumber)
+features5:AddButton("更新公會",function()
+	local replicatedStorage = game:GetService("ReplicatedStorage")
+    local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋
+    event:Fire("打开公会")
+    Guildname.Text = "公會名稱：" .. Guidename .. " 剩餘貢獻次數： " .. Donatetimesnumber
+end)
+local AutoDonateSwitch = features5:AddSwitch("自動捐献", function(bool)
+    AutoDonate = bool
+    if AutoDonate then
+        while AutoDonate do
+            Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
+            Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+            Guildname.Text = "公會名稱：" .. Guidename .. " 剩餘貢獻次數： " .. Donatetimesnumber
+            if Donatetimesnumber > 0 then
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\172\228\188\154"):FindFirstChild("\230\141\144\231\140\174"):FireServer()
+            end
+            wait(0.5)
+        end
+    end
+end)
+AutoDonateSwitch:Set(false)
+
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")

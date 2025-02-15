@@ -237,7 +237,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/15");
+features:AddLabel("Last Updated： 2025/02/16");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -532,11 +532,6 @@ local Refining = features1:AddSwitch("Unlock Auto-Crafting", function(bool)
 end);
 Refining:Set(true);
 
-local backpack = features1:AddSwitch("Backpack Expansion", function(bool)
-	local backpackbool = bool;
-    privileges:WaitForChild("扩充背包").Value = backpackbool;
-end);
-backpack:Set(true);
 local showAll = features1:AddSwitch("Show all Currencies", function(bool)
 	ShowAllbool = bool;
 	if ShowAllbool then
@@ -1484,6 +1479,8 @@ local USEDiamondSwitch = features4:AddSwitch("Enable Diamond Draw", function(boo
 	useDiamonds = bool
 end)
 USEDiamondSwitch:Set(false)
+-- ========================================================================== --
+-- 雜項頁
 
 local AutoupdFlyingSwordSwitch = features5:AddSwitch("Upd Flying Sword", function(bool)
     AutoupdFlyingSword = bool
@@ -1516,6 +1513,33 @@ local AutoupdRuneSwordSwitch = features5:AddSwitch("Upd Rune", function(bool)
     end
 end)
 AutoupdRuneSwordSwitch:Set(false)
+
+local Guidename = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("主页"):WaitForChild("介绍"):waitForChild("名称"):waitForChild("文本"):waitForChild("文本").Text
+local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
+local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+local Guildname = features5:AddLabel("Guide Name：Need chack Upd Guide" .. " || Contribute times： " .. Donatetimesnumber)
+features5:AddButton("Upd Guide",function()
+	local replicatedStorage = game:GetService("ReplicatedStorage")
+    local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋
+    event:Fire("打开公会")
+    Guildname.Text = "Guide Name：" .. Guidename .. " || Contribute times： " .. Donatetimesnumber
+end)
+local AutoDonateSwitch = features5:AddSwitch("Auto Contribute", function(bool)
+    AutoDonate = bool
+    if AutoDonate then
+        while AutoDonate do
+            Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
+            Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+            Guildname.Text = "Guide Name：" .. Guidename .. " || Contribute times： " .. Donatetimesnumber
+            if Donatetimesnumber > 0 then
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\172\228\188\154"):FindFirstChild("\230\141\144\231\140\174"):FireServer()
+            end
+            wait(0.5)
+        end
+    end
+end)
+AutoDonateSwitch:Set(false)
+
 -- ========================================================================== --
 -- UI頁
 local replicatedStorage = game:GetService("ReplicatedStorage")
