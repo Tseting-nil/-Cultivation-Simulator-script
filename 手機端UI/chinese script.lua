@@ -14,7 +14,7 @@ local features1 = window:AddTab("Main");
 local features2 = window:AddTab("副本");
 local features3 = window:AddTab("地下城");
 local features4 = window:AddTab("抽取");
-local features5 = window:AddTab("升級");
+local features5 = window:AddTab("雜項");
 local features6 = window:AddTab("開啟UI");
 local features7 = window:AddTab("設定");
 local workspace = game:GetService("Workspace");
@@ -187,7 +187,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/10");
+features:AddLabel("最後更新時間：2025/02/15");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -423,21 +423,16 @@ local Refining = features1:AddSwitch("解鎖自動煉製", function(bool)
 	privileges:WaitForChild("自动炼制").Value = Refiningbool;
 end);
 Refining:Set(true);
-local backpack = features1:AddSwitch("背包擴充", function(bool)
-	local backpackbool = bool;
-	privileges:WaitForChild("扩充背包").Value = backpackbool;
-end);
-backpack:Set(true);
 local showAll = features1:AddSwitch("顯示所有貨幣", function(bool)
 	ShowAllbool = bool;
 	if ShowAllbool then
 		while ShowAllbool do
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\230\180\187\229\138\168\231\137\169\229\147\129"].Visible = true;
-			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\159\191\231\159\179"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\159\191\231\159\179"].Visible = false;
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\172\166\231\159\179\231\178\137\230\156\171"].Visible = true;
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\173\137\231\186\167"].Visible = true;
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\231\180\171\233\146\187"].Visible = true;
-			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\232\141\137\232\141\175"].Visible = true;
+			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\232\141\137\232\141\175"].Visible = false;
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\135\145\229\184\129"].Visible = true;
 			game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\184\187\231\149\140\233\157\162"]["\228\184\187\229\159\142"]["\232\180\167\229\184\129\229\140\186\229\159\159"]["\233\146\187\231\159\179"].Visible = true;
 			wait(0.3);
@@ -647,6 +642,8 @@ local filePath = "DungeonsMaxLevel.json";
 local updDungeonui = false;
 local AutoDungeonplus1 = false;
 local Notexecuted = true;
+local AutoDungeonplusonly = false;
+local Autofinishdungeon = false;
 local dungeonFunctions = {};
 local function extractLocalPlayerData()
 	if not isfile(filePath) then
@@ -814,7 +811,6 @@ spawn(function()
 		wait(0.5);
 	end
 end);
-features3:AddLabel("!!因需要寫入本地數據所以操作勿太快");
 local updDungeonuiSwitch = features3:AddSwitch("同步地下城進入介面的難度", function(bool)
 	updDungeonui = bool;
 end);
@@ -839,6 +835,32 @@ local function DungeonTP()
 	local args = {[1]=dropdownchoose,[2]=dropdownTP};
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\137\175\230\156\172"):FindFirstChild("\232\191\155\229\133\165\229\137\175\230\156\172"):FireServer(unpack(args));
 end
+local dungeonList = {"Ore Dungeon","Gem Dungeon","Rune Dungeon","Relic Dungeon","Hover Dungeon","Gold Dungeon"};
+local dungeonKeys = {["Ore Dungeon"]="OreDungeon",["Gem Dungeon"]="GemDungeon",["Rune Dungeon"]="RuneDungeon",["Relic Dungeon"]="RelicDungeon",["Hover Dungeon"]="HoverDungeon",["Gold Dungeon"]="GoldDungeon"};
+local function getDungeonWithMostKeys()
+	local maxKeys = 0;
+	local bestDungeon = nil;
+	local bestDropdownIndex = 1;
+	for i, name in ipairs(dungeonList) do
+		local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0;
+		if (keyCount > maxKeys) then
+			maxKeys = keyCount;
+			bestDungeon = name;
+			bestDropdownIndex = i;
+		end
+	end
+	return bestDungeon, bestDropdownIndex;
+end
+local function selectDungeonWithMostKeys()
+	local bestDungeon, bestDropdownIndex = getDungeonWithMostKeys();
+	dropdownchoose = bestDropdownIndex;
+	local dungeonName = bestDungeon;
+	local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0");
+	print("已選擇最多鑰匙的地下城：" .. dungeonName);
+	wait(0.5);
+	wait(savemodetime);
+	DungeonTP();
+end
 local function AutostartDungeonf()
 	local Dungeonuilevel = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):WaitForChild("关卡信息"):WaitForChild("文本").Text;
 	local dungeonNametext = string.match(Dungeonuilevel, "^(.-)%s%d");
@@ -855,6 +877,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	elseif (dungeonNametext == "Gem Dungeon") then
 		local lastKeysCount = getDungeonKey("GemDungeon");
@@ -869,6 +902,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	elseif (dungeonNametext == "Rune Dungeon") then
 		local lastKeysCount = getDungeonKey("RuneDungeon");
@@ -883,6 +927,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	elseif (dungeonNametext == "Relic Dungeon") then
 		local lastKeysCount = getDungeonKey("RelicDungeon");
@@ -897,6 +952,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	elseif (dungeonNametext == "Hover Dungeon") then
 		local lastKeysCount = getDungeonKey("HoverDungeon");
@@ -911,6 +977,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	elseif (dungeonNametext == "Gold Dungeon") then
 		local lastKeysCount = getDungeonKey("GoldDungeon");
@@ -925,6 +1002,17 @@ local function AutostartDungeonf()
 			wait(0.5);
 			wait(savemodetime);
 			DungeonTP();
+		elseif ((lastKeysCount1 == 0) and Autofinishdungeon) then
+			if (lastKeysCount1 ~= currentKeysCount) then
+				if (AutoDungeonplus1 and not AutoDungeonplusonly) then
+					adjustDungeonLevel(1);
+					AutoDungeonplusonly = true;
+					wait(3);
+					AutoDungeonplusonly = false;
+				end
+			end
+			print("已啟用自動完成地下城");
+			selectDungeonWithMostKeys();
 		end
 	end
 end
@@ -942,6 +1030,10 @@ local AutoDungeonplus1Switch = features3:AddSwitch("戰鬥結束關卡數自動+
 	AutoDungeonplus1 = bool;
 end);
 AutoDungeonplus1Switch:Set(false);
+local AutofinishdungeonSwitch = features3:AddSwitch("完成所有地下城(從最多鑰匙的開始)--測試", function(bool)
+	Autofinishdungeon = bool;
+end);
+AutofinishdungeonSwitch:Set(false);
 features3:AddTextBox("自訂輸入關卡", function(text)
 	local dropdownchoose0 = string.gsub(text, "[^%d]", "");
 	local dropdownchoose3 = tonumber(dropdownchoose0);
@@ -995,7 +1087,7 @@ local AutoelixirSwitch = features4:AddSwitch("自動煉丹藥", function(bool)
 	end
 end);
 AutoelixirSwitch:Set(false);
-local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥(⚠️背包裡面所有的丹藥⚠️）", function(bool)
+local AutoelixirabsorbSwitch = features4:AddSwitch("自動吸收丹藥（⚠️背包裡面所有的丹藥⚠️）", function(bool)
 	Autoelixirabsorb = bool;
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
@@ -1018,25 +1110,28 @@ weaponlevel = string.gsub(weaponlevel, "%D", "");
 local weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
 weaponlevel2 = string.match(weaponlevel2, "(%d+)/");
 local currency = player:WaitForChild("值"):WaitForChild("货币");
-local diamonds = currency:WaitForChild("钻石");
+local diamonds = currency:WaitForChild("钻石").value;
 local sword_tickets = currency:WaitForChild("法宝抽奖券").value;
 local skill_tickets = currency:WaitForChild("技能抽奖券").value;
 local useDiamonds = false;
 local Autolotteryspeed = 0.3;
 local canstartticket = true;
 local canstartticket2 = true;
-local function updData()
+local function fetchData()
 	skilllevel = lotteryskill:WaitForChild("等级区域"):WaitForChild("值").text;
-	skilllevel = string.gsub(skilllevel, "%D", "") or 0;
 	skilllevel2 = lotteryskill:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
-	skilllevel2 = string.match(skilllevel2, "(%d+)/") or 0;
 	weaponlevel = lotteryweapon:WaitForChild("等级区域"):WaitForChild("值").text;
-	weaponlevel = string.gsub(weaponlevel, "%D", "") or 0;
 	weaponlevel2 = lotteryweapon:WaitForChild("等级区域"):WaitForChild("进度条"):WaitForChild("值"):WaitForChild("值").text;
-	weaponlevel2 = string.match(weaponlevel2, "(%d+)/") or 0;
-	diamonds = currency:WaitForChild("钻石").value;
 	sword_tickets = currency:WaitForChild("法宝抽奖券").value;
 	skill_tickets = currency:WaitForChild("技能抽奖券").value;
+	diamonds = currency:WaitForChild("钻石").value;
+end
+local function updData()
+	fetchData();
+	skilllevel = tonumber(string.match(skilllevel, "%d+"));
+	skilllevel2 = tonumber(string.match(skilllevel2, "(%d+)/"));
+	weaponlevel = tonumber(string.match(weaponlevel, "%d+"));
+	weaponlevel2 = tonumber(string.match(weaponlevel2, "(%d+)/"));
 	print("技能等級：" .. skilllevel .. "技能進度：" .. skilllevel2);
 	print("法寶等級：" .. weaponlevel .. "法寶進度：" .. weaponlevel2);
 	print("鑽石：" .. diamonds .. "法寶抽獎券：" .. sword_tickets .. "技能抽獎券：" .. skill_tickets);
@@ -1056,37 +1151,33 @@ local function usesword_ticket()
 	end
 end
 local function Compareskilltickets()
-	if ((skill_tickets <= 8) and useDiamonds) then
-		if (diamonds >= 400) then
-			local compare = 8 - tonumber(skill_tickets);
-			print("技能抽獎券不足，使用鑽石補足：" .. compare .. "張");
+	if (skill_tickets < 8) then
+		if (useDiamonds and (diamonds >= ((8 - skill_tickets) * 50))) then
+			local compare = 8 - skill_tickets;
+			print("技能抽獎券不足，使用鑽石補足：" .. compare .. " 張");
 			print("鑽石消耗：" .. (compare * 50));
 			useskill_ticket();
 		else
-			print("鑽石不足");
+			print("技能抽獎券不足且無法使用鑽石補足");
 		end
-	elseif (skill_tickets >= 8) then
+	else
 		print("技能抽獎券足夠");
 		useskill_ticket();
-	else
-		print("技能抽獎券不足且沒開啟鑽石補足");
 	end
 end
 local function Compareweapentickets()
-	if ((sword_tickets <= 8) and useDiamonds) then
-		if (diamonds > 400) then
-			local compare = 8 - tonumber(sword_tickets);
-			print("法寶抽獎券不足，使用鑽石補足：" .. compare .. "張");
+	if (sword_tickets < 8) then
+		if (useDiamonds and (diamonds >= ((8 - sword_tickets) * 50))) then
+			local compare = 8 - sword_tickets;
+			print("法寶抽獎券不足，使用鑽石補足：" .. compare .. " 張");
 			print("鑽石消耗：" .. (compare * 50));
 			usesword_ticket();
 		else
-			print("鑽石不足");
+			print("法寶抽獎券不足且無法使用鑽石補足");
 		end
-	elseif (sword_tickets >= 8) then
+	else
 		print("法寶抽獎券足夠");
 		usesword_ticket();
-	else
-		print("法寶抽獎券不足且沒開啟鑽石補足");
 	end
 end
 local function Compareprogress()
@@ -1098,19 +1189,17 @@ local function Compareprogress()
 		Compareskilltickets();
 	else
 		print("技能進度等於法寶進度");
-		spawn(function()
-			Compareskilltickets();
-		end);
+		Compareskilltickets();
 		Compareweapentickets();
 	end
 end
 local function Comparelevel()
 	updData();
 	if (skilllevel > weaponlevel) then
-		usesword_ticket();
+		Compareweapentickets();
 		print("法寶等級小於技能等級");
 	elseif (skilllevel < weaponlevel) then
-		useskill_ticket();
+		Compareskilltickets();
 		print("技能等級小於法寶等級");
 	else
 		print("技能等級等於法寶等級");
@@ -1130,21 +1219,16 @@ spawn(function()
 		wait(1);
 	end
 end);
-local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能(檢查中但可使用)", function(bool)
+local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能", function(bool)
 	Autolottery = bool;
 	if Autolottery then
 		canstartticket = true;
 		canstartticket2 = true;
-		spawn(function()
-			while Autolottery do
-				Comparelevel();
-				wait(Autolotteryspeed);
-				if not Autolottery then
-					break;
-				end
-				wait(0.3);
-			end
-		end);
+		while Autolottery do
+			Comparelevel();
+			wait(Autolotteryspeed);
+			wait(0.4);
+		end
 	else
 		canstartticket = false;
 		canstartticket2 = false;
@@ -1155,12 +1239,6 @@ local USEDiamondSwitch = features4:AddSwitch("啟用鑽石抽取", function(bool
 	useDiamonds = bool;
 end);
 USEDiamondSwitch:Set(false);
-features4:AddButton("抽取速度快", function()
-	Autolotteryspeed = 0;
-end);
-features4:AddButton("抽取速度一般", function()
-	Autolotteryspeed = 0.3;
-end);
 local AutoupdFlyingSwordSwitch = features5:AddSwitch("升級飛劍", function(bool)
 	AutoupdFlyingSword = bool;
 	if AutoupdFlyingSword then
