@@ -1037,12 +1037,13 @@ local function getDungeonWithMostKeys()
     local bestDungeon = nil
     local bestDropdownIndex = 1
 
+	local dropdownMapping = {1, 2, 3, 4, 7, 6}
     for i, name in ipairs(dungeonList) do
         local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0
         if keyCount > maxKeys then
             maxKeys = keyCount
             bestDungeon = name
-            bestDropdownIndex = i
+            bestDropdownIndex = dropdownMapping[i] or 0
         end
     end
 
@@ -1056,7 +1057,7 @@ local function selectDungeonWithMostKeys()
     --chooselevels.Text = "當前選擇："..dungeonName..", 鑰匙："..getDungeonKey(dungeonKeys[dungeonName]).." ,關卡選擇："..dungeonLevel
     print("已選擇最多鑰匙的地下城：" .. dungeonName)
     wait(0.5)
-    wait(savemodetime)
+    wait(savemodetime2)
     DungeonTP()
 end
 local function AutostartDungeonf()

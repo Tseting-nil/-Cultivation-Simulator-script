@@ -800,14 +800,15 @@ local function getDungeonWithMostKeys()
 	local maxKeys = 0;
 	local bestDungeon = nil;
 	local bestDropdownIndex = 1;
-	for i, name in ipairs(dungeonList) do
-		local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0;
-		if (keyCount > maxKeys) then
-			maxKeys = keyCount;
-			bestDungeon = name;
-			bestDropdownIndex = i;
-		end
-	end
+	local dropdownMapping = {1, 2, 3, 4, 7, 6}
+    for i, name in ipairs(dungeonList) do
+        local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0
+        if keyCount > maxKeys then
+            maxKeys = keyCount
+            bestDungeon = name
+            bestDropdownIndex = dropdownMapping[i] or 0
+        end
+    end
 	return bestDungeon, bestDropdownIndex;
 end
 local function selectDungeonWithMostKeys()
@@ -817,7 +818,7 @@ local function selectDungeonWithMostKeys()
 	local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0");
 	print("已選擇最多鑰匙的地下城：" .. dungeonName);
 	wait(0.5);
-	wait(savemodetime);
+	wait(savemodetime2);
 	DungeonTP();
 end
 local function AutostartDungeonf()
