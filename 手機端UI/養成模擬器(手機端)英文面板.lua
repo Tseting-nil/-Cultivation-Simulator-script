@@ -237,7 +237,7 @@ features:Show();
 features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/16");
+features:AddLabel("Last Updated： 2025/02/21");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -1520,6 +1520,7 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 local Guildname = features5:AddLabel("Guide Name：Need chack Upd Guide" .. " || Contribute times： " .. Donatetimesnumber)
 features5:AddButton("Upd Guide",function()
+    Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 	local replicatedStorage = game:GetService("ReplicatedStorage")
     local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋
     event:Fire("打开公会")

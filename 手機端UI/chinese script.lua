@@ -187,7 +187,7 @@ features:Show();
 features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/16");
+features:AddLabel("最後更新時間：2025/02/21");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1276,6 +1276,7 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 local Guildname = features5:AddLabel("公會名稱：未獲取點擊更新公會" .. " 剩餘貢獻次數： " .. Donatetimesnumber);
 features5:AddButton("更新公會", function()
+	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");
