@@ -234,7 +234,7 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.0.1");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.0.3");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
 features:AddLabel("Last Updated： 2025/02/23");
@@ -570,6 +570,7 @@ end)
 features1:AddButton("Redeem Game Code",function()
     local gamecode = {"ilovethisgame", "welcome", "30klikes", "40klikes", "halloween", "artistkapouki", "45klikes", "60klikes"}
     for i = 1, #gamecode do
+        print(gamecode[i])
         local args = {
             [1] = gamecode[i]
         }
@@ -616,64 +617,78 @@ local function gowordlevelscheak(gowordlevels)
 end
 local Difficulty_selection = features2:AddDropdown("                Difficulty Level Selection                ", function(text)
     if text == "  World ： 01 .. Easy" then
-        print("當前選擇：簡單")
+        print("World ： 01")
         gowordlevels = 1
         Difficulty_choose.Text = "Current Selection： 01"
     elseif text == "  World ： 21 .. Normal" then
-        print("當前選擇：普通")
+        print("World ： 21")
         gowordlevels = 21
         gowordlevelscheak(gowordlevels)
     elseif text == "  World ： 41 .. Hard" then
-        print("當前選擇：困難")
+        print("World ： 41")
         gowordlevels = 41
         gowordlevelscheak(gowordlevels)
     elseif text == "  World ： 61 .. Expert" then
-        print("當前選擇：專家")
+        print("World ： 61")
         gowordlevels = 61
         gowordlevelscheak(gowordlevels)
-    elseif text == "  World ： 81" then
+    elseif text == "  World ： 81 .. Master" then
         print("World ： 81")
         gowordlevels = 81
         gowordlevelscheak(gowordlevels)
+    elseif text == "  World ： 101" then
+        print("World ： 101")
+        gowordlevels = 101
+        gowordlevelscheak(gowordlevels)
     elseif text == "  Auto Max Choose" then
-        print("當前選擇：自動最高關卡")
-        if worldnum < 10 then
-            Difficulty_choose.Text = "Current Selection Max Level： 0"..worldnum;
+        local showone = false;
+        print("Current Selection: Auto Max Level");
+    
+        if (worldnum < 10) then
+            Difficulty_choose.Text = "Current Selection Max Level: 0"..worldnum;
         else
-            Difficulty_choose.Text = "Current Selection Max Level： "..worldnum;
+            Difficulty_choose.Text = "Current Selection Max Level: "..worldnum;
         end
-        gowordlevels = worldnum
-        while text == "Auto Max Choose"  do
-            if newworldnum ~= worldnum then
-                gowordlevels = worldnum
-                newworldnum = worldnum
-                finishworldnum = tonumber(gowordlevels)
-                if worldnum < 10 then
-                    Difficulty_choose.Text = "Current Selection Max Level： 0"..worldnum;
-                    wait(savemodetime2)
-                    wait(savemodetime + 1)
-                    local args = {[1]=finishworldnum}
-                    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))     
-        
-                else
-                    Difficulty_choose.Text = "Current Selection Max Level： "..worldnum;
-                    wait(savemodetime2)
-                    wait(savemodetime + 1)
-                    local args = {[1]=finishworldnum}
-                    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))        
-                end
+        gowordlevels = worldnum;
+    
+        while true do
+            local Difficulty_choose_Text = string.match(Difficulty_choose.Text, "Current Selection Max Level");
+    
+            if (Difficulty_choose_Text ~= "Current Selection Max Level") then
+                showone = false;
+                print("Auto Max Level has stopped");
+                break;
+            elseif not showone then
+                print("Auto Max Level has started");
+                showone = true;
             end
-            wait(1)
+    
+            if (newworldnum ~= worldnum) then
+                gowordlevels = worldnum;
+                newworldnum = worldnum;
+                finishworldnum = tonumber(gowordlevels);
+                if (worldnum < 10) then
+                    Difficulty_choose.Text = "  Current Selection Max Level: 0" .. gowordlevels;
+                else
+                    Difficulty_choose.Text = "  Current Selection Max Level: " .. gowordlevels;
+                end
+                wait(savemodetime2);
+                wait(savemodetime + 1);
+                local args = {[1]=finishworldnum};
+                game:GetService("ReplicatedStorage"):FindFirstChild("LevelData"):FindFirstChild("MaxLevel"):FireServer(unpack(args));
+            end
+            wait(1);
         end
-    end
+    end    
 end);
 local Levels1 = Difficulty_selection:Add("  World ： 01 .. Easy")
 local Levels2 = Difficulty_selection:Add("  World ： 21 .. Normal")
 local Levels3 = Difficulty_selection:Add("  World ： 41 .. Hard")
 local Levels4 = Difficulty_selection:Add("  World ： 61 .. Expert")
-local Levels5 = Difficulty_selection:Add("  World ： 81")
-local Levels6 = Difficulty_selection:Add("  Auto Max Choose")
-local Levels7 = Difficulty_selection:Add(" ... ")
+local Levels5 = Difficulty_selection:Add("  World ： 81 .. Master")
+--local Levels6 = Difficulty_selection:Add("  World ： 101")
+local Levels99 = Difficulty_selection:Add("  Auto Max Choose")
+local Levels999 = Difficulty_selection:Add(" ... ")
 features2:AddButton("Select level +1", function()
 	gowordlevels = gowordlevels + 1
     gowordlevelscheak(gowordlevels)

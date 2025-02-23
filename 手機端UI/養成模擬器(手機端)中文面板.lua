@@ -233,7 +233,7 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.1");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.3");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
 features:AddLabel("最後更新時間：2025/02/23");
@@ -571,6 +571,7 @@ end)
 features1:AddButton("兌換遊戲禮品碼",function()
     local gamecode = {"ilovethisgame", "welcome", "30klikes", "40klikes", "halloween", "artistkapouki", "45klikes", "60klikes"}
     for i = 1, #gamecode do
+        print(gamecode[i])
         local args = {
             [1] = gamecode[i]
         }
@@ -580,7 +581,7 @@ end)
 -- ========================================================================== --
 -- 副本頁
 -- ========================================================================== --
--- --特殊定義(關卡難易度選擇)
+-- 特殊定義(關卡難易度選擇)
 local worldnum = player:WaitForChild("值"):WaitForChild("主线进度"):WaitForChild("world").Value
 local newworldnum = worldnum
 local function statisticsupdata()
@@ -593,13 +594,24 @@ spawn(function()
         wait(1)
     end
 end)
--- ========================================================================== --
--- --特殊定義傳送(重啟世界)
 
--- ========================================================================== --
 -- 副本頁UI
+local Difficulty_choose = features2:AddLabel("  當前選擇 關卡： 01")
 
-local Difficulty_choose = features2:AddLabel("  當前選擇： 01");
+local function gowordlevelscheak(gowordlevels)
+	if (gowordlevels > worldnum) then
+		if (gowordlevels < 10) then
+			Difficulty_choose.Text = "  關卡未解鎖 關卡： 0" .. gowordlevels;
+		else
+			Difficulty_choose.Text = "  關卡未解鎖 關卡： " .. gowordlevels;
+		end
+	elseif (gowordlevels < 10) then
+		Difficulty_choose.Text = "  當前選擇 關卡： 0" .. gowordlevels;
+	else
+		Difficulty_choose.Text = "  當前選擇 關卡： " .. gowordlevels;
+	end
+end
+
 local Difficulty_selection = features2:AddDropdown("                關卡難易度選擇                ", function(text)
     if text == "      世界關卡簡單： 01       " then
         print("當前選擇：簡單")
@@ -608,129 +620,83 @@ local Difficulty_selection = features2:AddDropdown("                關卡難易
     elseif text == "      世界關卡普通： 21       " then
         print("當前選擇：普通")
         gowordlevels = 21
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
-            end
-
-        end
+        gowordlevelscheak(gowordlevels)
     elseif text == "      世界關卡困難： 41       " then
         print("當前選擇：困難")
         gowordlevels = 41
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
-            end
-
-        end
+        gowordlevelscheak(gowordlevels)
     elseif text == "      世界關卡專家： 61       " then
         print("當前選擇：專家")
         gowordlevels = 61
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
-            end
-
-        end
+        gowordlevelscheak(gowordlevels)
+    elseif text == "      世界關卡大師： 81       " then
+        print("當前選擇：大師")
+        gowordlevels = 81
+        gowordlevelscheak(gowordlevels)
+    elseif text == "      世界關卡      ： 101       " then
+        print("當前選擇：專家")
+        gowordlevels = 101
+        gowordlevelscheak(gowordlevels)
     elseif text == "      自動最高關卡        " then
+        local showone = false
         print("當前選擇：自動最高關卡")
         if worldnum < 10 then
-            Difficulty_choose.Text = "  當前選擇最高關卡： 0"..worldnum;
+            Difficulty_choose.Text = "  當前選擇最高關卡： 0"..worldnum
         else
-            Difficulty_choose.Text = "  當前選擇最高關卡： "..worldnum;
+            Difficulty_choose.Text = "  當前選擇最高關卡： "..worldnum
         end
         gowordlevels = worldnum
-        while text == "      自動最高關卡        "  do
+        while true do
+            local Difficulty_choose_Text = string.match(Difficulty_choose.Text, "當前選擇最高關卡")
+            if Difficulty_choose_Text ~= "當前選擇最高關卡" then
+                showone = false
+                print("自動最高關卡已停止")
+                break
+            else
+                if not showone then
+                    print("自動最高關卡已啟動")
+                    showone = true
+                end
+            end
             if newworldnum ~= worldnum then
                 gowordlevels = worldnum
                 newworldnum = worldnum
                 finishworldnum = tonumber(gowordlevels)
                 if worldnum < 10 then
-                    Difficulty_choose.Text = "  當前選擇最高關卡： 0"..gowordlevels;
-                    wait(savemodetime2)
-                    wait(savemodetime + 1)
-                    local args = {[1]=finishworldnum}
-                    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))     
-        
+                    Difficulty_choose.Text = "  當前選擇最高關卡： 0"..gowordlevels
                 else
-                    Difficulty_choose.Text = "  當前選擇最高關卡： "..gowordlevels;
-                    wait(savemodetime2)
-                    wait(savemodetime + 1)
-                    local args = {[1]=finishworldnum}
-                    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))        
+                    Difficulty_choose.Text = "  當前選擇最高關卡： "..gowordlevels
                 end
+                wait(savemodetime2)
+                wait(savemodetime + 1)
+                local args = {[1] = finishworldnum}
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args))
             end
             wait(1)
         end
     end
-end);
+end)
+
+-- 選擇關卡按鈕
 local Levels1 = Difficulty_selection:Add("      世界關卡簡單： 01       ")
 local Levels2 = Difficulty_selection:Add("      世界關卡普通： 21       ")
 local Levels3 = Difficulty_selection:Add("      世界關卡困難： 41       ")
 local Levels4 = Difficulty_selection:Add("      世界關卡專家： 61       ")
-local Levels5 = Difficulty_selection:Add("      自動最高關卡        ")
-local Levels6 = Difficulty_selection:Add("空白")
+local Levels5 = Difficulty_selection:Add("      世界關卡大師： 81       ")
+--local Levels6 = Difficulty_selection:Add("      世界關卡      ： 101       ")
+local Levels99 = Difficulty_selection:Add("      自動最高關卡        ")
+local Levels999 = Difficulty_selection:Add("空白")
+
 features2:AddButton("選擇關卡+1", function()
 	gowordlevels = gowordlevels + 1
-    if gowordlevels < 10 then
-        Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
-    else
-        Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
-    end
-    if gowordlevels > worldnum then
-        if gowordlevels < 10 then
-            Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
-        else
-            Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
-        end
-    end
-end);
+    gowordlevelscheak(gowordlevels)
+end)
 
 features2:AddButton("選擇關卡-1", function()
     gowordlevels = gowordlevels - 1
-    if gowordlevels < 1 then
-        gowordlevels = 1
-        Difficulty_choose.Text = "  自動修正： 關卡 0" .. gowordlevels
-    else
-        if gowordlevels > worldnum then
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  關卡未解鎖 關卡： "..gowordlevels;
-            end
-        else
-            if gowordlevels < 10 then
-                Difficulty_choose.Text = "  當前選擇： 0"..gowordlevels;
-            else
-                Difficulty_choose.Text = "  當前選擇： "..gowordlevels;
-            end
-        end
-    end
-end);
+    gowordlevelscheak(gowordlevels)
+end)
+
 
 -- ========================================================================== --
 -- --特殊定義(傳送相關)
