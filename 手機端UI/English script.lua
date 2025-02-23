@@ -8,7 +8,7 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	AntiAFK:ClickButton2(Vector2.new());
 	wait(2);
 end);
-local window = library:AddWindow("Cultivation-Simulator scrupt ", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator script ", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
 local features = window:AddTab("Rdme");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
@@ -449,6 +449,15 @@ features1:AddButton("Remove the display of the reward", function()
 		print("已刪除過");
 	end
 end);
+features1:AddButton("Redeem Game Code",function()
+    local gamecode = {"ilovethisgame", "welcome", "30klikes", "40klikes", "halloween", "artistkapouki", "45klikes", "60klikes"}
+    for i = 1, #gamecode do
+        local args = {
+            [1] = gamecode[i]
+        }
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\191\128\230\180\187\231\160\129"):FindFirstChild("\231\142\169\229\174\182\229\133\145\230\141\162\230\191\128\230\180\187\231\160\129"):FireServer(unpack(args))     
+    end
+end)
 local worldnum = player:WaitForChild("值"):WaitForChild("主线进度"):WaitForChild("world").Value;
 local newworldnum = worldnum;
 local function statisticsupdata()

@@ -449,6 +449,15 @@ features1:AddButton("刪除顯示獲得的獎勵(所有的)", function()
 		print("已刪除過");
 	end
 end);
+features1:AddButton("兌換遊戲禮品碼",function()
+    local gamecode = {"ilovethisgame", "welcome", "30klikes", "40klikes", "halloween", "artistkapouki", "45klikes", "60klikes"}
+    for i = 1, #gamecode do
+        local args = {
+            [1] = gamecode[i]
+        }
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\191\128\230\180\187\231\160\129"):FindFirstChild("\231\142\169\229\174\182\229\133\145\230\141\162\230\191\128\230\180\187\231\160\129"):FireServer(unpack(args))     
+    end
+end)
 local worldnum = player:WaitForChild("值"):WaitForChild("主线进度"):WaitForChild("world").Value;
 local newworldnum = worldnum;
 local function statisticsupdata()
