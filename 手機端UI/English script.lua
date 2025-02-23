@@ -8,7 +8,7 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	AntiAFK:ClickButton2(Vector2.new());
 	wait(2);
 end);
-local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator scrupt ", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
 local features = window:AddTab("Rdme");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("World");
@@ -184,10 +184,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.0.1");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/21");
+features:AddLabel("Last Updated： 2025/02/23");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -800,15 +800,15 @@ local function getDungeonWithMostKeys()
 	local maxKeys = 0;
 	local bestDungeon = nil;
 	local bestDropdownIndex = 1;
-	local dropdownMapping = {1, 2, 3, 4, 7, 6}
-    for i, name in ipairs(dungeonList) do
-        local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0
-        if keyCount > maxKeys then
-            maxKeys = keyCount
-            bestDungeon = name
-            bestDropdownIndex = dropdownMapping[i] or 0
-        end
-    end
+	local dropdownMapping = {1,2,3,4,7,6};
+	for i, name in ipairs(dungeonList) do
+		local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0;
+		if (keyCount > maxKeys) then
+			maxKeys = keyCount;
+			bestDungeon = name;
+			bestDropdownIndex = dropdownMapping[i] or 0;
+		end
+	end
 	return bestDungeon, bestDropdownIndex;
 end
 local function selectDungeonWithMostKeys()
@@ -1239,7 +1239,8 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 local Guildname = features5:AddLabel("Guide Name：Need chack Upd Guide" .. " || Contribute times： " .. Donatetimesnumber);
 features5:AddButton("Upd Guide", function()
-	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+	Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text;
+	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");

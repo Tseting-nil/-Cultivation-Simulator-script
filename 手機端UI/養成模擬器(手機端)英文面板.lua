@@ -18,7 +18,7 @@ game.Players.LocalPlayer.Idled:Connect(function()
 end);
 -- ========================================================================== --
 -- 標題
-local window = library:AddWindow("Cultivation-Simulator scrupt -- Mobile UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator scrupt ", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(408, 335),can_resize=false});
 -- ========================================================================== --
 -- 標籤
 local features = window:AddTab("Rdme");
@@ -234,10 +234,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version： Mobile Edition V1.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.0.1");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/21");
+features:AddLabel("Last Updated： 2025/02/23");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -1520,6 +1520,7 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 local Guildname = features5:AddLabel("Guide Name：Need chack Upd Guide" .. " || Contribute times： " .. Donatetimesnumber)
 features5:AddButton("Upd Guide",function()
+    Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
     Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 	local replicatedStorage = game:GetService("ReplicatedStorage")
     local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋

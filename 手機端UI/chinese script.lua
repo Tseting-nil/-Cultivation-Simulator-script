@@ -8,7 +8,7 @@ game.Players.LocalPlayer.Idled:Connect(function()
 	AntiAFK:ClickButton2(Vector2.new());
 	wait(2);
 end);
-local window = library:AddWindow("Cultivation-Simulator  養成模擬器 -- 手機板UI", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(395, 315),can_resize=false});
+local window = library:AddWindow("Cultivation-Simulator  養成模擬器", {main_color=Color3.fromRGB(41, 74, 122),min_size=Vector2.new(395, 315),can_resize=false});
 local features = window:AddTab("自述");
 local features1 = window:AddTab("Main");
 local features2 = window:AddTab("副本");
@@ -184,10 +184,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2    版本：手機板");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.1");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/21");
+features:AddLabel("最後更新時間：2025/02/23");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -841,15 +841,15 @@ local function getDungeonWithMostKeys()
 	local maxKeys = 0;
 	local bestDungeon = nil;
 	local bestDropdownIndex = 1;
-	local dropdownMapping = {1, 2, 3, 4, 7, 6}
-    for i, name in ipairs(dungeonList) do
-        local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0
-        if keyCount > maxKeys then
-            maxKeys = keyCount
-            bestDungeon = name
-            bestDropdownIndex = dropdownMapping[i] or 0
-        end
-    end
+	local dropdownMapping = {1,2,3,4,7,6};
+	for i, name in ipairs(dungeonList) do
+		local keyCount = tonumber(getDungeonKey(dungeonKeys[name])) or 0;
+		if (keyCount > maxKeys) then
+			maxKeys = keyCount;
+			bestDungeon = name;
+			bestDropdownIndex = dropdownMapping[i] or 0;
+		end
+	end
 	return bestDungeon, bestDropdownIndex;
 end
 local function selectDungeonWithMostKeys()
@@ -1276,7 +1276,8 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 local Guildname = features5:AddLabel("公會名稱：未獲取點擊更新公會" .. " 剩餘貢獻次數： " .. Donatetimesnumber);
 features5:AddButton("更新公會", function()
-	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
+	Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text;
+	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");
