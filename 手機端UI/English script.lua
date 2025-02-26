@@ -184,10 +184,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.0.3");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.0.4");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/23");
+features:AddLabel("Last Updated： 2025/02/26");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -814,7 +814,9 @@ local function DungeonTP()
 end
 local dungeonList = {"Ore Dungeon","Gem Dungeon","Rune Dungeon","Relic Dungeon","Hover Dungeon","Gold Dungeon"};
 local dungeonKeys = {["Ore Dungeon"]="OreDungeon",["Gem Dungeon"]="GemDungeon",["Rune Dungeon"]="RuneDungeon",["Relic Dungeon"]="RelicDungeon",["Hover Dungeon"]="HoverDungeon",["Gold Dungeon"]="GoldDungeon"};
+local changeDungeon = false;
 local function getDungeonWithMostKeys()
+	changeDungeon = true;
 	local maxKeys = 0;
 	local bestDungeon = nil;
 	local bestDropdownIndex = 1;
@@ -847,9 +849,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);
@@ -872,9 +875,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);
@@ -897,9 +901,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);
@@ -922,9 +927,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);
@@ -947,9 +953,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);
@@ -972,9 +979,10 @@ local function AutostartDungeonf()
 		local lastKeysCount1 = tonumber(lastKeysCount);
 		local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"));
 		if ((lastKeysCount1 ~= currentKeysCount) and (lastKeysCount1 > 0)) then
-			if AutoDungeonplus1 then
+			if (AutoDungeonplus1 and not changeDungeon) then
 				adjustDungeonLevel(1);
 			end
+			changeDungeon = false;
 			wait(savemodetime2);
 			teleporthome();
 			wait(0.5);

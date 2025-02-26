@@ -233,10 +233,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.3");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.4");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/23");
+features:AddLabel("最後更新時間：2025/02/26");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -1059,9 +1059,10 @@ local dungeonKeys = {
     ["Hover Dungeon"] = "HoverDungeon",
     ["Gold Dungeon"] = "GoldDungeon"
 }
-
+local changeDungeon = false
 -- 找到擁有最多鑰匙的地下城
 local function getDungeonWithMostKeys()
+    changeDungeon = true
     local maxKeys = 0
     local bestDungeon = nil
     local bestDropdownIndex = 1
@@ -1099,9 +1100,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
@@ -1124,9 +1126,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
@@ -1149,9 +1152,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
@@ -1174,9 +1178,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
@@ -1199,9 +1204,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
@@ -1224,9 +1230,10 @@ local function AutostartDungeonf()
         local lastKeysCount1 = tonumber(lastKeysCount)
         local currentKeysCount = tonumber(string.match(Dungeonuilevel, "Keys:%s*(%d+)"))
         if lastKeysCount1 ~= currentKeysCount and lastKeysCount1 > 0 then
-            if AutoDungeonplus1  then
+            if AutoDungeonplus1  and not changeDungeon then
                 adjustDungeonLevel(1)
             end
+            changeDungeon = false
             wait(savemodetime2)
             teleporthome()
             wait(0.5)
