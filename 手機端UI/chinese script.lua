@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))();
 local RespawPoint = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua"))();
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
 local JsonHandler = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/JSON%E6%A8%A1%E7%B5%84.lua"))();
 local AntiAFK = game:GetService("VirtualUser");
 game.Players.LocalPlayer.Idled:Connect(function()
@@ -184,10 +184,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.0.4");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.1.0");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/02/26");
+features:AddLabel("最後更新時間：2025/03/02");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -366,7 +366,7 @@ spawn(function()
 		wait(60);
 	end
 end);
-local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass任務)", function(bool)
+local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass任務、獎勵)", function(bool)
 	Autocollmissionbool = bool;
 	if Autocollmissionbool then
 		spawn(function()
@@ -374,6 +374,7 @@ local Autocollmission = features1:AddSwitch("自動任務領取(包括GamePass�
 				mainmissionchack();
 				everydaymission();
 				gamepassmission();
+				gamepassgiftget();
 				wait(1);
 			end
 		end);
@@ -1021,7 +1022,7 @@ local AutoDungeonplus1Switch = features3:AddSwitch("戰鬥結束關卡數自動+
 	AutoDungeonplus1 = bool;
 end);
 AutoDungeonplus1Switch:Set(false);
-local AutofinishdungeonSwitch = features3:AddSwitch("完成所有地下城(當沒有鑰匙會自動跳轉到最高鑰匙的)--測試", function(bool)
+local AutofinishdungeonSwitch = features3:AddSwitch("完成所有地下城(當沒有鑰匙會自動跳轉到最高鑰匙的)", function(bool)
 	Autofinishdungeon = bool;
 end);
 AutofinishdungeonSwitch:Set(false);
@@ -1271,6 +1272,7 @@ features5:AddButton("更新公會", function()
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");
+	wait(0.5);
 	Guildname.Text = "公會名稱：" .. Guidename .. " 剩餘貢獻次數： " .. Donatetimesnumber;
 end);
 local AutoDonateSwitch = features5:AddSwitch("自動捐献", function(bool)

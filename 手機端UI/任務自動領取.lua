@@ -107,7 +107,7 @@ local function gamepassgiftdraw(num, havepadgamepass)
 end
 
 local padgamepassnamecheck = false
-
+local padgamepassnamecheck2 = false
 function gamepassgiftget()
     local padgamepass = game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\186\140\231\186\167\231\149\140\233\157\162"]["\229\149\134\229\186\151"]["\232\131\140\230\153\175"]["\229\143\179\228\190\167\231\149\140\233\157\162"]["\230\156\136\233\128\154\232\161\140\232\175\129"]["\232\131\140\230\153\175"]["\229\165\150\229\138\177\229\140\186"]["\229\165\150\229\138\177\229\136\151\232\161\168"]:GetChildren()[4]["\233\187\132\233\135\145"]["\232\131\140\230\153\175"]["\228\184\138\233\148\129"].Visible
     if gamepassgiftnnamelist then
@@ -126,11 +126,14 @@ function gamepassgiftget()
             local giftgetgcheck2 = namegamepassgif:WaitForChild("免费"):WaitForChild("背景"):WaitForChild("领取图标").Visible
 
             if giftgetgcheck and padgamepass and not giftgetgcheck2 then
+                padgamepassnamecheck2 = false
                 gamepassgiftdraw(index, true)
             elseif giftgetgcheck and not padgamepass and not giftgetgcheck2 then
+                padgamepassnamecheck2 = false
                 gamepassgiftdraw(index, false)
-            elseif not giftgetgcheck then
+            elseif not giftgetgcheck and not padgamepassnamecheck2 then
                 print("目前沒有通行證獎勳可領取")
+                padgamepassnamecheck2 = true
                 break
             end
         end

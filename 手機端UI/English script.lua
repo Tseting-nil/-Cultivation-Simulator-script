@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://pastebin.com/raw/Ktm0i9QT", true))();
 local RespawPoint = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua"))();
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
 local JsonHandler = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/JSON%E6%A8%A1%E7%B5%84.lua"))();
 local AntiAFK = game:GetService("VirtualUser");
 game.Players.LocalPlayer.Idled:Connect(function()
@@ -184,10 +184,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.0.4");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/26");
+features:AddLabel("Last Updated： 2025/03/02");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -366,7 +366,7 @@ spawn(function()
 		wait(60);
 	end
 end);
-local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GamePass tasks)", function(bool)
+local Autocollmission = features1:AddSwitch("Auto-collect tasks (GamePass tasks and Gift)", function(bool)
 	Autocollmissionbool = bool;
 	if Autocollmissionbool then
 		spawn(function()
@@ -374,6 +374,7 @@ local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GameP
 				mainmissionchack();
 				everydaymission();
 				gamepassmission();
+				gamepassgiftget();
 				wait(1);
 			end
 		end);
@@ -1270,6 +1271,7 @@ features5:AddButton("Upd Guide", function()
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");
+	wait(0.5);
 	Guildname.Text = "Guide Name：" .. Guidename .. " || Contribute times： " .. Donatetimesnumber;
 end);
 local AutoDonateSwitch = features5:AddSwitch("Auto Contribute", function(bool)

@@ -4,7 +4,7 @@ local RespawPoint = loadstring(game:HttpGet('https://raw.githubusercontent.com/T
 --遊戲內部資料夾名稱更改(優先度最高)
 --loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%81%8A%E6%88%B2%E7%89%A9%E4%BB%B6%E5%90%8D%E7%A8%B1%E6%9B%BF%E6%8F%9B.lua'))()
 --任務自動領取--內部包含(遊戲內部資料夾名稱更改)
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua'))()
 --JSON模組
 local JsonHandler = loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/JSON%E6%A8%A1%E7%B5%84.lua'))()
 
@@ -234,10 +234,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.0.4");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.1.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/02/26");
+features:AddLabel("Last Updated： 2025/03/02");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -457,7 +457,7 @@ spawn(function()
 end)
 -- ========================================================================== --
 -- Main頁
-local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GamePass tasks)", function(bool)
+local Autocollmission = features1:AddSwitch("Auto-collect tasks (GamePass tasks and Gift)", function(bool)
 	Autocollmissionbool = bool;
 	if Autocollmissionbool then
         spawn(function()
@@ -465,24 +465,13 @@ local Autocollmission = features1:AddSwitch("Auto-collect tasks (including GameP
                 mainmissionchack()
                 everydaymission()
                 gamepassmission()
+                gamepassgiftget()
                 wait(1)
             end
         end)
 	end
 end);
 Autocollmission:Set(false);
---[[
-local GamePassaward = features1:AddSwitch("GamePass獎勵領取", function(bool)
-	GamePassawardbool = bool;
-	if GamePassawardbool then
-		while GamePassawardbool do
-			wait(1)
-		end
-	end
-end);
-GamePassaward:Set(true);
-]]--
-
 
 local invest = features1:AddSwitch("Auto-execute investments", function(bool)
 	investbool = bool;
@@ -1556,6 +1545,7 @@ features5:AddButton("Upd Guide",function()
 	local replicatedStorage = game:GetService("ReplicatedStorage")
     local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋
     event:Fire("打开公会")
+    wait(0.5)
     Guildname.Text = "Guide Name：" .. Guidename .. " || Contribute times： " .. Donatetimesnumber
 end)
 local AutoDonateSwitch = features5:AddSwitch("Auto Contribute", function(bool)
