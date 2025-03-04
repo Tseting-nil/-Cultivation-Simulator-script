@@ -117,15 +117,16 @@ function gamepassgiftget()
         end
     end
 
-    -- 使用寫死的for迴圈遍歷通行證獎勳（最多50）
+    -- 使用for迴圈遍歷通行證獎勳（最多50）
     for index = 1, 50 do
         local namegamepassgif = gamepassgiftnnamelist:WaitForChild("gamepassgift" .. tostring(index))  -- 直接尋找對應的gamepassgift
         if namegamepassgif then
             -- 分別等待所需的子物件
             local giftgetgcheck = namegamepassgif:WaitForChild("进度预制体"):WaitForChild("进度").Visible
             local giftgetgcheck2 = namegamepassgif:WaitForChild("免费"):WaitForChild("背景"):WaitForChild("领取图标").Visible
+            local giftgetgcheck3 = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("领取图标").Visible
 
-            if giftgetgcheck and padgamepass and not giftgetgcheck2 then
+            if giftgetgcheck and padgamepass and not giftgetgcheck2 or not giftgetgcheck3 then
                 padgamepassnamecheck2 = false
                 gamepassgiftdraw(index, true)
             elseif giftgetgcheck and not padgamepass and not giftgetgcheck2 then
