@@ -92,31 +92,23 @@ end
 -- ========================================================================== --
 -- 通行證獎勳
 local function gamepassgiftdraw(num, havepadgamepass)
+if havepadgamepass then
+    local args = {
+        [1] = 2, -- 付費通行證
+        [2] = num -- 等級
+    }
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))
+    warn("已領取付費通行證獎勵等級"..num)
+end
     local args = {
         [1] = 1, -- 免費通行證
         [2] = num -- 等級
     }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))
-    if havepadgamepass then
-        local args = {
-            [1] = 2, -- 付費通行證
-            [2] = num -- 等級
-        }
-        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))
-    end
+    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))   
+    print("已領取通行證獎勵等級"..num)
 end
-
-local padgamepassnamecheck = false
-local padgamepassnamecheck2 = false
+local padgamepass = true
 function gamepassgiftget()
-    local padgamepass = game:GetService("Players").LocalPlayer.PlayerGui.GUI["\228\186\140\231\186\167\231\149\140\233\157\162"]["\229\149\134\229\186\151"]["\232\131\140\230\153\175"]["\229\143\179\228\190\167\231\149\140\233\157\162"]["\230\156\136\233\128\154\232\161\140\232\175\129"]["\232\131\140\230\153\175"]["\229\165\150\229\138\177\229\140\186"]["\229\165\150\229\138\177\229\136\151\232\161\168"]:GetChildren()[4]["\233\187\132\233\135\145"]["\232\131\140\230\153\175"]["\228\184\138\233\148\129"].Visible
-    if gamepassgiftnnamelist then
-        if padgamepass and not padgamepassnamecheck then
-            print("無付費通行證")
-            padgamepassnamecheck = true
-        end
-    end
-
     -- 使用for迴圈遍歷通行證獎勳（最多50）
     for index = 1, 50 do
         local namegamepassgif = gamepassgiftnnamelist:WaitForChild("gamepassgift" .. tostring(index))  -- 直接尋找對應的gamepassgift
@@ -125,17 +117,12 @@ function gamepassgiftget()
             local giftgetgcheck = namegamepassgif:WaitForChild("进度预制体"):WaitForChild("进度").Visible
             local giftgetgcheck2 = namegamepassgif:WaitForChild("免费"):WaitForChild("背景"):WaitForChild("领取图标").Visible
             local giftgetgcheck3 = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("领取图标").Visible
-
-            if giftgetgcheck and padgamepass and not giftgetgcheck2 or not giftgetgcheck3 then
-                padgamepassnamecheck2 = false
+            padgamepass = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("上锁").Visible -- 判斷通行證上鎖(上鎖代表沒有購買付費通行證)
+            --有付費通行證但未領取通行證獎勵
+            if giftgetgcheck and not padgamepass and not giftgetgcheck3 or not giftgetgcheck2 then
                 gamepassgiftdraw(index, true)
-            elseif giftgetgcheck and not padgamepass and not giftgetgcheck2 then
-                padgamepassnamecheck2 = false
+            elseif giftgetgcheck and padgamepass and giftgetgcheck2 then
                 gamepassgiftdraw(index, false)
-            elseif not giftgetgcheck and not padgamepassnamecheck2 then
-                print("目前沒有通行證獎勳可領取")
-                padgamepassnamecheck2 = true
-                break
             end
         end
     end
