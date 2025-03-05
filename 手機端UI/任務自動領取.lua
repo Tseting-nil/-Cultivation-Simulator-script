@@ -127,7 +127,7 @@ function gamepassgiftget()
             gamepassnamecheck = false
         else
             if not gamepassnamecheck then
-                error("目前沒有通行證獎勳可領取")
+                print("目前沒有通行證獎勳可領取")
                 gamepassnamecheck = true
             end
             break
