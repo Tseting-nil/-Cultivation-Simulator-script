@@ -113,31 +113,29 @@ function gamepassgiftget()
     -- 使用for迴圈遍歷通行證獎勳（最多50）
     for index = 1, 50 do
         local namegamepassgif = gamepassgiftnnamelist:WaitForChild("gamepassgift" .. tostring(index))  -- 直接尋找對應的gamepassgift
-        if namegamepassgif then
-            -- 分別等待所需的子物件
-            local giftgetgcheck = namegamepassgif:WaitForChild("进度预制体"):WaitForChild("进度").Visible
-            local giftgetgcheck2 = namegamepassgif:WaitForChild("免费"):WaitForChild("背景"):WaitForChild("领取图标").Visible -- 判斷通行證領取狀態(True代表以領取)
-            local giftgetgcheck3 = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("领取图标").Visible -- 判斷通行證領取狀態(True代表以領取)
-            padgamepass = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("上锁").Visible -- 判斷通行證上鎖(上鎖代表沒有購買付費通行證)
-            --有付費通行證但未領取通行證獎勵
-            if giftgetgcheck and not padgamepass and not giftgetgcheck3 or not giftgetgcheck2 then
-                gamepassgiftdraw(index, true)
-                gamepassnamecheck = false
-            elseif giftgetgcheck and padgamepass and not giftgetgcheck2 then
-                gamepassgiftdraw(index, false)
-                gamepassnamecheck = false
-            else
-                if not gamepassnamecheck then
-                    print("目前沒有通行證獎勳可領取")
-                    gamepassnamecheck = true
-                end
-                break
+         -- 分別等待所需的子物件
+        local giftgetgcheck = namegamepassgif:WaitForChild("进度预制体"):WaitForChild("进度").Visible
+        local giftgetgcheck2 = namegamepassgif:WaitForChild("免费"):WaitForChild("背景"):WaitForChild("领取图标").Visible -- 判斷通行證領取狀態(True代表以領取)
+        local giftgetgcheck3 = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("领取图标").Visible -- 判斷通行證領取狀態(True代表以領取)
+        padgamepass = namegamepassgif:WaitForChild("黄金"):WaitForChild("背景"):WaitForChild("上锁").Visible -- 判斷通行證上鎖(上鎖代表沒有購買付費通行證)
+        --有付費通行證但未領取通行證獎勵
+        if giftgetgcheck and not padgamepass and (not giftgetgcheck3 or not giftgetgcheck2) then
+            gamepassgiftdraw(index, true)
+            gamepassnamecheck = false
+        elseif giftgetgcheck and padgamepass and not giftgetgcheck2 then
+            gamepassgiftdraw(index, false)
+            gamepassnamecheck = false
+        else
+            if not gamepassnamecheck then
+                error("目前沒有通行證獎勳可領取")
+                gamepassnamecheck = true
             end
+            break
         end
     end
 end
 
-
+gamepassgiftget()
 --[[
 --控制開關    
     mainmissionchack()
