@@ -125,11 +125,9 @@ function gamepassgiftget()
         elseif giftgetgcheck and padgamepass and not giftgetgcheck2 then
             gamepassgiftdraw(index, false)
             gamepassnamecheck = false
-        else
-            if not gamepassnamecheck then
-                print("目前沒有通行證獎勳可領取")
-                gamepassnamecheck = true
-            end
+        elseif not giftgetgcheck and not gamepassnamecheck then
+            print("目前沒有通行證獎勳可領取")
+            gamepassnamecheck = true
             break
         end
     end
