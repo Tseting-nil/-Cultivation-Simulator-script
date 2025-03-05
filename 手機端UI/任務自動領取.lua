@@ -135,7 +135,6 @@ function gamepassgiftget()
     end
 end
 
-gamepassgiftget()
 --[[
 --控制開關    
     mainmissionchack()
