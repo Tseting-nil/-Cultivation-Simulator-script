@@ -92,14 +92,14 @@ end
 -- ========================================================================== --
 -- 通行證獎勳
 local function gamepassgiftdraw(num, havepadgamepass)
-if havepadgamepass then
-    local args = {
-        [1] = 2, -- 付費通行證
-        [2] = num -- 等級
-    }
-    game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))
-    warn("已領取付費通行證獎勵等級"..num)
-end
+    if havepadgamepass then
+        local args = {
+            [1] = 2, -- 付費通行證
+            [2] = num -- 等級
+        }
+        game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\230\156\136\233\128\154\232\161\140\232\175\129"):FindFirstChild("\233\162\134\229\143\150"):FireServer(unpack(args))
+        warn("已領取付費通行證獎勵等級"..num)
+    end
     local args = {
         [1] = 1, -- 免費通行證
         [2] = num -- 等級
@@ -123,7 +123,7 @@ function gamepassgiftget()
             if giftgetgcheck and not padgamepass and not giftgetgcheck3 or not giftgetgcheck2 then
                 gamepassgiftdraw(index, true)
                 gamepassnamecheck = false
-            elseif giftgetgcheck and padgamepass and giftgetgcheck2 then
+            elseif giftgetgcheck and padgamepass and not giftgetgcheck2 then
                 gamepassgiftdraw(index, false)
                 gamepassnamecheck = false
             else
