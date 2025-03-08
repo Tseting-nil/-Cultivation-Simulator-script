@@ -233,7 +233,7 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.1.0");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.2.0");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
 features:AddLabel("最後更新時間：2025/03/02");

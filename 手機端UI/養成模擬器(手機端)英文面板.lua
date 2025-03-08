@@ -234,7 +234,7 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.1.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.2.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
 features:AddLabel("Last Updated： 2025/03/02");
