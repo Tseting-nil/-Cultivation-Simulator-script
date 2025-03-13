@@ -59,6 +59,7 @@ local function checkPlayersInRange()
 	if playerInRange then
 		if (timescheck == 0) then
 			print("有玩家在範圍內");
+			showNotification("somepeople in range");
 			savemodetime2 = 2;
 			savemodetime = 5;
 			timescheck = 1;
@@ -66,6 +67,7 @@ local function checkPlayersInRange()
 		end
 	elseif (timescheck == 1) then
 		print("範圍內玩家已離開");
+		showNotification("player out of range");
 		timescheck = 0;
 		savemodetime2 = 0;
 		hasPrintedNoPlayer = false;
@@ -184,10 +186,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.2.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.2.1");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/03/02");
+features:AddLabel("Last Updated： 2025/03/14");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -226,8 +228,10 @@ end);
 local function updateButtonText()
 	if isDetectionEnabled then
 		savemodebutton.Text = "Status：Safe Mode Enabled";
+		showNotification("Safe Mode Enabled");
 	else
 		savemodebutton.Text = "Status：Safe Mode Disabled";
+		showNotification("Safe Mode Disabled");
 	end
 end
 savemodebutton = features:AddButton("Status：Safe Mode Enabled ", function()
@@ -838,6 +842,7 @@ local function selectDungeonWithMostKeys()
 	local dungeonName = bestDungeon;
 	local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0");
 	print("已選擇最多鑰匙的地下城：" .. dungeonName);
+	showNotification("ChangeDungeon:" .. dungeonName);
 	wait(0.5);
 	wait(savemodetime2);
 	DungeonTP();
@@ -1210,7 +1215,7 @@ spawn(function()
 		wait(1);
 	end
 end);
-local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills", function(bool)
+local AutolotterySwitch = features4:AddSwitch("Auto Draw Weapons/Skills -- Need Fix", function(bool)
 	Autolottery = bool;
 	if Autolottery then
 		canstartticket = true;
@@ -1266,12 +1271,12 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 local Guildname = features5:AddLabel("Guide Name：Need chack Upd Guide" .. " || Contribute times： " .. Donatetimesnumber);
 features5:AddButton("Upd Guide", function()
-	Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text;
-	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 	local replicatedStorage = game:GetService("ReplicatedStorage");
 	local event = replicatedStorage:FindFirstChild("打开公会", true);
 	event:Fire("打开公会");
 	wait(0.5);
+	Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text;
+	Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"));
 	Guildname.Text = "Guide Name：" .. Guidename .. " || Contribute times： " .. Donatetimesnumber;
 end);
 local AutoDonateSwitch = features5:AddSwitch("Auto Contribute", function(bool)

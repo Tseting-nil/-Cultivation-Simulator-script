@@ -87,18 +87,21 @@ local function checkPlayersInRange()
 			savemodetime = 5;
 			timescheck = 1;
 			hasPrintedNoPlayer = true;
+            showNotification("有玩家在範圍內");
 		end
 	elseif (timescheck == 1) then
 		print("範圍內玩家已離開");
 		timescheck = 0;
         savemodetime2 = 0
 		hasPrintedNoPlayer = false;
+        showNotification("範圍內玩家已離開");
 	end
 	if (not playerInRange and not hasPrintedNoPlayer) then
 		print("範圍內無玩家");
 		savemodetime = 3;
         savemodetime2 = 0
 		hasPrintedNoPlayer = true;
+        --showNotification("範圍內無玩家");
 	end
 end
 local function setupRangeDetection()
@@ -233,10 +236,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.2.0");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.2.1");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/03/02");
+features:AddLabel("最後更新時間：2025/03/14");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -278,8 +281,10 @@ end)
 local function updateButtonText()
 	if isDetectionEnabled then
 		savemodebutton.Text = " 狀態：已啟用安全模式";
+        showNotification("已啟用安全模式");
 	else
-		savemodebutton.Text = " 狀態：以關閉安全模式";
+		savemodebutton.Text = " 狀態：已關閉安全模式";
+        showNotification("已關閉安全模式");
 	end
 end
 savemodebutton = features:AddButton(" 狀態：啟用安全模式 ", function()
@@ -1076,6 +1081,7 @@ local function selectDungeonWithMostKeys()
     local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0")
     --chooselevels.Text = "當前選擇："..dungeonName..", 鑰匙："..getDungeonKey(dungeonKeys[dungeonName]).." ,關卡選擇："..dungeonLevel
     print("已選擇最多鑰匙的地下城：" .. dungeonName)
+    showNotification("已切換地下城：" .. dungeonName);
     wait(0.5)
     wait(savemodetime2)
     DungeonTP()
@@ -1489,7 +1495,7 @@ spawn(function()
     end
 end)
 
-local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能", function(bool)
+local AutolotterySwitch = features4:AddSwitch("自動抽法寶/技能--需要修復但可用", function(bool)
     Autolottery = bool
     if Autolottery then
         canstartticket = true
@@ -1549,12 +1555,12 @@ local Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公
 local Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
 local Guildname = features5:AddLabel("公會名稱：未獲取點擊更新公會" .. " 剩餘貢獻次數： " .. Donatetimesnumber)
 features5:AddButton("更新公會",function()
-    Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
-    Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
-	local replicatedStorage = game:GetService("ReplicatedStorage")
+local replicatedStorage = game:GetService("ReplicatedStorage")
     local event = replicatedStorage:FindFirstChild("打开公会", true) -- 遞歸搜尋
     event:Fire("打开公会")
     wait(0.5)
+    Donatetimes = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("公会"):WaitForChild("捐献"):WaitForChild("背景"):WaitForChild("按钮"):WaitForChild("确定按钮"):WaitForChild("次数").Text
+    Donatetimesnumber = tonumber(string.match(Donatetimes, "%d+"))
     Guildname.Text = "公會名稱：" .. Guidename .. " 剩餘貢獻次數： " .. Donatetimesnumber
 end)
 local AutoDonateSwitch = features5:AddSwitch("自動捐献", function(bool)
