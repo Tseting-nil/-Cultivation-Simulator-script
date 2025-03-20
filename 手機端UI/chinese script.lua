@@ -186,7 +186,7 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.2.1");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.3.0");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
 features:AddLabel("最後更新時間：2025/03/14");
