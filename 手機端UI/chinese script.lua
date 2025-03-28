@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))();
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/imgui%E4%B8%AD%E6%96%87%E9%9D%A2%E6%9D%BF.lua", true))()
 local RespawPoint = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua"))();
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
 local JsonHandler = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/JSON%E6%A8%A1%E7%B5%84.lua"))();
@@ -186,10 +186,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.3.0");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.0");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/03/14");
+features:AddLabel("最後更新時間：2025/03/28");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()

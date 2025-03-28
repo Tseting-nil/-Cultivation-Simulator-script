@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://pastebin.com/raw/Ktm0i9QT", true))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/imgui_en%E9%9D%A2%E6%9D%BF.lua", true))()
 --獲取重生點
 local RespawPoint = loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua'))()
 --遊戲內部資料夾名稱更改(優先度最高)
@@ -236,10 +236,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.3.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.4.0");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/03/14");
+features:AddLabel("Last Updated： 2025/03/28");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
