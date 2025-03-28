@@ -3,7 +3,7 @@ local a = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil
 if a == 1 then
     local HttpService = game:GetService("HttpService")
 
-    local library = loadstring(game:HttpGet("https://pastebin.com/raw/d40xPN0c", true))()
+    local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/imgui_en%E9%9D%A2%E6%9D%BF.lua", true))()
     local switch11
     local switch22
 
