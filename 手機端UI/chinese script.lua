@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/imgui%E4%B8%AD%E6%96%87%E9%9D%A2%E6%9D%BF.lua", true))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/imgui%E4%B8%AD%E6%96%87%E9%9D%A2%E6%9D%BF.lua", true))();
 local RespawPoint = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E9%85%8D%E7%BD%AE%E4%B8%BB%E5%A0%B4%E6%99%AF.lua"))();
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E6%89%8B%E6%A9%9F%E7%AB%AFUI/%E4%BB%BB%E5%8B%99%E8%87%AA%E5%8B%95%E9%A0%98%E5%8F%96.lua"))();
 local JsonHandler = loadstring(game:HttpGet("https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/JSON%E6%A8%A1%E7%B5%84.lua"))();
@@ -68,15 +68,10 @@ local function checkPlayersInRange()
 	elseif (timescheck == 1) then
 		print("範圍內玩家已離開");
 		timescheck = 0;
+		savemodetime = 3;
 		savemodetime2 = 0;
 		hasPrintedNoPlayer = false;
 		showNotification("範圍內玩家已離開");
-	end
-	if (not playerInRange and not hasPrintedNoPlayer) then
-		print("範圍內無玩家");
-		savemodetime = 3;
-		savemodetime2 = 0;
-		hasPrintedNoPlayer = true;
 	end
 end
 local function setupRangeDetection()
@@ -186,10 +181,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.0");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.1");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/03/28");
+features:AddLabel("最後更新時間：2025/03/29");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -564,7 +559,7 @@ features2:AddButton("選擇關卡-1", function()
 	gowordlevels = gowordlevels - 1;
 	gowordlevelscheak(gowordlevels);
 end);
-local combatUI = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本");
+local decimal = 0;
 local function teleporttworld1()
 	local args = {[1]=gowordlevels};
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args));
@@ -583,9 +578,15 @@ local function CheckRestart()
 	local fraction = string.match(combattext, "-(%d+/%d+)");
 	if fraction then
 		local numerator, denominator = string.match(fraction, "(%d+)/(%d+)");
-		local decimal = tonumber(numerator) / tonumber(denominator);
-		if ((decimal == 1) and worldstring) then
+		decimal = tonumber(numerator) / tonumber(denominator);
+		if ((decimal == 1) and worldstring and Autostartwarld) then
 			Restart = true;
+		end
+		if ((decimal >= 0.7) and Autostar2twarld) then
+			Restart = true;
+		end
+		if (Autostartwarld and Autostar2twarld) then
+			showNotification("兩個都開只會執行無盡戰鬥");
 		end
 	end
 end
@@ -615,6 +616,29 @@ local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)
 	end
 end);
 Autostart:Set(false);
+local Autostart2 = features2:AddSwitch("無盡戰鬥", function(bool)
+	Autostar2twarld = bool;
+	if Autostar2twarld then
+		while Autostar2twarld do
+			CheckRestart();
+			if (Restart and not hasPrintedNoPlayer) then
+				print("無盡戰鬥開始,附近無玩家");
+				teleporttworld2();
+				Restart = false;
+			elseif (Restart and hasPrintedNoPlayer and (decimal == 1)) then
+				print("無盡戰鬥開始,附近有玩家,執行普通模式");
+				wait(savemodetime2);
+				teleporthome();
+				wait(0.5);
+				wait(savemodetime);
+				teleporttworld2();
+				Restart = false;
+			end
+			wait(1);
+		end
+	end
+end);
+Autostart2:Set(false);
 features2:AddButton("掛機模式", function()
 	local AFKmod = game:GetService("Players").LocalPlayer:WaitForChild("值"):WaitForChild("设置"):WaitForChild("自动战斗");
 	if (AFKmod.Value == true) then
@@ -845,9 +869,23 @@ local function selectDungeonWithMostKeys()
 	local bestDungeon, bestDropdownIndex = getDungeonWithMostKeys();
 	dropdownchoose = bestDropdownIndex;
 	local dungeonName = bestDungeon;
+	local dungeonNamechinese = " ";
 	local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0");
 	print("已選擇最多鑰匙的地下城：" .. dungeonName);
-	showNotification("已切換地下城：" .. dungeonName);
+	if (dungeonName == "Ore Dungeon") then
+		dungeonNamechinese = "礦石地下城";
+	elseif (dungeonName == "Gem Dungeon") then
+		dungeonNamechinese = "寶石地下城";
+	elseif (dungeonName == "Rune Dungeon") then
+		dungeonNamechinese = "符石地下城";
+	elseif (dungeonName == "Relic Dungeon") then
+		dungeonNamechinese = "遺物地下城";
+	elseif (dungeonName == "Hover Dungeon") then
+		dungeonNamechinese = "懸浮地下城";
+	elseif (dungeonName == "Gold Dungeon") then
+		dungeonNamechinese = "金幣地下城";
+	end
+	showNotification("已切換地下城：" .. dungeonNamechinese);
 	wait(0.5);
 	wait(savemodetime2);
 	DungeonTP();

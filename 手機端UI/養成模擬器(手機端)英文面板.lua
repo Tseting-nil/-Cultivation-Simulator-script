@@ -96,12 +96,6 @@ local function checkPlayersInRange()
         savemodetime2 = 0
 		hasPrintedNoPlayer = false;
 	end
-	if (not playerInRange and not hasPrintedNoPlayer) then
-		print("範圍內無玩家");
-		savemodetime = 3;
-        savemodetime2 = 0
-		hasPrintedNoPlayer = true;
-	end
 end
 local function setupRangeDetection()
 	while true do
@@ -236,10 +230,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.4.0");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.4.1");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/03/28");
+features:AddLabel("Last Updated： 2025/03/29");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -694,7 +688,7 @@ end);
 
 -- ========================================================================== --
 -- --特殊定義(傳送相關)
-local combatUI = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本")
+local decimal = 0
 local function teleporttworld1()
     local args = {[1]=gowordlevels};
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args));
@@ -714,10 +708,17 @@ local function CheckRestart() --玩家完成關卡後觸發自動傳送
     -- 將分數轉換為小數
     if fraction then
         local numerator, denominator = string.match(fraction, "(%d+)/(%d+)")
-        local decimal = tonumber(numerator) / tonumber(denominator)
-        if decimal == 1 and worldstring then
+        decimal = tonumber(numerator) / tonumber(denominator)
+        if decimal == 1 and worldstring and Autostartwarld then
             --print("完成戰鬥 世界"..finishworldnum)
             Restart = true
+        end
+        if decimal >= 0.7 and Autostar2twarld  then
+            Restart = true
+        end
+        --print(worldstring ..",".. numerator.."," .. denominator.."," .. decimal )
+        if Autostartwarld and Autostar2twarld then
+            showNotification("Both modes turned on will only execute Endless Battle")
         end
     end
 end
@@ -762,6 +763,31 @@ local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", 
     end
 end)
 Autostart:Set(false);
+
+local Autostart2 = features2:AddSwitch("Endless Battle(Wave > 70)", function(bool)
+    Autostar2twarld = bool
+    if Autostar2twarld then
+        while Autostar2twarld do
+            CheckRestart()
+            if Restart and not hasPrintedNoPlayer then
+                print("Endless battle begins, no players nearby")
+                teleporttworld2()
+                Restart = false
+            elseif Restart and hasPrintedNoPlayer and decimal == 1 then
+                print("Endless battle begins, there are players nearby, execute normal mode")
+                wait(savemodetime2)
+                teleporthome()
+                wait(0.5)
+                wait(savemodetime)
+                teleporttworld2()
+                Restart = false
+            end
+            wait(1)
+        end
+    end
+end)
+
+Autostart2:Set(false);
 
 features2:AddButton("AFK Mode", function()
 	local AFKmod = game:GetService("Players").LocalPlayer:WaitForChild("值"):WaitForChild("设置"):WaitForChild("自动战斗");
@@ -1257,8 +1283,8 @@ local AutoDungeonplus1Switch = features3:AddSwitch("Automatically Increase Level
 end)
 
 AutoDungeonplus1Switch:Set(false)
-features3:AddLabel("Need to choose for TP,when no keys, it will auto start the most keys")
-local AutofinishdungeonSwitch = features3:AddSwitch("Complete All Dungeons  -- Test", function(bool)
+features3:AddLabel("If open ,When no keys, it will change to other dungeon")
+local AutofinishdungeonSwitch = features3:AddSwitch("Complete All Dungeons ", function(bool)
     Autofinishdungeon = bool
 end)
 

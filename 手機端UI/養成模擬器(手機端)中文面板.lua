@@ -92,16 +92,11 @@ local function checkPlayersInRange()
 	elseif (timescheck == 1) then
 		print("範圍內玩家已離開");
 		timescheck = 0;
+        savemodetime = 3;
         savemodetime2 = 0
+
 		hasPrintedNoPlayer = false;
         showNotification("範圍內玩家已離開");
-	end
-	if (not playerInRange and not hasPrintedNoPlayer) then
-		print("範圍內無玩家");
-		savemodetime = 3;
-        savemodetime2 = 0
-		hasPrintedNoPlayer = true;
-        --showNotification("範圍內無玩家");
 	end
 end
 local function setupRangeDetection()
@@ -236,10 +231,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.0");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.1");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/03/28");
+features:AddLabel("最後更新時間：2025/03/29");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -694,7 +689,7 @@ end)
 
 -- ========================================================================== --
 -- --特殊定義(傳送相關)
-local combatUI = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("关卡信息"):waitForChild("文本")
+local decimal = 0
 local function teleporttworld1()
     local args = {[1]=gowordlevels};
 	game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\133\179\229\141\161"):FindFirstChild("\232\191\155\229\133\165\228\184\150\231\149\140\229\133\179\229\141\161"):FireServer(unpack(args));
@@ -714,10 +709,17 @@ local function CheckRestart() --玩家完成關卡後觸發自動傳送
     -- 將分數轉換為小數
     if fraction then
         local numerator, denominator = string.match(fraction, "(%d+)/(%d+)")
-        local decimal = tonumber(numerator) / tonumber(denominator)
-        if decimal == 1 and worldstring then
+        decimal = tonumber(numerator) / tonumber(denominator)
+        if decimal == 1 and worldstring and Autostartwarld then
             --print("完成戰鬥 世界"..finishworldnum)
             Restart = true
+        end
+        if decimal >= 0.7 and Autostar2twarld  then
+            Restart = true
+        end
+        --print(worldstring ..",".. numerator.."," .. denominator.."," .. decimal )
+        if Autostartwarld and Autostar2twarld then
+            showNotification("兩個都開只會執行無盡戰鬥")
         end
     end
 end
@@ -763,6 +765,31 @@ local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)
 end)
 
 Autostart:Set(false);
+
+local Autostart2 = features2:AddSwitch("無盡戰鬥", function(bool)
+    Autostar2twarld = bool
+    if Autostar2twarld then
+        while Autostar2twarld do
+            CheckRestart()
+            if Restart and not hasPrintedNoPlayer then
+                print("無盡戰鬥開始,附近無玩家")
+                teleporttworld2()
+                Restart = false
+            elseif Restart and hasPrintedNoPlayer and decimal == 1 then
+                print("無盡戰鬥開始,附近有玩家,執行普通模式")
+                wait(savemodetime2)
+                teleporthome()
+                wait(0.5)
+                wait(savemodetime)
+                teleporttworld2()
+                Restart = false
+            end
+            wait(1)
+        end
+    end
+end)
+
+Autostart2:Set(false);
 
 features2:AddButton("掛機模式", function()
 	local AFKmod = game:GetService("Players").LocalPlayer:WaitForChild("值"):WaitForChild("设置"):WaitForChild("自动战斗");
@@ -1040,10 +1067,7 @@ local function DungeonTP()
 
     game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\229\137\175\230\156\172"):FindFirstChild("\232\191\155\229\133\165\229\137\175\230\156\172"):FireServer(unpack(args))
 end
-local dungeonList = {
-    "Ore Dungeon", "Gem Dungeon", "Rune Dungeon",
-    "Relic Dungeon", "Hover Dungeon", "Gold Dungeon"
-}
+local dungeonList = {"Ore Dungeon", "Gem Dungeon", "Rune Dungeon","Relic Dungeon", "Hover Dungeon", "Gold Dungeon"}
 
 local dungeonKeys = {
     ["Ore Dungeon"] = "OreDungeon",
@@ -1078,10 +1102,24 @@ local function selectDungeonWithMostKeys()
     local bestDungeon, bestDropdownIndex = getDungeonWithMostKeys()
     dropdownchoose = bestDropdownIndex
     local dungeonName = bestDungeon
+    local dungeonNamechinese = " "
     local dungeonLevel = tostring(dungeonFunctions[dungeonKeys[dungeonName]]() or "0")
     --chooselevels.Text = "當前選擇："..dungeonName..", 鑰匙："..getDungeonKey(dungeonKeys[dungeonName]).." ,關卡選擇："..dungeonLevel
     print("已選擇最多鑰匙的地下城：" .. dungeonName)
-    showNotification("已切換地下城：" .. dungeonName);
+    if dungeonName == "Ore Dungeon" then
+        dungeonNamechinese = "礦石地下城"
+    elseif dungeonName == "Gem Dungeon" then
+        dungeonNamechinese = "寶石地下城"
+    elseif dungeonName == "Rune Dungeon" then
+        dungeonNamechinese = "符石地下城"
+    elseif dungeonName == "Relic Dungeon" then
+        dungeonNamechinese = "遺物地下城"
+    elseif dungeonName == "Hover Dungeon" then
+        dungeonNamechinese = "懸浮地下城"
+    elseif dungeonName == "Gold Dungeon" then
+        dungeonNamechinese = "金幣地下城"
+    end
+    showNotification("已切換地下城：" .. dungeonNamechinese);
     wait(0.5)
     wait(savemodetime2)
     DungeonTP()
