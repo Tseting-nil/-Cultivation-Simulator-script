@@ -15,29 +15,32 @@
 ---
 
 ## ✨ 介面使用
-- 電腦版使用 [Fluent](https://github.com/dawid-scripts/Fluent)
 - 手機版使用 [Elerium v2](https://github.com/memejames/elerium-v2-ui-library)
 
 ---
+
+## 🖋 作者：Tseting-nil 澤澤 
+  - 此腳本由我獨自一人耗費時間製作如使用請標註此GitHub倉庫
 
 ## ✨ 腳本：手機板中文/英文介面
 ```lua
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E5%95%9F%E5%8B%95%E5%99%A8%E5%8A%A0%E5%AF%86%E9%81%B8%E5%96%AE.lua'))()
 ```
-
-
-## 🖋 作者：Tseting-nil 澤澤 
-  - 此腳本由我獨自一人耗費時間製作如使用請標註此GitHub倉庫
+## 功能：
+- 自動領取（每日任務、世界任務、通行證任務、通行證獎勳）
+- 快速開始關卡
+- 自動開始關卡
+- 自動最高關卡
+- 自動煉丹 ~~法寶/技能~~
+- 快速升級
+- 自動公會捐獻
+- 快速開啟介面
+- 還有更多...
   
 ## 📸 展示
 
-### 電腦版介面(暫時停用)
-![電腦版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA1.jpg)  
-![電腦版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA2.jpg)  
-![電腦版 UI 展示 3](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA3.jpg)  
+### 手機版中文介面
+![中文手機版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E4%B8%AD%E6%96%87%E6%BC%94%E7%A4%BA1.png)  ![中文手機版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E4%B8%AD%E6%96%87%E6%BC%94%E7%A4%BA2.png)  ![中文手機版 UI 展示 3](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E4%B8%AD%E6%96%87%E6%BC%94%E7%A4%BA3.png) ![中文手機版 UI 展示 4](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E4%B8%AD%E6%96%87%E6%BC%94%E7%A4%BA4.png)  
 
-### 手機版介面
-![手機版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA4.jpg)  
-![手機版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E6%BC%94%E7%A4%BA5.jpg)  
-
-
+### 手機版英文文介面
+![英文手機版 UI 展示 1](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E8%8B%B1%E6%96%87%E6%BC%94%E7%A4%BA1.png)  ![英文手機版 UI 展示 2](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E8%8B%B1%E6%96%87%E6%BC%94%E7%A4%BA2.png)  ![英文手機版 UI 展示 3](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E8%8B%B1%E6%96%87%E6%BC%94%E7%A4%BA3.png) ![英文手機版 UI 展示 4](https://github.com/Tseting-nil/-Cultivation-Simulator-script/blob/main/%E5%9C%96%E7%89%87/%E8%8B%B1%E6%96%87%E6%BC%94%E7%A4%BA4.png)   
