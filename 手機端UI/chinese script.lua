@@ -181,7 +181,7 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.1");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.2");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
 features:AddLabel("最後更新時間：2025/03/29");
@@ -616,7 +616,7 @@ local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)
 	end
 end);
 Autostart:Set(false);
-local Autostart2 = features2:AddSwitch("無盡戰鬥(Wave > 70)", function(bool)
+local Autostart2 = features2:AddSwitch("無盡戰鬥(波次 > 70)", function(bool)
 	Autostar2twarld = bool;
 	if Autostar2twarld then
 		while Autostar2twarld do

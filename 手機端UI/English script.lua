@@ -180,7 +180,7 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.4.1");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.4.2");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
 features:AddLabel("Last Updated： 2025/03/29");
