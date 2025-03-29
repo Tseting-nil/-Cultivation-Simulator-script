@@ -582,7 +582,7 @@ local function CheckRestart()
 		if ((decimal == 1) and worldstring and Autostartwarld) then
 			Restart = true;
 		end
-		if ((decimal >= 0.7) and Autostar2twarld) then
+		if ((decimal >= 0.7) and worldstring and Autostar2twarld) then
 			Restart = true;
 		end
 		if (Autostartwarld and Autostar2twarld) then
@@ -616,7 +616,7 @@ local Autostart = features2:AddSwitch("戰鬥結束後自動開始(世界戰鬥)
 	end
 end);
 Autostart:Set(false);
-local Autostart2 = features2:AddSwitch("無盡戰鬥", function(bool)
+local Autostart2 = features2:AddSwitch("無盡戰鬥(Wave > 70)", function(bool)
 	Autostar2twarld = bool;
 	if Autostar2twarld then
 		while Autostar2twarld do

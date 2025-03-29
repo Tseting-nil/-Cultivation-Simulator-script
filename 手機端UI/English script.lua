@@ -581,7 +581,7 @@ local function CheckRestart()
 		if ((decimal == 1) and worldstring and Autostartwarld) then
 			Restart = true;
 		end
-		if ((decimal >= 0.7) and Autostar2twarld) then
+		if ((decimal >= 0.7) and worldstring and Autostar2twarld) then
 			Restart = true;
 		end
 		if (Autostartwarld and Autostar2twarld) then

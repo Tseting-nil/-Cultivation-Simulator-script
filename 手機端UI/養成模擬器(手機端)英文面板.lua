@@ -713,7 +713,7 @@ local function CheckRestart() --玩家完成關卡後觸發自動傳送
             --print("完成戰鬥 世界"..finishworldnum)
             Restart = true
         end
-        if decimal >= 0.7 and Autostar2twarld  then
+        if decimal >= 0.7 and worldstring and Autostar2twarld  then
             Restart = true
         end
         --print(worldstring ..",".. numerator.."," .. denominator.."," .. decimal )
