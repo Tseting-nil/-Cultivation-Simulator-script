@@ -230,10 +230,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.4.2");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.4.3");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/03/29");
+features:AddLabel("Last Updated： 2025/03/30");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -705,6 +705,12 @@ local function CheckRestart() --玩家完成關卡後觸發自動傳送
     local worldstring = string.match(combattext, "World")
     finishworldnum = string.match(combattext, "World (%d+)-")-- 關卡數字 1
     local fraction = string.match(combattext, "-(%d+/%d+)")-- 提取關卡完成度
+    local combatfail = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("变强提示").Visible
+    local combatimeout = playerGui.GUI:WaitForChild("主界面"):WaitForChild("战斗"):waitForChild("战斗结果图片").Visible
+    if (combatfail or combatimeout) and Autostartwarld and worldstring then
+        print("戰鬥失敗,重啟")
+        Restart = true
+    end
     -- 將分數轉換為小數
     if fraction then
         local numerator, denominator = string.match(fraction, "(%d+)/(%d+)")
@@ -744,7 +750,7 @@ end
 features2:AddButton("TP", function()
     teleporttworld1()
 end)
-features2:AddLabel("!! Auto-start requires the ability to complete wave 100")
+features2:AddLabel("!! Auto start no longer requires wave restrictions")
 local Autostart = features2:AddSwitch("Auto-start After Battle (World Battle)", function(bool)
     Autostartwarld = bool
     if Autostartwarld then
@@ -1343,9 +1349,16 @@ end)
 local AutoelixirSwitch = features4:AddSwitch("Auto Elixir ", function(bool)
 	Autoelixir = bool
 	if Autoelixir then
-		while Autoelixir do
-            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\231\130\188\228\184\185"):FindFirstChild("\229\136\182\228\189\156"):FireServer()
-            wait(0.5)
+        while Autoelixir do
+            local elixirspand = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("炼丹炉"):WaitForChild("背景"):WaitForChild("形象"):WaitForChild("制作"):WaitForChild("按钮"):WaitForChild("数量区"):WaitForChild("价格").text
+            elixirspand = tonumber(elixirspand)
+            local elixirnum = player:WaitForChild("值"):WaitForChild("货币"):WaitForChild("草药").Value
+            if elixirnum >= elixirspand then
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\231\130\188\228\184\185"):FindFirstChild("\229\136\182\228\189\156"):FireServer()
+            else
+                print("草药不足")
+            end
+            wait(1)
         end
 	end
 end)
@@ -1356,8 +1369,11 @@ local AutoelixirabsorbSwitch = features4:AddSwitch("Auto Absorb Elixir⚠️All 
 	Autoelixirabsorb = bool
 	if Autoelixirabsorb then
 		while Autoelixirabsorb do
-            game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\228\184\185\232\141\175"):FindFirstChild("\229\144\184\230\148\182\229\133\168\233\131\168"):FireServer()
-            wait(0.7)
+            local pllayerbag = playerGui.GUI:WaitForChild("二级界面"):waitForChild("主角"):WaitForChild("背景"):waitForChild("右侧界面"):WaitForChild("丹药"):waitForChild("背包区域"):WaitForChild("积分"):waitForChild("文本").text
+            if pllayerbag ~= "0" then
+                game:GetService("ReplicatedStorage"):FindFirstChild("\228\186\139\228\187\182"):FindFirstChild("\229\133\172\231\148\168"):FindFirstChild("\228\184\185\232\141\175"):FindFirstChild("\229\144\184\230\148\182\229\133\168\233\131\168"):FireServer()
+            end
+            wait(1.5)
         end
 	end
 end)
