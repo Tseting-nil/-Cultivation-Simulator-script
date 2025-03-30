@@ -1,8 +1,9 @@
 local player = game:GetService("Players").LocalPlayer;
 local playerGui = player.PlayerGui;
+local secondscreen = playerGui.GUI:WaitForChild("二级界面")
 -- ========================================================================== --
 -- 任務資料夾初始化名稱
-local gamepassmissionnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表")
+local gamepassmissionnamelist = secondscreen:WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表")
 local gamepassnamecheck = false
 local function gamepassmissionnamechange()
 	-- 檢查最終對象是否存在
@@ -28,7 +29,7 @@ gamepassmissionnamechange()
 -- 通行證獎勵資料夾初始化名稱
 local player = game:GetService("Players").LocalPlayer;
 local playerGui = player.PlayerGui;
-local gamepassgiftnnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("月通行证"):WaitForChild("背景"):WaitForChild("奖励区"):WaitForChild("奖励列表")
+local gamepassgiftnnamelist = secondscreen:WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("月通行证"):WaitForChild("背景"):WaitForChild("奖励区"):WaitForChild("奖励列表")
 local gamepassgiftnamecheck = false
 local function gamepassgiftnnamechange()
     if gamepassgiftnnamelist then
@@ -60,7 +61,7 @@ end
 gamepassgiftnnamechange()
 -- ========================================================================== --
 -- 每日任務資料夾初始化名稱
-local everydaymissionnamelist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("每日任务"):WaitForChild("背景"):WaitForChild("任务列表")
+local everydaymissionnamelist = secondscreen:WaitForChild("每日任务"):WaitForChild("背景"):WaitForChild("任务列表")
 local everydaynamecheck = false
 local function everydatmissionnamechange()
 	if everydaymissionnamelist then
@@ -95,7 +96,7 @@ end
 
 -- ========================================================================== --
 -- 地下城資料夾初始化名稱
-local Dungeonslist = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
+local Dungeonslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
 local function Dungeonnamechange()
     local namecheck = false
     if Dungeonslist then
@@ -122,3 +123,32 @@ local function Dungeonnamechange()
 end
 
 Dungeonnamechange()
+
+--活動地下城資料夾初始化名稱
+local Dungeonseventlist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表")
+local function eventDungeonnamechange()
+    local namecheck = false
+    if Dungeonseventlist then
+        spawn(function()
+            while true do
+                local Dungeonseventlist = Dungeonseventlist:FindFirstChild("活动副本预制体")
+                if Dungeonseventlist then
+                    local eventdungeonsname = Dungeonseventlist:FindFirstChild("名称").Text
+                    eventdungeonsname = string.gsub(eventdungeonsname, "%s+", "")
+                    Dungeonseventlist.Name = eventdungeonsname
+                else
+                    if not namecheck then
+                        print("活動地下城--名稱--已全部更改")
+                        namecheck = true
+                        break
+                    end
+                end
+            end
+            namecheck = false
+        end)
+    else
+        --print("地下城--名稱--已全部更改")
+    end
+end
+
+eventDungeonnamechange()
