@@ -231,10 +231,10 @@ checkTimeAndRun()
 -- ========================================================================== --
 -- 自述頁
 features:Show();
-features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.3");
+features:AddLabel("作者：澤澤   介面：Elerium v2   版本：V4.4.4");
 features:AddLabel("AntiAFK：start");
 features:AddLabel("製作時間：2024/09/27");
-features:AddLabel("最後更新時間：2025/03/30");
+features:AddLabel("最後更新時間：2025/03/31");
 local timeLabel = features:AddLabel("當前時間：00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("時區：UTC+00:00");
 local function getFormattedTime()
@@ -805,6 +805,12 @@ features2:AddButton("掛機模式", function()
 		AFKmod.Value = true;
 	end
 end)
+features2:AddButton("快速副本選擇",function()
+    local event = game:GetService("ReplicatedStorage"):FindFirstChild("打开关卡选择", true) -- 遞歸搜尋
+    if event and event:IsA("BindableEvent") then
+        event:Fire("打開煉丹爐")
+    end
+end)
 -- ========================================================================== --
 -- 地下城頁
 
@@ -910,6 +916,7 @@ for key, value in pairs(playerData) do
 end
 
 local Dungeonslist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
+local Dungeonseventlist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表")
 local dropdownchoose = 0
 local dropdownchoose2 = "1"
 local dropdownchoose3 = 0
@@ -925,6 +932,54 @@ local function getDungeonKey(dungeonName)
     end
     return nil
 end
+local Dungeonseventlist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表")
+local EventDungeonkey
+-- 用具體的副本名稱來建立表
+local dungeonList = {"EasterDungeon", "Halloween", "ChristmasDungeon"}
+
+local foundDungeons = {}
+
+-- 透過檢查活動副本可見性判斷,弊端超過兩個顯示就會出錯
+for _, dungeonName in ipairs(dungeonList) do
+    local dungeon = Dungeonseventlist:FindFirstChild(dungeonName)
+    if dungeon then
+        local visible = dungeon.Visible
+        if visible then
+            table.insert(foundDungeons, dungeonName) -- 將可見的副本名稱加入找到的表
+        end
+    end
+end
+
+
+local function getEventDungeonkey()
+    if #foundDungeons == 0 then
+        --print("活動地下城未開啟")
+        EventDungeonkey = "未開啟"
+        return EventDungeonkey
+    else
+        for _, dungeonName in ipairs(foundDungeons) do
+            -- 獲取該副本的鑰匙
+            local dungeon = Dungeonseventlist:FindFirstChild(dungeonName)
+            if dungeon then
+                local keyObject = dungeon:FindFirstChild("钥匙")
+                if keyObject then
+                    local keyValue = keyObject:FindFirstChild("值")
+                    if keyValue and keyValue.Text then
+                        local keyText = keyValue.Text
+                        local key = tonumber(string.match(keyText, "^%d+"))
+                        --print(dungeonName, "的鑰匙值為:", key)
+                        EventDungeonkey = key
+                        --print(EventDungeonkey)
+                        return EventDungeonkey
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+
 
 -- 獲取所有副本鑰匙值
 local function checkDungeonkey()
@@ -934,6 +989,7 @@ local function checkDungeonkey()
     Relic_Dungeonkey = getDungeonKey("RelicDungeon")
     Rune_Dungeonkey = getDungeonKey("RuneDungeon")
     Hover_Dungeonkey = getDungeonKey("HoverDungeon")
+    Event_Dungeonkey = getEventDungeonkey()
 end
 checkDungeonkey()
 
@@ -966,10 +1022,10 @@ local dropdown1 = features3:AddDropdown("選擇地下城", function(text)
         dropdownchoose = 6
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
         chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif text == ("            活動地下城   未開啟         ") then
-        dropdownchoose = 5
-        dropdownchoose2 = "未開啟"
-        chooselevels.Text = "當前選擇：活動地下城  未開啟"
+    elseif text == ("            活動地下城            ") then
+        dropdownchoose = 9
+        dropdownchoose2 = "1"
+        chooselevels.Text = "當前選擇：活動地下城,  鑰匙："..Event_Dungeonkey
     else
         dropdownchoose = 8
         chooselevels.Text = "此為佔位符號無任何效果"
@@ -982,7 +1038,7 @@ local Dungeon3 = dropdown1:Add("            符石地下城            ")
 local Dungeon4 = dropdown1:Add("            遺物地下城            ")
 local Dungeon5 = dropdown1:Add("            懸浮地下城            ")
 local Dungeon6 = dropdown1:Add("            金幣地下城            ")
-local Dungeon7 = dropdown1:Add("            活動地下城   未開啟            ")
+local Dungeon7 = dropdown1:Add("            活動地下城            ")
 local Dungeon8 = dropdown1:Add("            此為佔位符號無任何效果            ")
 
 local function UDPDungeontext()
@@ -1006,8 +1062,8 @@ local function UDPDungeontext()
     elseif dropdownchoose == 6 then
         dropdownchoose2 = tostring(dungeonFunctions["GoldDungeon"] and dungeonFunctions["GoldDungeon"]() or "0")
         chooselevels.Text = "當前選擇：金幣地下城,  鑰匙："..Gold_Dungeonkey.. "  ,關卡選擇："..dropdownchoose2
-    elseif dropdownchoose == 5 then  
-        chooselevels.Text = "當前選擇：活動地下城  未開啟"
+    elseif dropdownchoose == 9 then  
+        chooselevels.Text = "當前選擇：活動地下城,  鑰匙："..Event_Dungeonkey
     elseif dropdownchoose == 8 then
         chooselevels.Text = "此為佔位符號無任何效果"
     end
@@ -1021,7 +1077,7 @@ local function UDPDungeonchoose()
     Dungeon4.Text = ("            遺物地下城   鑰匙："..Relic_Dungeonkey.."            ")
     Dungeon5.Text = ("            懸浮地下城   鑰匙："..Hover_Dungeonkey.."            ")
     Dungeon6.Text = ("            金幣地下城   鑰匙："..Gold_Dungeonkey.."            ")
-    Dungeon7.Text = ("            活動地下城   未開啟            ")
+    Dungeon7.Text = ("            活動地下城   鑰匙："..Event_Dungeonkey.."            ")
 end
 
 spawn(function()
@@ -1366,7 +1422,12 @@ end)
 
 
 features3:AddButton("傳送", function()
-    DungeonTP()
+    if Event_Dungeonkey == "未開啟" and dropdownchoose == 9 then
+        print("活動地下城未開啟")
+        return
+    else
+        DungeonTP()
+    end
 end)
 -- ========================================================================== --
 -- 抽取頁
@@ -1673,6 +1734,12 @@ features6:AddButton("開啟練器台",function()
 end)
 features6:AddButton("開啟煉丹爐",function()
     local event = replicatedStorage:FindFirstChild("打开炼丹炉", true) -- 遞歸搜尋
+    if event and event:IsA("BindableEvent") then
+        event:Fire("打開煉丹爐")
+    end
+end)
+features6:AddButton("開啟關卡選擇",function()
+    local event = replicatedStorage:FindFirstChild("打开关卡选择", true) -- 遞歸搜尋
     if event and event:IsA("BindableEvent") then
         event:Fire("打開煉丹爐")
     end

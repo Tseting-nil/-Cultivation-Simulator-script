@@ -180,10 +180,10 @@ local function checkTimeAndRun()
 end
 checkTimeAndRun();
 features:Show();
-features:AddLabel("Author： Tseting-nil  |  Version：V4.4.3");
+features:AddLabel("Author： Tseting-nil  |  Version：V4.4.4");
 features:AddLabel("AntiAFK：Start");
 features:AddLabel("Created on： 2024/09/27");
-features:AddLabel("Last Updated： 2025/03/30");
+features:AddLabel("Last Updated： 2025/03/31");
 local timeLabel = features:AddLabel("Current Time： 00/00/00 00:00:00");
 local timezoneLabel = features:AddLabel("Time Zone： UTC+00:00");
 local function getFormattedTime()
@@ -652,6 +652,12 @@ features2:AddButton("AFK Mode", function()
 		AFKmod.Value = true;
 	end
 end);
+features2:AddButton("Fast Dungeon Selection", function()
+	local event = game:GetService("ReplicatedStorage"):FindFirstChild("打开关卡选择", true);
+	if (event and event:IsA("BindableEvent")) then
+		event:Fire("打開煉丹爐");
+	end
+end);
 local httpService = game:GetService("HttpService");
 local player = game.Players.LocalPlayer;
 local filePath = "DungeonsMaxLevel.json";
@@ -731,6 +737,41 @@ local function getDungeonKey(dungeonName)
 	end
 	return nil;
 end
+local Dungeonseventlist = playerGui:WaitForChild("GUI"):WaitForChild("二级界面"):WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表");
+local EventDungeonkey;
+local dungeonList = {"EasterDungeon","Halloween","ChristmasDungeon"};
+local foundDungeons = {};
+for _, dungeonName in ipairs(dungeonList) do
+	local dungeon = Dungeonseventlist:FindFirstChild(dungeonName);
+	if dungeon then
+		local visible = dungeon.Visible;
+		if visible then
+			table.insert(foundDungeons, dungeonName);
+		end
+	end
+end
+local function getEventDungeonkey()
+	if (#foundDungeons == 0) then
+		EventDungeonkey = "NOT OPEN";
+		return EventDungeonkey;
+	else
+		for _, dungeonName in ipairs(foundDungeons) do
+			local dungeon = Dungeonseventlist:FindFirstChild(dungeonName);
+			if dungeon then
+				local keyObject = dungeon:FindFirstChild("钥匙");
+				if keyObject then
+					local keyValue = keyObject:FindFirstChild("值");
+					if (keyValue and keyValue.Text) then
+						local keyText = keyValue.Text;
+						local key = tonumber(string.match(keyText, "^%d+"));
+						EventDungeonkey = key;
+						return EventDungeonkey;
+					end
+				end
+			end
+		end
+	end
+end
 local function checkDungeonkey()
 	Ore_Dungeonkey = getDungeonKey("OreDungeon");
 	Gem_Dungeonkey = getDungeonKey("GemDungeon");
@@ -738,6 +779,7 @@ local function checkDungeonkey()
 	Relic_Dungeonkey = getDungeonKey("RelicDungeon");
 	Rune_Dungeonkey = getDungeonKey("RuneDungeon");
 	Hover_Dungeonkey = getDungeonKey("HoverDungeon");
+	Event_Dungeonkey = getEventDungeonkey();
 end
 checkDungeonkey();
 local chooselevels = features3:AddLabel("Dungeon Selection ...");
@@ -766,10 +808,13 @@ local dropdown1 = features3:AddDropdown("Dungeon Selection ...", function(text)
 		dropdownchoose = 6;
 		dropdownchoose2 = tostring((dungeonFunctions['GoldDungeon'] and dungeonFunctions['GoldDungeon']()) or "0");
 		chooselevels.Text = " GoldDungeon,  Key：" .. Gold_Dungeonkey .. "  ,Level：" .. dropdownchoose2;
-	elseif (text == "    Event Dungeon...Not open    ") then
-		dropdownchoose = 5;
-		dropdownchoose2 = "未開啟";
-		chooselevels.Text = "當前選擇：活動地下城  未開啟";
+	elseif (text == "    EventDungeon    ") then
+		dropdownchoose = 9;
+		dropdownchoose2 = "1";
+		chooselevels.Text = " EventDungeon,  Key：" .. Event_Dungeonkey;
+	else
+		dropdownchoose = 8;
+		chooselevels.Text = "    ...    ";
 	end
 end);
 local Dungeon1 = dropdown1:Add("    OreDungeon    ");
@@ -778,7 +823,7 @@ local Dungeon3 = dropdown1:Add("    RuneDungeon    ");
 local Dungeon4 = dropdown1:Add("    RelicDungeon    ");
 local Dungeon5 = dropdown1:Add("    HoverDungeon    ");
 local Dungeon6 = dropdown1:Add("    GoldDungeon    ");
-local Dungeon7 = dropdown1:Add("    Event Dungeon...Not open    ");
+local Dungeon7 = dropdown1:Add("    EventDungeon    ");
 local Dungeon8 = dropdown1:Add("    ...    ");
 local function UDPDungeontext()
 	if (dropdownchoose == 0) then
@@ -801,19 +846,21 @@ local function UDPDungeontext()
 	elseif (dropdownchoose == 6) then
 		dropdownchoose2 = tostring((dungeonFunctions['GoldDungeon'] and dungeonFunctions['GoldDungeon']()) or "0");
 		chooselevels.Text = " GoldDungeon,  Key：" .. Gold_Dungeonkey .. "  ,Level：" .. dropdownchoose2;
-	elseif (dropdownchoose == 5) then
-		chooselevels.Text = " EventDungeon  Not OPEN";
+	elseif (dropdownchoose == 9) then
+		chooselevels.Text = " EventDungeon,  Key：" .. Event_Dungeonkey;
+	elseif (dropdownchoose == 8) then
+		chooselevels.Text = "    ...    ";
 	end
 end
 local function UDPDungeonchoose()
 	checkDungeonkey();
-	Dungeon1.Text = "  OreDungeon          Key：" .. Ore_Dungeonkey .. "  ";
-	Dungeon2.Text = "  GemDungeon        Key：" .. Gem_Dungeonkey .. "  ";
-	Dungeon3.Text = "  RuneDungeon       Key：" .. Rune_Dungeonkey .. "  ";
-	Dungeon4.Text = "  RelicDungeon        Key：" .. Relic_Dungeonkey .. "  ";
-	Dungeon5.Text = "  HoverDungeon      Key：" .. Hover_Dungeonkey .. "  ";
-	Dungeon6.Text = "  GoldDungeon         Key：" .. Gold_Dungeonkey .. "  ";
-	Dungeon7.Text = "  Event Dungeon...Not open";
+	Dungeon1.Text = "      OreDungeon             Key：" .. Ore_Dungeonkey .. "  ";
+	Dungeon2.Text = "      GemDungeon          Key：" .. Gem_Dungeonkey .. "  ";
+	Dungeon3.Text = "      RuneDungeon         Key：" .. Rune_Dungeonkey .. "  ";
+	Dungeon4.Text = "      RelicDungeon          Key：" .. Relic_Dungeonkey .. "  ";
+	Dungeon5.Text = "      HoverDungeon        Key：" .. Hover_Dungeonkey .. "  ";
+	Dungeon6.Text = "      GoldDungeon           Key：" .. Gold_Dungeonkey .. "  ";
+	Dungeon7.Text = "      EventDungeon         Key：" .. Event_Dungeonkey .. "  ";
 end
 spawn(function()
 	while true do
@@ -1097,7 +1144,12 @@ features3:AddButton("Level Selection -1", function()
 	adjustDungeonLevel(-1);
 end);
 features3:AddButton("TP", function()
-	DungeonTP();
+	if ((Event_Dungeonkey == "NOT OPEN") and (dropdownchoose == 9)) then
+		print("Event Dungeon Not Open");
+		return;
+	else
+		DungeonTP();
+	end
 end);
 local AutoelixirSwitch = features4:AddSwitch("Auto Elixir ", function(bool)
 	Autoelixir = bool;
