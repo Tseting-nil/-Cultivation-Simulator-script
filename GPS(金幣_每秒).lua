@@ -103,18 +103,34 @@ local function calculateGPS()
 
     -- 根據當前選擇的單位進行顯示
     if currentUnitIndex == 1 then
-        -- 秒金幣
         gpsDisplay = math.floor(gpsValue)  -- 只顯示整數
-        unitLabel = string.format("%d 金幣/秒", gpsDisplay)
+        -- 秒金幣
+        if gpsValue >= 10000 then
+            gpsValue = math.floor(gpsValue / 1000)  -- K
+            unitLabel = string.format("%d (k)金幣/秒", gpsValue) -- 顯示為 "數字 K 秒金幣"
+        else
+            unitLabel = string.format("%d 金幣/秒", gpsValue)
+        end
     elseif currentUnitIndex == 2 then
         -- 分鐘金幣 (用過去 60 秒的平均 GPS)
         gpsDisplay = math.floor(avgGPS * 60)  -- 每分鐘的 GPS
-        unitLabel = string.format("%d 金幣/分鐘", gpsDisplay)
+        if gpsDisplay >= 10000000 then
+            gpsDisplay = math.floor(gpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)金幣/分鐘", gpsDisplay) -- 顯示為 "數字 M 分鐘金幣"
+        elseif gpsDisplay >= 10000 then
+            gpsDisplay = math.floor(gpsDisplay / 1000)  -- K
+            unitLabel = string.format("%d (k)金幣/分鐘", gpsDisplay) -- 顯示為 "數字 K 分鐘金幣"
+        else
+            unitLabel = string.format("%d 金幣/分鐘", gpsDisplay)
+        end
     elseif currentUnitIndex == 3 then
         -- 小時金幣
         gpsDisplay = math.floor(avgGPS * 3600)  -- 每小時的 GPS
-        -- 轉換為 K (千)
-        if gpsDisplay >= 1000 then
+        -- 轉換為 M (百萬)
+        if gpsDisplay >= 10000000 then
+            gpsDisplay = math.floor(gpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)金幣/小時", gpsDisplay) -- 顯示為 "數字 M 小時金幣"
+        elseif gpsDisplay >= 10000 then
             gpsDisplay = math.floor(gpsDisplay / 1000)  -- K
             unitLabel = string.format("%d (k)金幣/小時", gpsDisplay) -- 顯示為 "數字 K 小時金幣"
         else
@@ -123,10 +139,13 @@ local function calculateGPS()
     elseif currentUnitIndex == 4 then
         -- 天金幣
         gpsDisplay = math.floor(avgGPS * 86400)  -- 每天的 GPS
-        -- 轉換為 K (千)
-        if gpsDisplay >= 1000 then
+        -- 轉換為 M (百萬)
+        if gpsDisplay >= 10000000 then
+            gpsDisplay = math.floor(gpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)金幣/天", gpsDisplay) -- 顯示為 "數字 M 天金幣"
+        elseif gpsDisplay >= 10000 then
             gpsDisplay = math.floor(gpsDisplay / 1000)  -- K
-            unitLabel = string.format("%d (k)金幣/天", gpsDisplay)
+            unitLabel = string.format("%d (k)金幣/天", gpsDisplay) -- 顯示為 "數字 K 天金幣"
         else
             unitLabel = string.format("%d 金幣/天", gpsDisplay)
         end

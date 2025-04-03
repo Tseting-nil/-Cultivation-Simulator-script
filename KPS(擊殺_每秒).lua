@@ -106,30 +106,49 @@ local function calculateKPS()
     if currentUnitIndex == 1 then
         -- 秒擊殺
         kpsDisplay = math.floor(kpsValue)  -- 只顯示整數
-        unitLabel = string.format("%d 擊殺/秒", kpsDisplay)
+        if kpsValue >= 10000 then
+            kpsDisplay = math.floor(kpsDisplay / 1000)  -- K
+            unitLabel = string.format("%d (k)擊殺/秒", kpsDisplay) -- 顯示為 "數字 K 秒擊殺"
+        else
+            unitLabel = string.format("%d 擊殺/秒", kpsDisplay)  -- 顯示為 "數字 秒擊殺"
+        end
     elseif currentUnitIndex == 2 then
         -- 分鐘擊殺 (用過去 60 秒的平均 KPS)
         kpsDisplay = math.floor(avgKPS * 60)  -- 每分鐘的 KPS
-        unitLabel = string.format("%d 擊殺/分鐘", kpsDisplay)
+        if kpsDisplay >= 10000000 then
+            kpsDisplay = math.floor(kpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)擊殺/分鐘", kpsDisplay) -- 顯示為 "數字 M 分鐘擊殺"
+        elseif kpsDisplay >= 10000 then
+            kpsDisplay = math.floor(kpsDisplay / 1000)  -- K
+            unitLabel = string.format("%d (k)擊殺/分鐘", kpsDisplay) -- 顯示為 "數字 K 分鐘擊殺"
+        else
+            unitLabel = string.format("%d 擊殺/分鐘", kpsDisplay) -- 顯示為 "數字 分鐘擊殺"
+        end
     elseif currentUnitIndex == 3 then
         -- 小時擊殺
         kpsDisplay = math.floor(avgKPS * 3600)  -- 每小時的 KPS
-        -- 轉換為 K (千)
-        if kpsDisplay >= 1000 then
+        -- 轉換為 M (百萬)
+        if kpsDisplay >= 10000000 then
+            kpsDisplay = math.floor(kpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)擊殺/小時", kpsDisplay) -- 顯示為 "數字 M 小時擊殺"
+        elseif kpsDisplay >= 10000 then
             kpsDisplay = math.floor(kpsDisplay / 1000)  -- K
             unitLabel = string.format("%d (k)擊殺/小時", kpsDisplay) -- 顯示為 "數字 K 小時擊殺"
         else
-            unitLabel = string.format("%d 擊殺/小時", kpsDisplay)
+            unitLabel = string.format("%d 擊殺/小時", kpsDisplay) -- 顯示為 "數字 小時擊殺"
         end
     elseif currentUnitIndex == 4 then
         -- 天擊殺
         kpsDisplay = math.floor(avgKPS * 86400)  -- 每天的 KPS
         -- 轉換為 K (千)
-        if kpsDisplay >= 1000 then
+        if kpsDisplay >= 10000000 then
+            kpsDisplay = math.floor(kpsDisplay / 1000000)  -- M
+            unitLabel = string.format("%d (M)擊殺/天", kpsDisplay) -- 顯示為 "數字 M 天擊殺"
+        elseif kpsDisplay >= 10000 then
             kpsDisplay = math.floor(kpsDisplay / 1000)  -- K
-            unitLabel = string.format("%d (k)擊殺/天", kpsDisplay)
+            unitLabel = string.format("%d (k)擊殺/天", kpsDisplay) -- 顯示為 "數字 K 天擊殺"
         else
-            unitLabel = string.format("%d 擊殺/天", kpsDisplay)
+            unitLabel = string.format("%d 擊殺/天", kpsDisplay) -- 顯示為 "數字 天擊殺"
         end
     end
 
