@@ -156,43 +156,25 @@ eventDungeonnamechange()
 -- ========================================================================== --
 -- 郵件資料夾初始化名稱
 local mailList = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("邮件"):WaitForChild("背景"):WaitForChild("邮件列表")
-local function mailnamechange()
-    if not mailList then
-        print("郵件列表不存在")
-        return
-    end
-    -- 用於追蹤每個類別的編號
-    local counters = {
-        freemail = 0,
-        gamepassmail = 0,
-        arenamail = 0,
-        mail = 0
-    }
-    -- 遍歷 mailList 下的所有子物件
-    for _, mail in pairs(mailList:GetChildren()) do
-        if mail.Name == "邮件" then
-            local mailname = mail:FindFirstChild("名称") and mail:FindFirstChild("名称").Text or "mail"
-            local category
 
-            -- 根據名稱分類
-            if mailname == "Falling Gems from the Sky" then
-                category = "freemail"
-            elseif mailname == "Mysterious Letter" then
-                category = "gamepassmail"
-            elseif mailname == "Rewards from the Arena last week" then
-                category = "arenamail"
+local function mailnamechange()
+    spawn(function()
+        local i = 1
+        local namecheck = false
+        while true do
+            local mail = mailList:FindFirstChild("邮件")
+            if mail then
+                mail.Name = tostring("mail" .. i)
+                i = i + 1
             else
-                category = "mail"
+                if not namecheck then
+                    print("郵件--名稱--已全部更改")
+                    namecheck = true
+                    break
+                end
             end
-            -- 移除名稱中的空格
-            category = string.gsub(category, "%s+", "")
-            -- 遞增對應類別的計數器並生成新名稱
-            counters[category] = counters[category] + 1
-            local newName = category .. counters[category]
-            -- 更改物件名稱
-            mail.Name = newName
         end
-    end
-    print("郵件--名稱--已全部更改")
+    end)
 end
+
 mailnamechange()
