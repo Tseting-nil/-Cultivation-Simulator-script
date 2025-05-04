@@ -142,6 +142,29 @@ ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ScrollingFrame.CanvasSize = UDim2.fromOffset(0, 0)
 
 -- ====================== --
+-- 修改標題函式
+function changeTitle(newTitleText)
+    UI.TitleLabel.Text = newTitleText
+end
+
+-- ====================== --
+-- 標題函式(比公告字體大一點)
+function addTitle(titleText)
+    local label = Instance.new("TextLabel")
+    label.Name = "TitleEntry"
+    label.Size = UDim2.new(1, 0, 0, 50) -- 高度可調整
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.Font = Enum.Font.GothamBold -- 加粗字體
+    label.TextSize = (addAnnouncementtextsize + 5) -- 比公告再大一點
+    label.Text = titleText
+    label.TextXAlignment = Enum.TextXAlignment.Center
+    label.TextYAlignment = Enum.TextYAlignment.Center
+    label.TextWrapped = true
+    label.Parent = ScrollingFrame
+end
+
+-- ====================== --
 -- 公告函式
 function addAnnouncement(content)
     local label = Instance.new("TextLabel")
@@ -228,4 +251,3 @@ end
 function hideUI()
     Frame.Visible = false
 end
-
