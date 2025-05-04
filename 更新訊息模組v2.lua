@@ -1,52 +1,140 @@
 -- ====================== --
---GUI結構
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local TitleLabel = Instance.new("TextLabel")
-local MainFrame = Instance.new("Frame")
-local ScrollingFrame = Instance.new("ScrollingFrame")
+-- GUI 手機版本
+local function createUIMobile()
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    local Frame = Instance.new("Frame")
+    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Frame.BorderSizePixel = 0
+    Frame.Position = UDim2.new(0.170963883, 0, 0.143080816, 0)
+    Frame.Size = UDim2.new(0, 481, 0, 278)
+    Frame.Parent = ScreenGui
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(0.231249496, 0, 0.209756389, 0)
-Frame.Size = UDim2.new(0, 1031, 0, 543)
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Name = "TitleLabe"
+    TitleLabel.Parent = Frame
+    TitleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.BorderSizePixel = 0
+    TitleLabel.Position = UDim2.new(-0.000929612375, 0, -3.31521878e-05, 0)
+    TitleLabel.Size = UDim2.new(0, 481, 0, 34)
+    TitleLabel.Font = Enum.Font.SourceSans
+    TitleLabel.Text = "公告/更新日誌"
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextSize = 26.000
 
-TitleLabel.Name = "TitleLabel"
-TitleLabel.Parent = Frame
-TitleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TitleLabel.BorderSizePixel = 0
-TitleLabel.Size = UDim2.new(0, 1031, 0, 65)
-TitleLabel.Font = Enum.Font.SourceSans
-TitleLabel.Text = "公告/更新日誌"
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 60.000
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = Frame
+    MainFrame.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
+    MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0, 0, 0.125899285, 0)
+    MainFrame.Size = UDim2.new(0, 481, 0, 243)
 
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = Frame
-MainFrame.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
-MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(0, 0, 0.119705342, 0)
-MainFrame.Size = UDim2.new(0, 1031, 0, 478)
+    local ScrollingFrame = Instance.new("ScrollingFrame")
+    ScrollingFrame.Parent = MainFrame
+    ScrollingFrame.Active = true
+    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderSizePixel = 0
+    ScrollingFrame.Size = UDim2.new(0, 481, 0, 241)
 
-ScrollingFrame.Parent = MainFrame
-ScrollingFrame.Active = true
-ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-ScrollingFrame.BorderSizePixel = 0
-ScrollingFrame.Position = UDim2.new(0, 0, 0.00418410031, 0)
-ScrollingFrame.Size = UDim2.new(0, 1031, 0, 476)
+    return {
+        ScreenGui = ScreenGui,
+        Frame = Frame,
+        TitleLabel = TitleLabel,
+        MainFrame = MainFrame,
+        ScrollingFrame = ScrollingFrame,
+        addAnnouncementtextsize = 25,
+        addChangelogtextsize = 20
+    }
+end
 
 -- ====================== --
---排版與捲軸設定
+-- GUI PC 版本
+local function createUIPC()
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local Frame = Instance.new("Frame")
+    Frame.Parent = ScreenGui
+    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Frame.BorderSizePixel = 0
+    Frame.Position = UDim2.new(0.231249496, 0, 0.209756389, 0)
+    Frame.Size = UDim2.new(0, 1031, 0, 543)
+
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Name = "TitleLabel"
+    TitleLabel.Parent = Frame
+    TitleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.BorderSizePixel = 0
+    TitleLabel.Size = UDim2.new(0, 1031, 0, 65)
+    TitleLabel.Font = Enum.Font.SourceSans
+    TitleLabel.Text = "公告/更新日誌"
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextSize = 60.000
+
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = Frame
+    MainFrame.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
+    MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0, 0, 0.119705342, 0)
+    MainFrame.Size = UDim2.new(0, 1031, 0, 478)
+
+    local ScrollingFrame = Instance.new("ScrollingFrame")
+    ScrollingFrame.Parent = MainFrame
+    ScrollingFrame.Active = true
+    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderSizePixel = 0
+    ScrollingFrame.Position = UDim2.new(0, 0, 0.00418410031, 0)
+    ScrollingFrame.Size = UDim2.new(0, 1031, 0, 476)
+
+    return {
+        ScreenGui = ScreenGui,
+        Frame = Frame,
+        TitleLabel = TitleLabel,
+        MainFrame = MainFrame,
+        ScrollingFrame = ScrollingFrame,
+        addAnnouncementtextsize = 35,
+        addChangelogtextsize = 25
+    }
+end
+
+
+-- 裝置檢測
+local function selectUI()
+    local player = game.Players.LocalPlayer
+    local guiService = game:GetService("GuiService")
+    local screenSize = guiService:GetScreenResolution()
+
+    if screenSize.X < 800 then
+        print("📱 Mobile UI loaded")
+        return createUIMobile()
+    else
+        print("🖥️ PC UI loaded")
+        return createUIPC()
+    end
+end
+
+--主程序
+local UI = selectUI()
+local Frame = UI.Frame
+local ScrollingFrame = UI.ScrollingFrame
+local addAnnouncementtextsize = UI.addAnnouncementtextsize
+local addChangelogtextsize = UI.addChangelogtextsize
+
 local listLayout = Instance.new("UIListLayout")
-listLayout.Padding = UDim.new(0, 10) -- 項目間距
+listLayout.Padding = UDim.new(0, 10)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Parent = ScrollingFrame
 
@@ -62,7 +150,7 @@ function addAnnouncement(content)
     label.BackgroundTransparency = 1
     label.TextColor3 = Color3.fromRGB(255, 255, 255)
     label.Font = Enum.Font.GothamBold
-    label.TextSize = 35
+    label.TextSize = addAnnouncementtextsize
     label.Text = content
     label.TextXAlignment = Enum.TextXAlignment.Center
     label.TextYAlignment = Enum.TextYAlignment.Center
@@ -70,8 +158,7 @@ function addAnnouncement(content)
     label.Parent = ScrollingFrame
 end
 
--- ====================== --
--- 間距函式
+--  空白函式：空白分隔項
 function addSpacer(height)
     local spacer = Instance.new("Frame")
     spacer.Name = "Spacer"
@@ -81,7 +168,7 @@ function addSpacer(height)
 end
 
 -- ====================== --
--- 日誌函式
+-- 更新日誌函式
 function addChangelog(date, version, description)
     local container = Instance.new("Frame")
     container.Name = "ChangelogEntry"
@@ -101,7 +188,7 @@ function addChangelog(date, version, description)
     header.BackgroundTransparency = 1
     header.TextColor3 = Color3.fromRGB(220, 220, 220)
     header.Font = Enum.Font.Gotham
-    header.TextSize = 30
+    header.TextSize = addChangelogtextsize
     header.Text = string.format("[%s] %s", date, version)
     header.TextXAlignment = Enum.TextXAlignment.Center
     header.TextYAlignment = Enum.TextYAlignment.Center
@@ -115,7 +202,7 @@ function addChangelog(date, version, description)
     content.BackgroundTransparency = 1
     content.TextColor3 = Color3.fromRGB(200, 200, 200)
     content.Font = Enum.Font.Gotham
-    content.TextSize = 30
+    content.TextSize = addChangelogtextsize
     content.Text = description
     content.TextWrapped = true
     content.TextXAlignment = Enum.TextXAlignment.Center
@@ -133,13 +220,11 @@ function addChangelog(date, version, description)
 end
 
 -- ====================== --
---顯示 UI
+-- UI 顯示/隱藏
 function showUI()
     Frame.Visible = true
 end
 
--- ====================== --
---隱藏 UI
 function hideUI()
     Frame.Visible = false
 end
