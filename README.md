@@ -31,7 +31,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivat
 - 快速開始關卡
 - 自動開始關卡
 - 自動最高關卡
-- 自動煉丹 ~~法寶/技能~~
+- 自動抽取丹藥/法寶/技能
 - 快速升級
 - 自動公會捐獻
 - 快速開啟介面
