@@ -123,8 +123,8 @@ local function Dungeonnamechange()
 end
 
 Dungeonnamechange()
-
---活動地下城資料夾初始化名稱
+-- ========================================================================== --
+-- 活動地下城資料夾初始化名稱
 local Dungeonseventlist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表")
 local function eventDungeonnamechange()
     local namecheck = false
@@ -178,3 +178,28 @@ local function mailnamechange()
 end
 
 mailnamechange()
+
+-- ========================================================================== --
+-- 活動商品資料夾初始化名稱
+local eventcommodity = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("节日活动商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("兑换"):WaitForChild("列表")
+
+local function eventcommoditynamechange()
+    spawn(function()
+        local i = 1
+        local namecheck = false
+        while true do
+            local eventcommodity = eventcommodity:FindFirstChild("活动商品预制体")
+            if eventcommodity then
+                eventcommodity.Name = tostring("eventcommodity" .. i)
+                i = i + 1
+            else
+                if not namecheck then
+                    print("活動商品--名稱--已全部更改")
+                    namecheck = true
+                    break
+                end
+            end
+        end
+    end)
+end
+eventcommoditynamechange()
