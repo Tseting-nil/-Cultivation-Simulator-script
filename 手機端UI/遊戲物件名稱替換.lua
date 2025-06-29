@@ -203,3 +203,28 @@ local function eventcommoditynamechange()
     end)
 end
 eventcommoditynamechange()
+
+-- ========================================================================== --
+-- 世界BOSS資料夾初始化名稱
+local Worldbosslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("世界boss"):WaitForChild("列表")
+
+local function worldbossnamechange()
+    spawn(function()
+        local i = 1
+        local namecheck = false
+        while true do
+            local Worldbosslist = Worldbosslist:FindFirstChild("世界boss关卡预制体")
+            if Worldbosslist then
+                Worldbosslist.Name = tostring("eventcommodity" .. i)
+                i = i + 1
+            else
+                if not namecheck then
+                    print("世界BOSS--名稱--已全部更改")
+                    namecheck = true
+                    break
+                end
+            end
+        end
+    end)
+end
+worldbossnamechange()
