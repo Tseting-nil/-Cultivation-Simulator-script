@@ -228,3 +228,28 @@ local function worldbossnamechange()
     end)
 end
 worldbossnamechange()
+
+-- ========================================================================== --
+-- 公會商店資料夾初始化名稱
+local Guildshoplist = secondscreen:WaitForChild("公会"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("商店"):WaitForChild("列表")
+
+local function guildshopnamechange()
+    spawn(function()
+        local i = 1
+        local namecheck = false
+        while true do
+            local Guildshoplist = Guildshoplist:FindFirstChild("活动商品预制体")
+            if Guildshoplist then
+                Guildshoplist.Name = tostring("Guildshopitem" .. i)
+                i = i + 1
+            else
+                if not namecheck then
+                    print("公會商店--名稱--已全部更改")
+                    namecheck = true
+                    break
+                end
+            end
+        end
+    end)
+end
+guildshopnamechange()
