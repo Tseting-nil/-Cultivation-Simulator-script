@@ -10,43 +10,45 @@ local function initializationNameChange(parent, targetName, newNamePrefix, maxCo
 	end
 
 	local RunService = game:GetService("RunService")
-    local items = {}
-    local processed = 0
+	spawn(function()
+		local items = {}
+		local processed = 0
 
-    for _, child in ipairs(parent:GetChildren()) do
-        if child.Name == targetName then
-            table.insert(items, child)
-        end
-    end
+		for _, child in ipairs(parent:GetChildren()) do
+			if child.Name == targetName then
+				table.insert(items, child)
+			end
+		end
 
-    for i, item in ipairs(items) do
-        if newNamePrefix then
-            item.Name = newNamePrefix .. tostring(i)
-        else
-            item.Name = tostring(i)
-        end
-        processed = processed + 1
-    end
+		for i, item in ipairs(items) do
+			if newNamePrefix then
+				item.Name = newNamePrefix .. tostring(i)
+			else
+				item.Name = tostring(i)
+			end
+			processed = processed + 1
+		end
 
-    if maxCount and processed < maxCount then
-        local attempts = 0
-        local maxAttempts = 50 -- 最多50次
-        while processed < maxCount and attempts < maxAttempts do
-            local item = parent:FindFirstChild(targetName)
-            if item then
-                processed = processed + 1
-                if newNamePrefix then
-                    item.Name = newNamePrefix .. tostring(processed)
-                else
-                    item.Name = tostring(processed)
-                end
-            else
-                attempts = attempts + 1
-                RunService.Heartbeat:Wait() -- 等待一幀
-            end
-        end
-    end
-    print(completedMessage .. " (處理了 " .. processed .. " 個物件)")
+		if maxCount and processed < maxCount then
+			local attempts = 0
+			local maxAttempts = 50 -- 最多50次
+			while processed < maxCount and attempts < maxAttempts do
+				local item = parent:FindFirstChild(targetName)
+				if item then
+					processed = processed + 1
+					if newNamePrefix then
+						item.Name = newNamePrefix .. tostring(processed)
+					else
+						item.Name = tostring(processed)
+					end
+				else
+					attempts = attempts + 1
+					RunService.Heartbeat:Wait() -- 等待一幀
+				end
+			end
+		end
+		print(completedMessage .. " (處理了 " .. processed .. " 個物件)")
+	end)
 end
 
 -- 地下城專用的名稱處理函數
@@ -54,44 +56,46 @@ local function initializationDungeonNameChange(parent, targetName, completedMess
 	if not parent then
 		return
 	end
-    local items = {}
-    local processed = 0
+	spawn(function()
+		local items = {}
+		local processed = 0
 
-    for _, child in ipairs(parent:GetChildren()) do
-        if child.Name == targetName then
-            table.insert(items, child)
-        end
-    end
+		for _, child in ipairs(parent:GetChildren()) do
+			if child.Name == targetName then
+				table.insert(items, child)
+			end
+		end
 
-    for _, item in ipairs(items) do
-        local nameText = item:FindFirstChild("名称")
-        if nameText then
-            local cleanName = string.gsub(nameText.Text, "%s+", "")
-            item.Name = cleanName
-            processed = processed + 1
-        end
-    end
+		for _, item in ipairs(items) do
+			local nameText = item:FindFirstChild("名称")
+			if nameText then
+				local cleanName = string.gsub(nameText.Text, "%s+", "")
+				item.Name = cleanName
+				processed = processed + 1
+			end
+		end
 
-    if processed == 0 then
-        local RunService = game:GetService("RunService")
-        local attempts = 0
-        local maxAttempts = 100
-        while attempts < maxAttempts do
-            local item = parent:FindFirstChild(targetName)
-            if item then
-                local nameText = item:FindFirstChild("名称")
-                if nameText then
-                    local cleanName = string.gsub(nameText.Text, "%s+", "")
-                    item.Name = cleanName
-                    processed = processed + 1
-                end
-            else
-                attempts = attempts + 1
-                RunService.Heartbeat:Wait()
-            end
-        end
-    end
-    print(completedMessage .. " (處理了 " .. processed .. " 個物件)")
+		if processed == 0 then
+			local RunService = game:GetService("RunService")
+			local attempts = 0
+			local maxAttempts = 100
+			while attempts < maxAttempts do
+				local item = parent:FindFirstChild(targetName)
+				if item then
+					local nameText = item:FindFirstChild("名称")
+					if nameText then
+						local cleanName = string.gsub(nameText.Text, "%s+", "")
+						item.Name = cleanName
+						processed = processed + 1
+					end
+				else
+					attempts = attempts + 1
+					RunService.Heartbeat:Wait()
+				end
+			end
+		end
+		print(completedMessage .. " (處理了 " .. processed .. " 個物件)")
+	end)
 end
 
 -- 處理固定數量的物件
