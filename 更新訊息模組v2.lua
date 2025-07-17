@@ -53,7 +53,62 @@ local function createUIMobile()
         addChangelogtextsize = 20
     }
 end
+-- ====================== --
+-- GUI 平板
+local function createUIPad()
+    local ScreenGui = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local TitleLabe = Instance.new("TextLabel")
+    local MainFrame = Instance.new("Frame")
+    local ScrollingFrame = Instance.new("ScrollingFrame")
 
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    Frame.Parent = ScreenGui
+    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Frame.BorderSizePixel = 0
+    Frame.Position = UDim2.new(0.10439758, 0, 0.129509449, 0)
+    Frame.Size = UDim2.new(0, 853, 0, 498)
+
+    TitleLabe.Name = "TitleLabe"
+    TitleLabe.Parent = Frame
+    TitleLabe.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabe.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabe.BorderSizePixel = 0
+    TitleLabe.Size = UDim2.new(0, 853, 0, 65)
+    TitleLabe.Font = Enum.Font.SourceSans
+    TitleLabe.Text = "公告/更新日誌"
+    TitleLabe.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabe.TextSize = 60.000
+
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = Frame
+    MainFrame.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
+    MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0.00130656734, 0, 0.130144969, 0)
+    MainFrame.Size = UDim2.new(0, 852, 0, 433)
+
+    ScrollingFrame.Parent = MainFrame
+    ScrollingFrame.Active = true
+    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ScrollingFrame.BorderSizePixel = 0
+    ScrollingFrame.Position = UDim2.new(-0.00199195254, 0, 0.00460878853, 0)
+    ScrollingFrame.Size = UDim2.new(0, 853, 0, 431)
+
+    return {
+        ScreenGui = ScreenGui,
+        Frame = Frame,
+        TitleLabel = TitleLabe,
+        MainFrame = MainFrame,
+        ScrollingFrame = ScrollingFrame,
+        addAnnouncementtextsize = 25,
+        addChangelogtextsize = 20
+    }
+end
 -- ====================== --
 -- GUI PC 版本
 local function createUIPC()
@@ -120,6 +175,9 @@ local function selectUI()
     if screenSize.X < 800 then
         print("📱 Mobile UI loaded")
         return createUIMobile()
+    elseif screenSize.X > 1200 then
+        print("🖥️ Pad UI loaded")
+        return createUIPad()
     else
         print("🖥️ PC UI loaded")
         return createUIPC()
@@ -251,3 +309,23 @@ end
 function hideUI()
     Frame.Visible = false
 end
+
+showUI();
+changeTitle("公告/更新日誌")
+addSpacer(height);
+addAnnouncement("密鑰系統為公共密鑰，3天更換一次,所以有些人拿到的密鑰時間會很短");
+addSpacer(height);
+addChangelog("2025/07/05", "v5.3.0", "[+] 公會商店自動購買腳本");
+addChangelog("2025/06/29", "v5.2.1", "[+] 世界Boss檢查 [!] 活動商品時間顯示");
+addChangelog("2025/06/27", "v5.2.0", "[!] 修復遺物未顯示");
+addChangelog("2025/06/27", "v5.1.1", "[+] 開啟劍雕像UI [+] 快速/自動購買活動物品");
+addChangelog("2025/06/23", "v5.1.0", "[+] BOSS地下城 - Mecha Dungeon");
+addChangelog("2025/06/19", "v5.0.3", "[!] 安全模式按鈕樣式更改(舊方法) [+] 重新設置腳本語言");
+addChangelog("2025/06/18", "v5.0.2", "[+] 側邊訊息模組適配");
+addChangelog("2025/06/18", "v5.0.1", "[+] 無盡戰鬥失敗會自動重啟 [+] 安全模式按鈕樣式更改");
+addChangelog("2025/06/16", "v5.0.0", "[+] 傳送煉器台，[+] 自動升級煉器台、煉丹爐");
+addChangelog("2025/05/19", "v4.8.3", "[+] 自動更新遺物功能");
+addChangelog("2025/05/18", "v4.8.2", "[+] 轉盤抽取功能");
+addChangelog("2025/05/17", "v4.8.1", "[+] 為抽取法寶/技能添加一個延遲按鈕");
+addChangelog("2025/05/10", "v4.8.0", "[!] 修復地下城功能、[+] 自定義自動地下城");
+addChangelog("2025/05/04", "v4.7.4", "日誌模組v2適配手機端");
