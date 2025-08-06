@@ -100,15 +100,15 @@ end
 
 -- 處理固定數量的物件
 local function initializePhaseOne()
-  
+
     -- 通行證任務 (固定12個)
 	local gamepassmissionnamelist = secondscreen:WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表")
 	initializationNameChange(gamepassmissionnamelist, "任务项预制体", nil, 12, "通行證任務--名稱--已全部更改")
-    
+
     -- 每日任務 (固定7個)
 	local everydaymissionnamelist = secondscreen:WaitForChild("每日任务"):WaitForChild("背景"):WaitForChild("任务列表")
 	initializationNameChange(everydaymissionnamelist, "任务项预制体", nil, 7, "每日任務--名稱--已全部更改")
-    
+
     -- 世界關卡 (立即處理)
 	local schedule = player:WaitForChild("值"):WaitForChild("主线进度")
 	local worldname = schedule:FindFirstChild("世界")
@@ -122,7 +122,6 @@ end
 
 -- 處理動態數量的物件
 local function initializePhaseTwo()
-
     -- 通行證獎勵 (動態數量)
 	local gamepassgiftnnamelist = secondscreen:WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("月通行证"):WaitForChild("背景"):WaitForChild("奖励区"):WaitForChild("奖励列表")
 	initializationNameChange(gamepassgiftnnamelist, "月通行证奖励预制体", "gamepassgift", nil, "通行證獎勵--名稱--已全部更改")
@@ -142,6 +141,10 @@ local function initializePhaseTwo()
     -- 世界BOSS (動態數量)
 	local Worldbosslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("世界boss"):WaitForChild("列表")
 	initializationNameChange(Worldbosslist, "世界boss关卡预制体", "worldboss", nil, "世界BOSS--名稱--已全部更改")
+
+	-- 祝福 (動態數量)
+	local Blessinglist = game:GetService("Players").LocalPlayer.PlayerGui.GUI:WaitForChild("二级界面"):WaitForChild("主角"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("小绿瓶"):WaitForChild("祝福"):waitForChild("列表")
+	initializationNameChange(Blessinglist, "祝福预制体", "Blessing", nil, "祝福--名稱--已全部更改")
 end
 
 -- 處理需要文本處理的物件
