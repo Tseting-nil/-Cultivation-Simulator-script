@@ -24,17 +24,22 @@
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Tseting-nil/-Cultivation-Simulator-script/refs/heads/main/%E5%95%9F%E5%8B%95%E5%99%A8%E5%8A%A0%E5%AF%86%E9%81%B8%E5%96%AE.lua'))()
 ```
 ## Features:
-- Auto collect (Daily Tasks, World Tasks, Pass Tasks, Pass Rewards)
-- Quick start levels
-- Auto start levels
-- Auto highest level
-- Auto alchemy ~~Talismans/Skills~~
-- Quick leveling
-- Auto guild donation
-- Quick interface opening
-- And more...
 
-  
+Support two language(EN,中文)
+
+* **Free gamepass** - AutoCrafting
+* **Imitate gamepass** (Auto execute investments, Auto harvest herbs)
+* Auto collect (Daily Tasks, World Tasks, Pass Tasks, Pass Rewards)
+* Auto start world (Two modes)
+* Auto start Dungeons (Local storage level) + world boss
+* Auto Elixir + Absorb
+* Auto Draw weapon/skill/Turntable
+* Auto buy (event store)
+* Auto upgrade
+* Group (Auto contribute, Guild store auto purchase script)
+* Statistics (kill calculate, Gold calculate)
+* Quick open game UI
+
 ## 📸 Show
 
 ### Mobile Version English Interface
