@@ -138,6 +138,10 @@ local function initializePhaseTwo()
 	local Guildshoplist = secondscreen:WaitForChild("公会"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("商店"):WaitForChild("列表")
 	initializationNameChange(Guildshoplist, "活动商品预制体", "Guildshopitem", nil, "公會商店--名稱--已全部更改")
 
+	-- 競技場商店 (動態數量)
+	local Arenashoplist = secondscreen:WaitForChild("竞技场"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("商店"):WaitForChild("列表")
+	initializationNameChange(Arenashoplist, "活动商品预制体", "Arenashopitem", nil, "競技場商店--名稱--已全部更改")
+	
     -- 世界BOSS (動態數量)
 	local Worldbosslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("世界boss"):WaitForChild("列表")
 	initializationNameChange(Worldbosslist, "世界boss关卡预制体", "worldboss", nil, "世界BOSS--名稱--已全部更改")
