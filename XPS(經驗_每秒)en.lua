@@ -58,7 +58,7 @@ unitButton.Position = UDim2.new(0, 10, 0, 10) -- 位於框架頂部
 unitButton.BackgroundColor3 = Color3.new(0, 0, 0)
 unitButton.TextColor3 = Color3.new(1, 1, 1)
 unitButton.TextScaled = true
-unitButton.Text = "切換單位"
+unitButton.Text = "Switch units"
 unitButton.BorderSizePixel = 2
 unitButton.BorderColor3 = Color3.new(1, 1, 1)
 
