@@ -182,12 +182,12 @@ local function calculateXPS()
         xpsDisplay = math.floor(avgXPS * 86400 + 0.5)  -- 四捨五入
         if xpsDisplay >= 10000000 then
             xpsDisplay = math.floor(xpsDisplay / 1000000)  -- M
-            unitLabel = string.format("%d (M)exp/Day", xpsDisplay)
+            unitLabel = string.format("%d (M)exp/day", xpsDisplay)
         elseif xpsDisplay >= 10000 then
             xpsDisplay = math.floor(xpsDisplay / 1000)  -- K
-            unitLabel = string.format("%d (k)exp/Day", xpsDisplay)
+            unitLabel = string.format("%d (k)exp/day", xpsDisplay)
         else
-            unitLabel = string.format("%d exp/Day", xpsDisplay)
+            unitLabel = string.format("%d exp/day", xpsDisplay)
         end
     end
 
