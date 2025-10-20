@@ -5,6 +5,25 @@
 
 ---
 
+# PVP Test Feature List
+
+1. **Check TP Coordinates**  
+   - Verify teleport coordinates are correct  
+   - Prevent getting stuck or teleport failures  
+
+2. **Check Follow Player**  
+   - Ensure following the target player accurately  
+   - Include stop-follow functionality  
+
+3. **More Feedback**  
+   - Bug reporting and improvement suggestions
+
+ ```lua
+loadstring(game:HttpGet("https://gist.githubusercontent.com/Tseting-nil/98c9e5932f75f365faf319c785b26219/raw/b347dc3770b3ce582a9f047d827884eb08dc510a/PVPtest"))()
+```
+
+
+
 ## ⚠️ Notes
 1. **This script is for academic research and learning purposes only**，Please do not use it to break the game rules。
 2. Using the script carries risks, such as account suspension. The author takes no responsibility。
