@@ -172,7 +172,6 @@ local function runInitialization()
 	initializePhaseOne()
 	initializePhaseTwo()
 	initializePhaseThree()
-	task.wait(2)
 	print("=== 初始化完成 ===")
 end
 
