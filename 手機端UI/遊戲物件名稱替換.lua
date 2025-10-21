@@ -1,6 +1,6 @@
 local player = game:GetService("Players").LocalPlayer
 local playerGui = player.PlayerGui
-local secondscreen = playerGui.GUI:WaitForChild("二级界面")
+local secondscreen = playerGui.GUI:FindFirstChild("二级界面")
 
 -- ========================================================================== --
 -- (父物件：任務列表容器,目標名稱：要找的物件名稱,新名稱前綴,最大數量,完成訊息)
@@ -102,15 +102,15 @@ end
 local function initializePhaseOne()
 
     -- 通行證任務 (固定12個)
-	local gamepassmissionnamelist = secondscreen:WaitForChild("商店"):WaitForChild("通行证任务"):WaitForChild("背景"):WaitForChild("任务列表")
+	local gamepassmissionnamelist = secondscreen:FindFirstChild("商店"):FindFirstChild("通行证任务"):FindFirstChild("背景"):FindFirstChild("任务列表")
 	initializationNameChange(gamepassmissionnamelist, "任务项预制体", nil, 12, "通行證任務--名稱--已全部更改")
 
     -- 每日任務 (固定7個)
-	local everydaymissionnamelist = secondscreen:WaitForChild("每日任务"):WaitForChild("背景"):WaitForChild("任务列表")
+	local everydaymissionnamelist = secondscreen:FindFirstChild("每日任务"):FindFirstChild("背景"):FindFirstChild("任务列表")
 	initializationNameChange(everydaymissionnamelist, "任务项预制体", nil, 7, "每日任務--名稱--已全部更改")
 
     -- 世界關卡 (立即處理)
-	local schedule = player:WaitForChild("值"):WaitForChild("主线进度")
+	local schedule = player:FindFirstChild("值"):FindFirstChild("主线进度")
 	local worldname = schedule:FindFirstChild("世界")
 	local worldlevelsname = schedule:FindFirstChild("关卡")
 	if worldname and worldlevelsname then
@@ -123,56 +123,56 @@ end
 -- 處理動態數量的物件
 local function initializePhaseTwo()
     -- 通行證獎勵 (動態數量)
-	local gamepassgiftnnamelist = secondscreen:WaitForChild("商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("月通行证"):WaitForChild("背景"):WaitForChild("奖励区"):WaitForChild("奖励列表")
+	local gamepassgiftnnamelist = secondscreen:FindFirstChild("商店"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("月通行证"):FindFirstChild("背景"):FindFirstChild("奖励区"):FindFirstChild("奖励列表")
 	initializationNameChange(gamepassgiftnnamelist, "月通行证奖励预制体", "gamepassgift", nil, "通行證獎勵--名稱--已全部更改")
 
     -- 郵件 (動態數量)
-	local mailList = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("邮件"):WaitForChild("背景"):WaitForChild("邮件列表")
+	local mailList = secondscreen:FindFirstChild("邮件"):FindFirstChild("背景"):FindFirstChild("邮件列表")
 	initializationNameChange(mailList, "邮件", "mail", nil, "郵件--名稱--已全部更改")
 
     -- 活動商品 (動態數量)
-	local eventcommodity = playerGui.GUI:WaitForChild("二级界面"):WaitForChild("节日活动商店"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("兑换"):WaitForChild("列表")
+	local eventcommodity = secondscreen:FindFirstChild("节日活动商店"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("兑换"):FindFirstChild("列表")
 	initializationNameChange(eventcommodity, "活动商品预制体", "eventcommodity", nil, "活動商品--名稱--已全部更改")
 
     -- 公會商店 (動態數量)
-	local Guildshoplist = secondscreen:WaitForChild("公会"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("商店"):WaitForChild("列表")
+	local Guildshoplist = secondscreen:FindFirstChild("公会"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("商店"):FindFirstChild("列表")
 	initializationNameChange(Guildshoplist, "活动商品预制体", "Guildshopitem", nil, "公會商店--名稱--已全部更改")
 
 	-- 競技場商店 (動態數量)
-	local Arenashoplist = secondscreen:WaitForChild("竞技场"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("商店"):WaitForChild("列表")
+	local Arenashoplist = secondscreen:FindFirstChild("竞技场"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("商店"):FindFirstChild("列表")
 	initializationNameChange(Arenashoplist, "活动商品预制体", "Arenashopitem", nil, "競技場商店--名稱--已全部更改")
 	
     -- 世界BOSS (動態數量)
-	local Worldbosslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("世界boss"):WaitForChild("列表")
+	local Worldbosslist = secondscreen:FindFirstChild("关卡选择"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("世界boss"):FindFirstChild("列表")
 	initializationNameChange(Worldbosslist, "世界boss关卡预制体", "worldboss", nil, "世界BOSS--名稱--已全部更改")
 
 	-- 祝福 (動態數量)
-	local Blessinglist = game:GetService("Players").LocalPlayer.PlayerGui.GUI:WaitForChild("二级界面"):WaitForChild("主角"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("小绿瓶"):WaitForChild("祝福"):waitForChild("列表")
+	local Blessinglist = secondscreen:FindFirstChild("主角"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("小绿瓶"):FindFirstChild("祝福"):FindFirstChild("列表")
 	initializationNameChange(Blessinglist, "祝福预制体", "Blessing", nil, "祝福--名稱--已全部更改")
+
+	-- 寵物蛋 (動態數量)
+	local PetEgglist = secondscreen:FindFirstChild("宠物"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("宠物蛋"):FindFirstChild("背包区域"):FindFirstChild("道具栏"):FindFirstChild("列表")
+	initializationNameChange(PetEgglist, "背包项预制体", "PetEgg", nil, "寵物蛋背包--名稱--已全部更改")
 end
 
 -- 處理需要文本處理的物件
 local function initializePhaseThree()
 
     -- 地下城 (需要文本處理)
-	local Dungeonslist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("副本"):WaitForChild("列表")
+	local Dungeonslist = secondscreen:FindFirstChild("关卡选择"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("副本"):FindFirstChild("列表")
 	initializationDungeonNameChange(Dungeonslist, "副本预制体", "地下城--名稱--已全部更改")
 
     -- 活動地下城 (需要文本處理)
-	local Dungeonseventlist = secondscreen:WaitForChild("关卡选择"):WaitForChild("背景"):WaitForChild("右侧界面"):WaitForChild("活动副本"):WaitForChild("列表")
+	local Dungeonseventlist = secondscreen:FindFirstChild("关卡选择"):FindFirstChild("背景"):FindFirstChild("右侧界面"):FindFirstChild("活动副本"):FindFirstChild("列表")
 	initializationDungeonNameChange(Dungeonseventlist, "活动副本预制体", "活動地下城--名稱--已全部更改")
 end
 
 local function runInitialization()
 	print("=== 開始遊戲初始化命名程序 ===")
-
 	initializePhaseOne()
-
-	wait(0.5)
 	initializePhaseTwo()
-
-	wait(0.5)
 	initializePhaseThree()
+	task.wait(2)
 	print("=== 初始化完成 ===")
 end
 
