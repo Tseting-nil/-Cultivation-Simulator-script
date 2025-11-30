@@ -1,4 +1,5 @@
 ### 中文 | [English](READMEen.md)
+# [該腳本以不再維護請使用新腳本](https://github.com/Tseting-nil/Cultivation-mortal-to-immortal-script)
 # 🌟 養成模擬器腳本 | Cultivation Simulator Script
 
 **遊戲鏈接**：  
