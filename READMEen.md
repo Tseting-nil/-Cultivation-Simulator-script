@@ -1,4 +1,5 @@
 ### English | [中文](README.md)
+# [This script is no longer maintained, please use the new script](https://github.com/Tseting-nil/Cultivation-mortal-to-immortal-script)
 # 🌟  Cultivation Simulator Script
 
 **Game Link**：  [Cultivation Simulator ](https://www.roblox.com/games/18645473062/UPD21-Cultivation-Simulator)
