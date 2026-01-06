@@ -83,7 +83,7 @@ icon.Parent = titleContainer
 
 -- 標題
 local title = Instance.new("TextLabel")
-title.Text = "腳本更新通知"
+title.Text = "腳本錯誤通知"
 title.Font = Enum.Font.GothamBold
 title.TextSize = 24
 title.Size = UDim2.new(1, -50, 0, 40)
@@ -95,7 +95,7 @@ title.Parent = titleContainer
 
 -- 子標題
 local subtitle = Instance.new("TextLabel")
-subtitle.Text = "Component Missing Detected"
+subtitle.Text = "腳本錯誤通知"
 subtitle.Font = Enum.Font.Gotham
 subtitle.TextSize = 14
 subtitle.Size = UDim2.new(1, -50, 0, 20)
@@ -119,7 +119,7 @@ contentCorner.Parent = contentFrame
 
 -- 訊息內容
 local message = Instance.new("TextLabel")
-message.Text = "該腳本將在12/31日停止使用，目前已提供全新版本: v6.4.0腳本！\n\n請前往以下GitHub頁面下載最新版本腳本，確保您能繼續享受最佳的遊戲體驗。"
+message.Text = "因Re-GUI作者不知出何原因刪除了UI庫導致現在所有基於該UI系統的腳本均無法使用。\n所有人都退回舊版本。而我將繼續為該版本進行維護與更新。"
 message.Font = Enum.Font.Gotham
 message.TextSize = 20
 message.TextWrapped = true
@@ -139,7 +139,7 @@ buttonContainer.Position = UDim2.new(0, 20, 0, 320)
 buttonContainer.BackgroundTransparency = 1
 buttonContainer.Parent = frame
 
--- 複製連結按鈕
+--[[ 複製連結按鈕
 local copyButton = Instance.new("TextButton")
 copyButton.Text = "📋 複製連結"
 copyButton.Font = Enum.Font.GothamSemibold
@@ -154,14 +154,15 @@ copyButton.Parent = buttonContainer
 local copyButtonCorner = Instance.new("UICorner")
 copyButtonCorner.CornerRadius = UDim.new(0, 10)
 copyButtonCorner.Parent = copyButton
+--]]
 
--- 加入遊戲按鈕
+-- 關閉通知按鈕
 local joinButton = Instance.new("TextButton")
-joinButton.Text = "🎮 繼續遊戲"
+joinButton.Text = "關閉通知"
 joinButton.Font = Enum.Font.GothamSemibold
 joinButton.TextSize = 20
-joinButton.Size = UDim2.new(0.48, 0, 0, 50)
-joinButton.Position = UDim2.new(0.52, 0, 0, 0)
+joinButton.Size = UDim2.new(0, 300, 0, 50)
+joinButton.Position = UDim2.new(0.5, -150, 0, 0)
 joinButton.BackgroundColor3 = Color3.fromRGB(46, 204, 113)
 joinButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 joinButton.BorderSizePixel = 0
@@ -192,11 +193,12 @@ local function createButtonAnimation(button, hoverColor, normalColor)
     end)
 end
 
--- 應用按鈕動畫
+--[[ 應用按鈕動畫
 createButtonAnimation(copyButton, Color3.fromRGB(41, 128, 185), Color3.fromRGB(52, 152, 219))
+--]]
 createButtonAnimation(joinButton, Color3.fromRGB(39, 174, 96), Color3.fromRGB(46, 204, 113))
 
--- 複製連結功能
+--[[ 複製連結功能
 copyButton.MouseButton1Click:Connect(function()
     setclipboard("https://github.com/Tseting-nil/Cultivation-mortal-to-immortal-script")
     local originalText = copyButton.Text
@@ -219,6 +221,7 @@ copyButton.MouseButton1Click:Connect(function()
     copyButton.Text = originalText
     copyButton.BackgroundColor3 = Color3.fromRGB(52, 152, 219)
 end)
+--]]
 
 -- 關閉 UI 功能
 joinButton.MouseButton1Click:Connect(function()
@@ -245,3 +248,13 @@ local fadeIn = TweenService:Create(backdrop, TweenInfo.new(0.3, Enum.EasingStyle
 
 slideIn:Play()
 fadeIn:Play()
+
+-- 3秒後自動關閉
+task.wait(3)
+local fadeOut = TweenService:Create(gui, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
+    Enabled = false
+})
+fadeOut:Play()
+fadeOut.Completed:Connect(function()
+    gui:Destroy()
+end)
